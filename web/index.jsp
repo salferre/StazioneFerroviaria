@@ -1,16 +1,11 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: salvo
-  Date: 05/10/2019
-  Time: 16:46
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
   <head>
-    <title>$Title$</title>
+    <title>Stazione Ferroviaria</title>
   </head>
   <body>
-  $END$
+  Benvenuti nella Stazione Ferroviaria!
+  <a href="login.jsp">Entra</a>
+  <a href=""></a>
   </body>
 </html>
