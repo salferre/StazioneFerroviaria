@@ -14,10 +14,11 @@
     <br/><br/>
     <input type="submit" value="Accedi">
     <%
-        Boolean msg = (Boolean) request.getAttribute("result");
-        if(msg)
-        {
+        Boolean result = (Boolean) request.getAttribute("result");
+        if(result != null && result) {
             out.println("CORRETTO!");
+        } else {
+            out.println("ERRATO!!!");
         }
     %>
 </form>
