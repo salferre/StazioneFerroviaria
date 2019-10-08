@@ -12,8 +12,8 @@
 </head>
 <body>
     Cosa vuoi fare?
-    <a href="login.jsp">Insert</a>
-    <a href="login.jsp">Update</a>
-    <a href="login.jsp">Delete</a>
+    <a href="insert.jsp">Insert</a>
+    <a href="update.jsp">Update</a>
+    <a href="delete.jsp">Delete</a>
 </body>
 </html>

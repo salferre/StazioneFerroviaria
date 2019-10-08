@@ -11,6 +11,7 @@ public class LoginController {
     public static Boolean checkUser(String username, String password) {
 
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
             String jdbcUrl="jdbc:mysql://127.0.0.1:3306/StazioneFerroviaria?serverTimezone=UTC";
             Connection connection= DriverManager.getConnection(jdbcUrl, "root", "Suazami94");
             String query = "SELECT * FROM Utenti u WHERE u.username = ? AND u.password = ?;";
