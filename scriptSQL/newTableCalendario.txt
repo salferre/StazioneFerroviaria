@@ -1,0 +1,8 @@
+CREATE TABLE `StazioneFerroviaria`.`Calendario` (
+  `idCalendario` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idTratta` VARCHAR(45) NOT NULL,
+  `dataPartenza` DATETIME NOT NULL,
+  `idTreno` VARCHAR(45) NOT NULL,
+  `Binario` DECIMAL(1) NOT NULL,
+  PRIMARY KEY (`idCalendario`),
+  UNIQUE INDEX `idCalendario_UNIQUE` (`idCalendario` ASC) VISIBLE);

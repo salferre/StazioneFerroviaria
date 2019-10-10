@@ -1,0 +1,6 @@
+CREATE TABLE `StazioneFerroviaria`.`Treno` (
+  `idTreno` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `codiceTreno` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idTreno`),
+  UNIQUE INDEX `idTreno_UNIQUE` (`idTreno` ASC) VISIBLE,
+  UNIQUE INDEX `codiceTreno_UNIQUE` (`codiceTreno` ASC) VISIBLE);

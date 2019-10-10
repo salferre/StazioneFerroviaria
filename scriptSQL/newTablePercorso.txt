@@ -1,0 +1,8 @@
+CREATE TABLE `StazioneFerroviaria`.`Percorso` (
+  `idPercorso` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idTratta` VARCHAR(45) NOT NULL,
+  `idStazione` VARCHAR(45) NOT NULL,
+  `Progressivo` DECIMAL(10) NOT NULL,
+  `durata` DECIMAL(4) NOT NULL,
+  PRIMARY KEY (`idPercorso`),
+  UNIQUE INDEX `idPercorso_UNIQUE` (`idPercorso` ASC) VISIBLE);
