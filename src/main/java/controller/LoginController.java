@@ -3,7 +3,7 @@ package controller;
 import javax.servlet.http.HttpSession;
 import java.sql.*;
 
-public class LoginController {
+public class LoginController implements AbstractController {
 
     public LoginController() {
     }
@@ -11,10 +11,9 @@ public class LoginController {
     public static Boolean checkUser(String username, String password) {
 
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-            String jdbcUrl="jdbc:mysql://127.0.0.1:3306/StazioneFerroviaria?serverTimezone=UTC";
-            Connection connection= DriverManager.getConnection(jdbcUrl, "root", "Suazami94");
-            String query = "SELECT * FROM Utenti u WHERE u.username = ? AND u.password = ?;";
+            Class.forName(DRIVER).newInstance();
+            Connection connection= DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+            String query = "SELECT * FROM Utenti u WHERE u.username = ? AND u.password = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, username);
             statement.setString(2, password);

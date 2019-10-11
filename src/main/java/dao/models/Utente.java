@@ -1,4 +1,4 @@
-package models;
+package dao.models;
 
 public class Utente {
 

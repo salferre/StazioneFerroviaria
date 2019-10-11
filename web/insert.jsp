@@ -5,13 +5,14 @@
 </head>
 <body>
 <form action="InsertTreno" method="POST" >
+
     <h5>Insert Treno</h5>
-    Numero: <input type="text" name="numero" id="numero" readonly ><br /><br />
+
+    Numero: <input type="text" name="numero" id="numero" ><br /><br />
     Stazione di Partenza: <input type="text" name="stazionePartenza" id="stazionePartenza" ><br /><br />
     Stazione di Arrivo: <input type="text" name="stazioneArrivo" id="stazioneArrivo" ><br /><br />
     Giorno: <input type="text" name="giorno" id="giorno" ><br /><br />
     Ora Partenza: <input type="text" name="oraPartenza" id="oraPartenza" ><br /><br />
-    Ora Arrivo: <input type="text" name="oraArrivo" id="oraArrivo" ><br /><br />
     Binario: <input type="text" name="binario" id="binario" >
 
 <%--    <input type="radio" name="sala" value="Sala_1" id="sala"> Sala 1 <br />--%>
