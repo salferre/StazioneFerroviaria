@@ -1,3 +1,5 @@
+<%@ page import="controller.StazioneController" %>
+<%@ page import="dao.models.Stazione" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -21,6 +23,11 @@
 <%--    <input type="radio" name="sala" value="Sala_4" id="sala"> Sala 4 <br />--%>
 
     <input type="submit" value="Insert">
+
+    <% for ( Stazione stazione : StazioneController.getAllStazioni() ) {
+        out.println(stazione.getNomeStazione());
+    } %>
+
 </form>
 </body>
 </html>

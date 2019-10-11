@@ -18,4 +18,7 @@ public class Stazione {
     public void setNomeStazione(String nomeStazione) {
         this.nomeStazione = nomeStazione;
     }
+
+    @Override
+    public String toString() { return nomeStazione; }
 }
