@@ -1,0 +1,10 @@
+INSERT INTO `StazioneFerroviaria`.`Stazione` (`idStazione`, `nomeStazione`) VALUES ('1', 'Palermo');
+INSERT INTO `StazioneFerroviaria`.`Stazione` (`idStazione`, `nomeStazione`) VALUES ('2', 'Messina');
+INSERT INTO `StazioneFerroviaria`.`Stazione` (`idStazione`, `nomeStazione`) VALUES ('3', 'Catania');
+INSERT INTO `StazioneFerroviaria`.`Stazione` (`idStazione`, `nomeStazione`) VALUES ('4', 'Napoli');
+INSERT INTO `StazioneFerroviaria`.`Stazione` (`idStazione`, `nomeStazione`) VALUES ('5', 'Roma');
+INSERT INTO `StazioneFerroviaria`.`Stazione` (`idStazione`, `nomeStazione`) VALUES ('6', 'Firenze');
+INSERT INTO `StazioneFerroviaria`.`Stazione` (`idStazione`, `nomeStazione`) VALUES ('7', 'Bologna');
+INSERT INTO `StazioneFerroviaria`.`Stazione` (`idStazione`, `nomeStazione`) VALUES ('8', 'Venezia');
+INSERT INTO `StazioneFerroviaria`.`Stazione` (`idStazione`, `nomeStazione`) VALUES ('9', 'Milano');
+INSERT INTO `StazioneFerroviaria`.`Stazione` (`idStazione`, `nomeStazione`) VALUES ('10', 'Torino');
