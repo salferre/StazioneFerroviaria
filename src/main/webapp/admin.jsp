@@ -17,13 +17,13 @@
 <body>
     Cosa vuoi fare?
     <div id="buttons">
-        <button id="insertButton">Insert</button>
-        <button id="updateButton">Update</button>
-        <button id="deleteButton">Delete</button>
+        <button id="insert-button">Insert</button>
+        <button id="update-button">Update</button>
+        <button id="delete-button">Delete</button>
     </div>
 
     <div id="forms">
-        <div id="insertForm" >
+        <div id="insert-form" >
 
             <form action="InsertTreno" method="POST">
 
@@ -51,7 +51,7 @@
 
         </div>
 
-        <div id="updateForm" >
+        <div id="update-form" >
 
             <form action="UpdateTreno" method="POST">
 
@@ -79,7 +79,7 @@
 
         </div>
 
-        <div id="deleteForm" >
+        <div id="delete-form">
 
             <form action="DeleteTreno" method="POST">
 
@@ -113,7 +113,6 @@
         $(forms).children('div').each(function () {
             $(this).hide();
         })
-        toggleFunctions();
     });
 
     toggleFunctions();
@@ -121,11 +120,14 @@
     function toggleFunctions() {
         $(buttons).children('button').each(function () {
             $(this).click(function () {
-                closeOthers($(this).attr('id'));
-                $(this).toggle();
+                form = $(this).attr('id').split('-')[0]+'-form';
+                closeOthers(form);
+                form = '#'+form;
+                $(form).toggle();
             });
         })
     }
+
 
     function closeOthers(nonChiudere) {
         $(forms).children('div').each(function () {
