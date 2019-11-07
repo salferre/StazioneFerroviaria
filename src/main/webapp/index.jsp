@@ -1,10 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
   <head>
-    <title>Stazione Ferroviaria</title>
+    <title>Stazione di Palermo</title>
   </head>
   <body>
-  Benvenuti nella Stazione Ferroviaria!
+  Benvenuti nella Stazione Ferroviaria di Palermo!
   <a href="login.jsp">Entra</a>
   </body>
 </html>
