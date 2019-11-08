@@ -2,12 +2,14 @@ package dao.models;
 
 public class Stazione {
 
+    private Integer idStazione;
     private String nomeStazione;
 
     public Stazione() {
     }
 
-    public Stazione(String nomeStazione) {
+    public Stazione(Integer idStazione, String nomeStazione) {
+        this.idStazione = idStazione;
         this.nomeStazione = nomeStazione;
     }
 
@@ -19,6 +21,16 @@ public class Stazione {
         this.nomeStazione = nomeStazione;
     }
 
+    public Integer getIdStazione() { return idStazione; }
+
+    public void setIdStazione(Integer idStazione) { this.idStazione = idStazione; }
+
     @Override
-    public String toString() { return nomeStazione; }
+    public String toString() {
+        return "Stazione{" +
+                "idStazione=" + idStazione +
+                ", nomeStazione='" + nomeStazione + '\'' +
+                '}';
+    }
+
 }

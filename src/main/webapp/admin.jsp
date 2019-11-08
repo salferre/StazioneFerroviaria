@@ -1,11 +1,7 @@
 <%@ page import="dao.models.Stazione" %>
-<%@ page import="controller.StazioneController" %><%--
-  Created by IntelliJ IDEA.
-  User: salvatore
-  Date: 08/10/2019
-  Time: 17:27
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="controller.StazioneController" %>
+<%@ page import="java.util.List" %>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -31,6 +27,15 @@
 
                 Numero: <input type="text" name="numero" id="numero" ><br /><br />
                 Stazione di Partenza: <input type="text" name="stazionePartenza" id="stazionePartenza" ><br /><br />
+
+                <select name="stazioni">
+                    <c:forEach items="${stazioni}" var="stazione">
+                        <option value="${stazione.idStazione}">${stazione.nomeStazione}</option>
+                    </c:forEach>
+                </select>
+
+                <br /><br />
+
                 Stazione di Arrivo: <input type="text" name="stazioneArrivo" id="stazioneArrivo" ><br /><br />
                 Giorno: <input type="text" name="giorno" id="giorno" ><br /><br />
                 Ora Partenza: <input type="text" name="oraPartenza" id="oraPartenza" ><br /><br />
@@ -43,9 +48,12 @@
 
                 <input type="submit" value="Insert">
 
-                <% for ( Stazione stazione : StazioneController.getAllStazioni() ) {
-                    out.println(stazione.getNomeStazione());
-                } %>
+                <%
+                    List<Stazione> stazioni = (List<Stazione>) request.getAttribute("stazioni");
+                    for ( Stazione s : stazioni ) {
+                        out.println(s.getIdStazione() + " - " + s.getNomeStazione());
+                    }
+                %>
 
             </form>
 
@@ -53,6 +61,7 @@
 
         <div id="update-form" >
 
+            <c:foreach></c:foreach>
             <form action="UpdateTreno" method="POST">
 
                 <h5>Update Treno</h5>

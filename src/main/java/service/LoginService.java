@@ -30,7 +30,7 @@ public class LoginService extends HttpServlet {
         if(result){
             HttpSession session = request.getSession();
             session.setAttribute("username", username);
-            redirectURL = "/admin.jsp";
+            redirectURL = "/Admin";
         } else {
             redirectURL = "/login.jsp";
         }

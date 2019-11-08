@@ -25,7 +25,7 @@ public class StazioneController implements AbstractController {
             PreparedStatement statement = connection.prepareStatement(StazioneRepository.GET_ALL_STAZIONI);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                Stazione stazione = new Stazione(rs.getString("nomeStazione"));
+                Stazione stazione = new Stazione( rs.getInt("idStazione") ,rs.getString("nomeStazione"));
                 stazioni.add(stazione);
             }
             rs.close();
