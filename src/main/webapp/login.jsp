@@ -5,7 +5,7 @@
     <title>Stazione di Palermo</title>
 </head>
 <body>
-<form action="/StazioneFerroviaria/Login" method="post">
+<form action="/StazioneFerroviaria/Login" method="GET"> <%--TODO ASK si può fare il POST e fare il redirect in GET?--%>
     <h5>REGISTRAZIONE </h5>
     Username: <input type="text" name="username">
     <br/><br/>

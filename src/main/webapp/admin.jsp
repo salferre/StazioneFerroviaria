@@ -26,15 +26,18 @@
                 <h5>Insert Treno</h5>
 
                 Numero: <input type="text" name="numero" id="numero" ><br /><br />
-                Stazione di Partenza: <input type="text" name="stazionePartenza" id="stazionePartenza" ><br /><br />
-
-                <select name="stazioni">
-                    <c:forEach items="${stazioni}" var="stazione">
-                        <option value="${stazione.idStazione}">${stazione.nomeStazione}</option>
-                    </c:forEach>
-                </select>
-
+                Stazione di Partenza: <input type="text" name="stazionePartenza" id="stazionePartenza" >
+                <button id="addStazione" name="addStazione" type="button">Add</button>
                 <br /><br />
+
+                <div id="scali"></div>
+
+<%--                <select name="stazioni">--%>
+<%--                    <c:forEach items="${stazioni}" var="stazione">--%>
+<%--                        <option value="${stazione.idStazione}">${stazione.nomeStazione}</option>--%>
+<%--                    </c:forEach>--%>
+<%--                </select>--%>
+<%--                <br /><br />--%>
 
                 Stazione di Arrivo: <input type="text" name="stazioneArrivo" id="stazioneArrivo" ><br /><br />
                 Giorno: <input type="text" name="giorno" id="giorno" ><br /><br />
@@ -61,7 +64,6 @@
 
         <div id="update-form" >
 
-            <c:foreach></c:foreach>
             <form action="UpdateTreno" method="POST">
 
                 <h5>Update Treno</h5>
@@ -119,9 +121,17 @@
 
 <script>
     $(document).ready(function() {
+
         $(forms).children('div').each(function () {
             $(this).hide();
-        })
+        });
+
+        ${"addStazione"}.click(function() {
+            var node = document.createElement("select");
+            var textNode = document.createTextNode("TESTO");
+            node.appendChild(textNode);
+            document.getElementById("scali").appendChild(node);
+        });
     });
 
     toggleFunctions();
@@ -134,7 +144,7 @@
                 form = '#'+form;
                 $(form).toggle();
             });
-        })
+        });
     }
 
 
@@ -143,7 +153,7 @@
             if($(this).is(":visible") && $(this).attr('id') != nonChiudere){
                 $(this).hide();
             }
-        })
+        });
     }
 
 </script>
