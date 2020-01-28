@@ -27,15 +27,13 @@ Cosa vuoi fare?
             <h5>Insert Treno</h5>
 
             Numero: <input type="text" name="numero" id="numero" ><br /><br />
-            Stazione di Partenza: <input type="text" name="stazionePartenza" id="stazionePartenza" >
-            <button id="addStazione" name="addStazione" type="button">Add</button>
-            <br /><br />
-
-            <select name="stazioni">
+            Stazione di Partenza:
+            <select id="stazioni">
                 <c:forEach items="${stazioni}" var="stazione">
                     <option value="${stazione.idStazione}">${stazione.nomeStazione}</option>
                 </c:forEach>
             </select>
+            <button id="addStazione" name="addStazione" type="button">Add</button>
             <br /><br />
 
             <div id="scali"></div>
@@ -45,19 +43,7 @@ Cosa vuoi fare?
             Ora Partenza: <input type="text" name="oraPartenza" id="oraPartenza" ><br /><br />
             Binario: <input type="text" name="binario" id="binario" >
 
-            <%--    <input type="radio" name="sala" value="Sala_1" id="sala"> Sala 1 <br />--%>
-            <%--    <input type="radio" name="sala" value="Sala_2" id="sala"> Sala 2 <br />--%>
-            <%--    <input type="radio" name="sala" value="Sala_3" id="sala"> Sala 3 <br />--%>
-            <%--    <input type="radio" name="sala" value="Sala_4" id="sala"> Sala 4 <br />--%>
-
             <input type="submit" value="Insert">
-
-            <%--                <%--%>
-            <%--                    List<Stazione> stazioni = (List<Stazione>) request.getAttribute("stazioni");--%>
-            <%--                    for ( Stazione s : stazioni ) {--%>
-            <%--                        out.println(s.getIdStazione() + " - " + s.getNomeStazione());--%>
-            <%--                    }--%>
-            <%--                %>--%>
 
         </form>
 

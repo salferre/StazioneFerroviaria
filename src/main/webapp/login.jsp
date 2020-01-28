@@ -1,4 +1,4 @@
-<%@ page import="com.sun.org.apache.xpath.internal.operations.Bool" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -12,12 +12,17 @@
     Password: <input type="password" name="password">
     <br/><br/>
     <input type="submit" value="Accedi">
-    <%
-        Boolean result = (Boolean) request.getAttribute("result");
-        if(result != null && !result) {
-            out.println("ERRATO!");
-        }
-    %>
+
+    <c:if test="${not empty result}">
+        ERRATO!!!
+    </c:if>
+
+<%--    <%--%>
+<%--        Boolean result = (Boolean) request.getAttribute("result");--%>
+<%--        if(result != null && !result) {--%>
+<%--            out.println("ERRATO!");--%>
+<%--        }--%>
+<%--    %>--%>
 </form>
 </body>
 </html>
