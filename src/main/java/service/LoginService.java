@@ -26,7 +26,7 @@ public class LoginService extends HttpServlet {
         if(result){
             HttpSession session = request.getSession();
             session.setAttribute("username", username);
-            redirectURL = "/Admin";
+            redirectURL = "/admin";
         } else {
             redirectURL = "/login.jsp";
         }

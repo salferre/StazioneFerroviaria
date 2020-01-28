@@ -1,5 +1,6 @@
 package service;
 
+import com.google.gson.Gson;
 import controller.StazioneController;
 import dao.models.Stazione;
 
@@ -12,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/Admin")
+@WebServlet("/admin")
 public class AdminService extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -21,11 +22,12 @@ public class AdminService extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         List<Stazione> stazioni = StazioneController.getAllStazioni();
-        request.setAttribute("stazioni", stazioni);
-
+        String json = new Gson().toJson(stazioni);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(json);
         RequestDispatcher dispatcher = request.getRequestDispatcher("admin.jsp");
         dispatcher.forward(request, response);
-
     }
 
     @Override
