@@ -28,17 +28,19 @@ Cosa vuoi fare?
 
             Numero: <input type="text" name="numero" id="numero" ><br /><br />
             Stazione di Partenza:
-            <select id="stazioni">
-                <c:forEach items="${stazioni}" var="stazione">
-                    <option value="${stazione.idStazione}">${stazione.nomeStazione}</option>
-                </c:forEach>
+            <select id="stazionePartenza">
+                <option disabled selected value> -- Seleziona una stazione -- </option>
             </select>
-            <button id="addStazione" name="addStazione" type="button">Add</button>
+            <button id="addStazione" type="button" onclick="addStazioneIntermedia()">Aggiungi stazione intermedia</button>
             <br /><br />
 
             <div id="scali"></div>
 
-            Stazione di Arrivo: <input type="text" name="stazioneArrivo" id="stazioneArrivo" ><br /><br />
+            Stazione di Arrivo:
+            <select id="stazioneArrivo">
+                <option disabled selected value> -- Seleziona una stazione -- </option>
+            </select>
+            <br /><br />
             Giorno: <input type="text" name="giorno" id="giorno" ><br /><br />
             Ora Partenza: <input type="text" name="oraPartenza" id="oraPartenza" ><br /><br />
             Binario: <input type="text" name="binario" id="binario" >
@@ -107,27 +109,20 @@ Cosa vuoi fare?
 </body>
 
 <script>
+
+    var stazioni = {};
     $(document).ready(function() {
+
+        $.get("admin", function(responseJson) {
+            stazioni = responseJson;
+        });
 
         $(forms).children('div').each(function () {
             $(this).hide();
         });
 
-        ${"addStazione"}.click(function() {
-            var node = document.createElement("select");
-            var textNode = document.createTextNode("TESTO");
-            node.appendChild(textNode);
-            document.getElementById("scali").appendChild(node);
-        });
-
-        $.get("admin", function(responseJson) {
-            var $select = $("#stazioni");
-            $select.find("option").remove();
-            $.each(responseJson, function(index, category) {
-                $("<option>").val(category.idStazione).text(category.nomeStazione).appendTo($select);
-            });
-
-        });
+        appendStazioniToSelect("stazionePartenza");
+        appendStazioniToSelect("stazioneArrivo");
 
     });
 
@@ -144,6 +139,19 @@ Cosa vuoi fare?
         });
     }
 
+    function appendStazioniToSelect(selectId) {
+        var $select = $(selectId);
+        $.each(stazioni, function(index, category) {
+            $("<option>").val(category.idStazione).text(category.nomeStazione).appendTo($select);
+        });
+    }
+
+    function addStazioneIntermedia() {
+        var node = document.createElement("select");
+        var textNode = document.createTextNode("TESTO");
+        node.appendChild(textNode);
+        document.getElementById("scali").appendChild(node);
+    }
 
     function closeOthers(nonChiudere) {
         $(forms).children('div').each(function () {
