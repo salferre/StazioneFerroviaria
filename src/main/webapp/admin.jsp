@@ -10,6 +10,11 @@
 
     <script src="js/jquery-3.4.1.js"></script>
 
+<%--    <link rel="stylesheet" href="jquery-ui.min.css">--%>
+<%--    <script src="external/jquery/jquery.js"></script>--%>
+<%--    <script src="jquery-ui.min.js"></script>--%>
+
+
 </head>
 <body>
 Cosa vuoi fare?
@@ -26,8 +31,9 @@ Cosa vuoi fare?
 
             <h5>Insert Treno</h5>
 
-            Numero: <input type="text" name="numero" id="numero" ><br /><br />
-            Stazione di Partenza:
+            <label for="numero">Numero: </label> <input type="text" name="numero" id="numero" ><br /><br />
+
+            <label for="stazionePartenza">Stazione di Partenza: </label>
             <select id="stazionePartenza">
                 <option disabled selected value> -- Seleziona una stazione -- </option>
             </select>
@@ -36,14 +42,17 @@ Cosa vuoi fare?
 
             <div id="scali"></div>
 
-            Stazione di Arrivo:
+            <label for="stazioneArrivo">Stazione di Arrivo: </label>
             <select id="stazioneArrivo">
                 <option disabled selected value> -- Seleziona una stazione -- </option>
             </select>
             <br /><br />
-            Giorno: <input type="text" name="giorno" id="giorno" ><br /><br />
-            Ora Partenza: <input type="text" name="oraPartenza" id="oraPartenza" ><br /><br />
-            Binario: <input type="text" name="binario" id="binario" >
+
+            <label for="giorno">Giorno: </label><input type="text" name="giorno" id="giorno" ><br /><br />
+
+            <label for="oraPartenza">Ora Partenza: </label><input type="text" name="oraPartenza" id="oraPartenza" ><br /><br />
+
+            <label for="binario">Binario: </label><input type="text" name="binario" id="binario" >
 
             <input type="submit" value="Insert">
 
@@ -57,23 +66,14 @@ Cosa vuoi fare?
 
             <h5>Update Treno</h5>
 
-            Numero: <input type="text" name="numero" id="numero" ><br /><br />
-            Stazione di Partenza: <input type="text" name="stazionePartenza" id="stazionePartenza" ><br /><br />
-            Stazione di Arrivo: <input type="text" name="stazioneArrivo" id="stazioneArrivo" ><br /><br />
-            Giorno: <input type="text" name="giorno" id="giorno" ><br /><br />
-            Ora Partenza: <input type="text" name="oraPartenza" id="oraPartenza" ><br /><br />
-            Binario: <input type="text" name="binario" id="binario" >
-
-            <%--    <input type="radio" name="sala" value="Sala_1" id="sala"> Sala 1 <br />--%>
-            <%--    <input type="radio" name="sala" value="Sala_2" id="sala"> Sala 2 <br />--%>
-            <%--    <input type="radio" name="sala" value="Sala_3" id="sala"> Sala 3 <br />--%>
-            <%--    <input type="radio" name="sala" value="Sala_4" id="sala"> Sala 4 <br />--%>
+            <label for="numero">Numero:</label> <input type="text" name="numero" id="numero" ><br /><br />
+            <label for="stazionePartenza">Stazione di Partenza:</label><input type="text" name="stazionePartenza" id="stazionePartenza" ><br /><br />
+            <label for="stazioneArrivo">Stazione di Arrivo:</label><input type="text" name="stazioneArrivo" id="stazioneArrivo" ><br /><br />
+            <label for="giorno">Giorno:</label><input type="text" name="giorno" id="giorno" ><br /><br />
+            <label for="oraPartenza">Ora Partenza:</label><input type="text" name="oraPartenza" id="oraPartenza" ><br /><br />
+            <label for="binario">Binario:</label><input type="text" name="binario" id="binario" >
 
             <input type="submit" value="Update">
-
-            <% for ( Stazione stazione : StazioneController.getAllStazioni() ) {
-                out.println(stazione.getNomeStazione());
-            } %>
 
         </form>
 
@@ -85,23 +85,14 @@ Cosa vuoi fare?
 
             <h5>Delete Treno</h5>
 
-            Numero: <input type="text" name="numero" id="numero" ><br /><br />
-            Stazione di Partenza: <input type="text" name="stazionePartenza" id="stazionePartenza" ><br /><br />
-            Stazione di Arrivo: <input type="text" name="stazioneArrivo" id="stazioneArrivo" ><br /><br />
-            Giorno: <input type="text" name="giorno" id="giorno" ><br /><br />
-            Ora Partenza: <input type="text" name="oraPartenza" id="oraPartenza" ><br /><br />
-            Binario: <input type="text" name="binario" id="binario" >
-
-            <%--    <input type="radio" name="sala" value="Sala_1" id="sala"> Sala 1 <br />--%>
-            <%--    <input type="radio" name="sala" value="Sala_2" id="sala"> Sala 2 <br />--%>
-            <%--    <input type="radio" name="sala" value="Sala_3" id="sala"> Sala 3 <br />--%>
-            <%--    <input type="radio" name="sala" value="Sala_4" id="sala"> Sala 4 <br />--%>
+            <label for="numero">Numero:</label> <input type="text" name="numero" id="numero" ><br /><br />
+            <label for="stazionePartenza">Stazione di Partenza:</label><input type="text" name="stazionePartenza" id="stazionePartenza" ><br /><br />
+            <label for="stazioneArrivo">Stazione di Arrivo:</label><input type="text" name="stazioneArrivo" id="stazioneArrivo" ><br /><br />
+            <label for="giorno">Giorno:</label><input type="text" name="giorno" id="giorno" ><br /><br />
+            <label for="oraPartenza">Ora Partenza:</label><input type="text" name="oraPartenza" id="oraPartenza" ><br /><br />
+            <label for="binario">Binario:</label><input type="text" name="binario" id="binario" >
 
             <input type="submit" value="Delete">
-
-            <% for ( Stazione stazione : StazioneController.getAllStazioni() ) {
-                out.println(stazione.getNomeStazione());
-            } %>
 
         </form>
     </div>
@@ -109,20 +100,18 @@ Cosa vuoi fare?
 </body>
 
 <script>
-
     var stazioni = {};
     $(document).ready(function() {
 
         $.get("admin", function(responseJson) {
             stazioni = responseJson;
+            appendStazioniToSelect(${"stazionePartenza"});
+            appendStazioniToSelect(${"stazioneArrivo"});
         });
 
         $(forms).children('div').each(function () {
             $(this).hide();
         });
-
-        appendStazioniToSelect("stazionePartenza");
-        appendStazioniToSelect("stazioneArrivo");
 
     });
 
@@ -140,17 +129,32 @@ Cosa vuoi fare?
     }
 
     function appendStazioniToSelect(selectId) {
-        var $select = $(selectId);
         $.each(stazioni, function(index, category) {
-            $("<option>").val(category.idStazione).text(category.nomeStazione).appendTo($select);
+            $("<option>").val(category.idStazione).text(category.nomeStazione).appendTo(selectId);
         });
     }
 
+    var idSelect = 0;
+
     function addStazioneIntermedia() {
-        var node = document.createElement("select");
-        var textNode = document.createTextNode("TESTO");
-        node.appendChild(textNode);
-        document.getElementById("scali").appendChild(node);
+        var select = document.createElement("select");
+        select.id = "tappaIntermedia"+idSelect;
+        idSelect++;
+        select.innerHTML = '<option disabled selected value> -- Seleziona una stazione -- </option>';
+
+        var label = document.createElement("label");
+        label.setAttribute("for", select.id);
+        label.innerHTML = "Stazione Intermedia " + idSelect + ": ";
+
+        var br = document.createElement("br");
+        var br2 = document.createElement("br");
+
+        document.getElementById("scali").appendChild(label);
+        document.getElementById("scali").appendChild(select);
+        document.getElementById("scali").appendChild(br);
+        document.getElementById("scali").appendChild(br2);
+
+        appendStazioniToSelect(select);
     }
 
     function closeOthers(nonChiudere) {
@@ -160,6 +164,8 @@ Cosa vuoi fare?
             }
         });
     }
+
+    // $( "#giorno" ).datepicker();
 
 </script>
 
