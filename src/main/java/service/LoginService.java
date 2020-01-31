@@ -17,6 +17,10 @@ public class LoginService extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        super.doGet(request, response);
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
@@ -32,9 +36,5 @@ public class LoginService extends HttpServlet {
         }
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(redirectURL);
         dispatcher.forward(request, response);
-    }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
     }
 }

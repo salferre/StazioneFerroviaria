@@ -31,10 +31,10 @@ Cosa vuoi fare?
 
             <h5>Insert Treno</h5>
 
-            <label for="numero">Numero: </label> <input type="text" name="numero" id="numero" ><br /><br />
+            <label for="numeroTreno">Numero: </label> <input required type="text" name="numeroTreno" id="numeroTreno" ><br /><br />
 
             <label for="stazionePartenza">Stazione di Partenza: </label>
-            <select id="stazionePartenza">
+            <select id="stazionePartenza" required>
                 <option disabled selected value> -- Seleziona una stazione -- </option>
             </select>
             <button id="addStazione" type="button" onclick="addStazioneIntermedia()">Aggiungi stazione intermedia</button>
@@ -43,16 +43,16 @@ Cosa vuoi fare?
             <div id="scali"></div>
 
             <label for="stazioneArrivo">Stazione di Arrivo: </label>
-            <select id="stazioneArrivo">
+            <select id="stazioneArrivo" required>
                 <option disabled selected value> -- Seleziona una stazione -- </option>
             </select>
             <br /><br />
 
-            <label for="giorno">Giorno: </label><input type="text" name="giorno" id="giorno" ><br /><br />
+            <label for="giornoPartenza">Giorno: </label><input type="text" name="giornoPartenza" id="giornoPartenza" required><br /><br />
 
-            <label for="oraPartenza">Ora Partenza: </label><input type="text" name="oraPartenza" id="oraPartenza" ><br /><br />
+            <label for="oraPartenza">Ora Partenza: </label><input type="text" name="oraPartenza" id="oraPartenza" required><br /><br />
 
-            <label for="binario">Binario: </label><input type="text" name="binario" id="binario" >
+            <label for="binario">Binario: </label><input type="text" name="binario" id="binario" required>
 
             <input type="submit" value="Insert">
 
