@@ -26,23 +26,36 @@ public class InsertValidator implements AbstractValidator {
         }
 
         if (rejectIfNullOrWhiteSpace(stazioneArrivo)) {
-            errors.put("stazionePartenza", "Inserire stazione di partenza!");
+            errors.put("stazioneArrivo", "Inserire stazione di arrivo!");
         } else {
             if (!checkStazioneExists(stazioneArrivo)) {
-                errors.put("stazionePartenza", "Inserire una stazione di partenza fra quelle in lista!");
+                errors.put("stazioneArrivo", "Inserire una stazione di arrivo fra quelle in lista!");
             }
         }
 
-        if(rejectIfNullOrWhiteSpace(giornoPartenza)){
-            errors.put("giornoPartenza", "Inserire giorno di partenza!");
+        if(rejectIfNullOrWhiteSpace(giornoPartenza)) {
+            errors.put("giornoPartenza", "Inserire il giorno della partenza!");
         } else {
-            if(!giornoPartenza.matches(DATE_REGEX)){
+            if(!giornoPartenza.matches(DATE_REGEX)) {
                 errors.put("giornoPartenza", "Inserire il giorno della partenza in formato dd/mm/yyyy!");
             }
         }
 
-        //TODO continuare validazione orario e binario
+        if(rejectIfNullOrWhiteSpace(oraPartenza)) {
+            errors.put("oraPartenza", "Inserire l'ora della partenza!");
+        } else {
+            if(!oraPartenza.matches(TIME_REGEX)) {
+                errors.put("oraPartenza", "Inserire l'ora della partenza in formato hh:mm!");
+            }
+        }
 
+        if (rejectIfNullOrWhiteSpace(binario)) {
+            errors.put("binario", "Inserire binario!");
+        } else {
+            if (!numeroTreno.matches(NUMERIC_REGEX)) {
+                errors.put("binario", "Il binario può contenere solo caratteri numerici!");
+            }
+        }
         return errors;
     }
 

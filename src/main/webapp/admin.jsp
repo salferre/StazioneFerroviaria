@@ -27,7 +27,7 @@ Cosa vuoi fare?
 <div id="forms">
     <div id="insert-form" >
 
-        <form action="InsertTreno" method="POST">
+        <form action="/StazioneFerroviaria/admin" method="POST">
 
             <h5>Insert Treno</h5>
 
@@ -35,7 +35,7 @@ Cosa vuoi fare?
 
             <label for="stazionePartenza">Stazione di Partenza: </label>
             <select id="stazionePartenza" required>
-                <option disabled selected value> -- Seleziona una stazione -- </option>
+                <option selected disabled value> -- Seleziona una stazione -- </option>
             </select>
             <button id="addStazione" type="button" onclick="addStazioneIntermedia()">Aggiungi stazione intermedia</button>
             <br /><br />
@@ -44,7 +44,7 @@ Cosa vuoi fare?
 
             <label for="stazioneArrivo">Stazione di Arrivo: </label>
             <select id="stazioneArrivo" required>
-                <option disabled selected value> -- Seleziona una stazione -- </option>
+                <option selected disabled value> -- Seleziona una stazione -- </option>
             </select>
             <br /><br />
 
@@ -54,7 +54,7 @@ Cosa vuoi fare?
 
             <label for="binario">Binario: </label><input type="text" name="binario" id="binario" required>
 
-            <input type="submit" value="Insert">
+            <input type="submit" id="insertButton" value="Inserisci treno">
 
         </form>
 
@@ -114,6 +114,13 @@ Cosa vuoi fare?
         });
 
     });
+
+    // $(document).on("click", "#insertButton", function() {
+    //     var params = {category : $("#stazionePartenza option:selected").text()};
+    //     $.post("admin", $.param(params), function(responseText) {
+    //         alert(responseText);
+    //     });
+    // });
 
     toggleFunctions();
 
