@@ -34,7 +34,7 @@ Cosa vuoi fare?
             <label for="numeroTreno">Numero: </label> <input required type="text" name="numeroTreno" id="numeroTreno" ><br /><br />
 
             <label for="stazionePartenza">Stazione di Partenza: </label>
-            <select id="stazionePartenza" required>
+            <select id="stazionePartenza" name="stazionePartenza" required>
                 <option selected disabled value> -- Seleziona una stazione -- </option>
             </select>
             <button id="addStazione" type="button" onclick="addStazioneIntermedia()">Aggiungi stazione intermedia</button>
@@ -43,7 +43,7 @@ Cosa vuoi fare?
             <div id="scali"></div>
 
             <label for="stazioneArrivo">Stazione di Arrivo: </label>
-            <select id="stazioneArrivo" required>
+            <select id="stazioneArrivo" name="stazioneArrivo" required>
                 <option selected disabled value> -- Seleziona una stazione -- </option>
             </select>
             <br /><br />
@@ -114,13 +114,6 @@ Cosa vuoi fare?
         });
 
     });
-
-    // $(document).on("click", "#insertButton", function() {
-    //     var params = {category : $("#stazionePartenza option:selected").text()};
-    //     $.post("admin", $.param(params), function(responseText) {
-    //         alert(responseText);
-    //     });
-    // });
 
     toggleFunctions();
 
