@@ -1,11 +1,10 @@
 package validation;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class InsertValidator implements AbstractValidator {
 
-    public static Map<String, String> validate(String numeroTreno, String stazionePartenza, String stazioneArrivo, String giornoPartenza, String oraPartenza, String binario) {
+    public static Map<String, String> validate(String numeroTreno, String stazionePartenza, String stazioneArrivo, String giornoPartenza, String oraPartenza, String binario, List<String> tappe) {
 
         Map<String, String> errors = new HashMap<>();
 
@@ -56,6 +55,11 @@ public class InsertValidator implements AbstractValidator {
                 errors.put("binario", "Il binario può contenere solo caratteri numerici!");
             }
         }
+
+        if(checkDuplicateStation(tappe)){
+            errors.put("tappe", "Impossibile inserire la stessa stazione più volte!");
+        }
+
         return errors;
     }
 
@@ -65,6 +69,14 @@ public class InsertValidator implements AbstractValidator {
 
     public static boolean rejectIfNullOrWhiteSpace(String toCheck){
         return (toCheck == null || toCheck.trim().isEmpty());
+    }
+
+    public static boolean checkDuplicateStation(List<String> tappe){
+        Set<String> set = new HashSet<>(tappe);
+        if(set.size() < tappe.size()){
+            return true;
+        }
+        return false;
     }
 
 }

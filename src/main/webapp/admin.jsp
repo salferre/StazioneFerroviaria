@@ -1,20 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="dao.models.Stazione" %>
-<%@ page import="controller.StazioneController" %>
-<%@ page import="java.util.List" %>
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Stazione di Palermo - Admin</title>
-
-    <script src="js/jquery-3.4.1.js"></script>
-
-<%--    <link rel="stylesheet" href="jquery-ui.min.css">--%>
-<%--    <script src="external/jquery/jquery.js"></script>--%>
-<%--    <script src="jquery-ui.min.js"></script>--%>
-
-
 </head>
 <body>
 Cosa vuoi fare?
@@ -27,7 +15,7 @@ Cosa vuoi fare?
 <div id="forms">
     <div id="insert-form" >
 
-        <form action="/StazioneFerroviaria/admin" method="POST">
+        <form action="/StazioneFerroviaria/admin" method="POST" onsubmit="return validateForm()">
 
             <h5>Insert Treno</h5>
 
@@ -97,76 +85,28 @@ Cosa vuoi fare?
         </form>
     </div>
 </div>
-</body>
+
+<c:choose>
+    <c:when test="${empty result}"></c:when>
+    <c:when test="${not empty result && result == true}">
+        ${result}
+        INSERT ESEGUITA!!!
+    </c:when>
+    <c:otherwise>
+        <c:forEach items="${errors}" var="errore">
+            ${errore}
+        </c:forEach>
+    </c:otherwise>
+</c:choose>
 
 <script>
-    var stazioni = {};
-    $(document).ready(function() {
-
-        $.get("admin", function(responseJson) {
-            stazioni = responseJson;
-            appendStazioniToSelect(${"stazionePartenza"});
-            appendStazioniToSelect(${"stazioneArrivo"});
-        });
-
-        $(forms).children('div').each(function () {
-            $(this).hide();
-        });
-
-    });
-
-    toggleFunctions();
-
-    function toggleFunctions() {
-        $(buttons).children('button').each(function () {
-            $(this).click(function () {
-                form = $(this).attr('id').split('-')[0]+'-form';
-                closeOthers(form);
-                form = '#'+form;
-                $(form).toggle();
-            });
-        });
-    }
-
-    function appendStazioniToSelect(selectId) {
-        $.each(stazioni, function(index, category) {
-            $("<option>").val(category.idStazione).text(category.nomeStazione).appendTo(selectId);
-        });
-    }
-
-    var idSelect = 0;
-
-    function addStazioneIntermedia() {
-        var select = document.createElement("select");
-        select.id = "tappaIntermedia"+idSelect;
-        idSelect++;
-        select.innerHTML = '<option disabled selected value> -- Seleziona una stazione -- </option>';
-
-        var label = document.createElement("label");
-        label.setAttribute("for", select.id);
-        label.innerHTML = "Stazione Intermedia " + idSelect + ": ";
-
-        var br = document.createElement("br");
-        var br2 = document.createElement("br");
-
-        document.getElementById("scali").appendChild(label);
-        document.getElementById("scali").appendChild(select);
-        document.getElementById("scali").appendChild(br);
-        document.getElementById("scali").appendChild(br2);
-
-        appendStazioniToSelect(select);
-    }
-
-    function closeOthers(nonChiudere) {
-        $(forms).children('div').each(function () {
-            if($(this).is(":visible") && $(this).attr('id') != nonChiudere){
-                $(this).hide();
-            }
-        });
-    }
-
-    // $( "#giorno" ).datepicker();
-
+    var stazionePartenza = ${"stazionePartenza"};
+    var stazioneArrivo = ${"stazioneArrivo"};
 </script>
+
+<script src="js/jquery-3.4.1.js"></script>
+<script src="js/admin.js" type="text/javascript"></script>
+
+</body>
 
 </html>
