@@ -2,11 +2,11 @@ var stazioni = {};
 
 $(document).ready(function() {
 
-    $.get("admin", function(responseJson) {
-        stazioni = responseJson;
-        appendStazioniToSelect(stazionePartenza);
-        appendStazioniToSelect(stazioneArrivo);
-    });
+    // $.get("admin", function(responseJson) {
+    //     stazioni = responseJson;
+    //     appendStazioniToSelect(stazionePartenza);
+    //     appendStazioniToSelect(stazioneArrivo);
+    // });
 
     $(forms).children('div').each(function () {
         $(this).hide();
@@ -28,8 +28,8 @@ function toggleFunctions() {
 }
 
 function validateForm() {
-    alert("Name must be filled out");
-    return false;
+    // alert("Name must be filled out");
+    // return false;
 }
 
 function appendStazioniToSelect(selectId) {
@@ -44,7 +44,7 @@ function addStazioneIntermedia() {
     if(idSelect < 8){
         var select = document.createElement("select");
         select.id = "tappaIntermedia"+idSelect;
-        select.name = "tappaIntermedia"+idSelect;
+        select.name = "tappaIntermedia";
         idSelect++;
         select.innerHTML = '<option disabled selected value> -- Seleziona una stazione -- </option>';
 

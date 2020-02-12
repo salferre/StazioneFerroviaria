@@ -12,6 +12,8 @@ Cosa vuoi fare?
     <button id="delete-button">Delete</button>
 </div>
 
+<div id="errors"></div>
+
 <div id="forms">
     <div id="insert-form" >
 
@@ -19,7 +21,7 @@ Cosa vuoi fare?
 
             <h5>Insert Treno</h5>
 
-            <label for="numeroTreno">Numero: </label> <input required type="text" name="numeroTreno" id="numeroTreno" ><br /><br />
+            <label for="numeroTreno">Numero: </label> <input required type="text" name="numeroTreno" id="numeroTreno" placeholder="Inserire numero treno" pattern="[0-9]{3}" ><br /><br />
 
             <label for="stazionePartenza">Stazione di Partenza: </label>
             <select id="stazionePartenza" name="stazionePartenza" required>
@@ -36,11 +38,11 @@ Cosa vuoi fare?
             </select>
             <br /><br />
 
-            <label for="giornoPartenza">Giorno: </label><input type="text" name="giornoPartenza" id="giornoPartenza" required><br /><br />
+            <label for="giornoPartenza">Giorno: </label><input type="text" name="giornoPartenza" id="giornoPartenza" required placeholder="gg/mm/aaaa"><br /><br />
 
-            <label for="oraPartenza">Ora Partenza: </label><input type="text" name="oraPartenza" id="oraPartenza" required><br /><br />
+            <label for="oraPartenza">Ora Partenza: </label><input type="text" name="oraPartenza" id="oraPartenza" required placeholder="hh:mm"><br /><br />
 
-            <label for="binario">Binario: </label><input type="text" name="binario" id="binario" required>
+            <label for="binario">Binario: </label><input type="text" name="binario" id="binario" required placeholder="Inserire binario">
 
             <input type="submit" id="insertButton" value="Inserisci treno">
 
@@ -100,13 +102,27 @@ Cosa vuoi fare?
 </c:choose>
 
 <script>
-    var stazionePartenza = ${"stazionePartenza"};
-    var stazioneArrivo = ${"stazioneArrivo"};
+
+    <%--var stazionePartenza = ${"stazionePartenza"};--%>
+    <%--var stazioneArrivo = ${"stazioneArrivo"};--%>
+
 </script>
 
 <script src="js/jquery-3.4.1.js"></script>
 <script src="js/admin.js" type="text/javascript"></script>
 
 </body>
+
+<script>
+    $(document).ready(function() {
+
+        $.get("admin", function(responseJson) {
+            stazioni = responseJson;
+            appendStazioniToSelect(${"stazionePartenza"});
+            appendStazioniToSelect(${"stazioneArrivo"});
+        });
+
+    });
+</script>
 
 </html>

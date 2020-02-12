@@ -38,13 +38,16 @@ public class AdminService extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String numeroTreno = request.getParameter("numeroTreno");
         String stazionePartenza = request.getParameter("stazionePartenza");
-        String[] tappaIntermedia = request.getParameterValues("tappaIntermedia0");
+        String[] tappaIntermedia = request.getParameterValues("tappaIntermedia");
         String stazioneArrivo = request.getParameter("stazioneArrivo");
         String giornoPartenza = request.getParameter("giornoPartenza");
         String oraPartenza = request.getParameter("oraPartenza");
         String binario = request.getParameter("binario");
-        List<String> tappe = Arrays.asList(tappaIntermedia);
+        List<String> tappe = new ArrayList<>();
         tappe.add(stazionePartenza);
+        for ( String s : tappaIntermedia ) {
+            tappe.add(s);
+        }
         tappe.add(stazioneArrivo);
         Map<String, String> errors = InsertValidator.validate(numeroTreno, stazionePartenza, stazioneArrivo, giornoPartenza, oraPartenza, binario, tappe);
         if(errors.isEmpty()){
