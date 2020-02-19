@@ -12,23 +12,27 @@ Cosa vuoi fare?
     <button id="delete-button">Delete</button>
 </div>
 
-<div id="errors"></div>
+<div id="errors">
+
+</div>
 
 <div id="forms">
     <div id="insert-form" >
 
-        <form action="/StazioneFerroviaria/admin" method="POST" onsubmit="return validateForm()">
+        <form action="/StazioneFerroviaria/admin" method="POST" onsubmit="return validateForm('insert')">
 
             <h5>Insert Treno</h5>
 
-            <label for="numeroTreno">Numero: </label> <input required type="text" name="numeroTreno" id="numeroTreno" placeholder="Inserire numero treno" pattern="[0-9]{3}" ><br /><br />
+            <label for="numeroTreno">Numero: </label>
+            <input required type="text" name="numeroTreno" id="numeroTreno" placeholder="Inserire numero treno">
+            <br/><br/>
 
             <label for="stazionePartenza">Stazione di Partenza: </label>
             <select id="stazionePartenza" name="stazionePartenza" required>
                 <option selected disabled value> -- Seleziona una stazione -- </option>
             </select>
             <button id="addStazione" type="button" onclick="addStazioneIntermedia()">Aggiungi stazione intermedia</button>
-            <br /><br />
+            <br/><br/>
 
             <div id="scali"></div>
 
@@ -36,13 +40,18 @@ Cosa vuoi fare?
             <select id="stazioneArrivo" name="stazioneArrivo" required>
                 <option selected disabled value> -- Seleziona una stazione -- </option>
             </select>
-            <br /><br />
+            <br/><br/>
 
-            <label for="giornoPartenza">Giorno: </label><input type="text" name="giornoPartenza" id="giornoPartenza" required placeholder="gg/mm/aaaa"><br /><br />
+            <label for="giornoPartenza">Giorno: </label>
+            <input type="text" name="giornoPartenza" id="giornoPartenza" required placeholder="gg/mm/aaaa">
+            <br/><br/>
 
-            <label for="oraPartenza">Ora Partenza: </label><input type="text" name="oraPartenza" id="oraPartenza" required placeholder="hh:mm"><br /><br />
+            <label for="oraPartenza">Ora Partenza: </label>
+            <input type="text" name="oraPartenza" id="oraPartenza" required placeholder="hh:mm">
+            <br/><br/>
 
-            <label for="binario">Binario: </label><input type="text" name="binario" id="binario" required placeholder="Inserire binario">
+            <label for="binario">Binario: </label>
+            <input type="text" name="binario" id="binario" required placeholder="Inserire binario">
 
             <input type="submit" id="insertButton" value="Inserisci treno">
 

@@ -45,8 +45,10 @@ public class AdminService extends HttpServlet {
         String binario = request.getParameter("binario");
         List<String> tappe = new ArrayList<>();
         tappe.add(stazionePartenza);
-        for ( String s : tappaIntermedia ) {
-            tappe.add(s);
+        if (tappaIntermedia != null && tappaIntermedia.length > 0){
+            for ( String s : tappaIntermedia ) {
+                tappe.add(s);
+            }
         }
         tappe.add(stazioneArrivo);
         Map<String, String> errors = InsertValidator.validate(numeroTreno, stazionePartenza, stazioneArrivo, giornoPartenza, oraPartenza, binario, tappe);

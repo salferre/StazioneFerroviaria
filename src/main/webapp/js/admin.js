@@ -1,4 +1,5 @@
 var stazioni = {};
+var erroriJS = [];
 
 $(document).ready(function() {
 
@@ -27,9 +28,31 @@ function toggleFunctions() {
     });
 }
 
-function validateForm() {
-    // alert("Name must be filled out");
-    // return false;
+function validateForm(tipoForm) {
+
+    erroriJS = [];
+
+    var numRegex = /^\d+$/;
+    var dateRegex = /^([0-9]{2})\/([0-9]{2})\/([0-9]{4})$/;
+    var timeRegex = /^([01][0-9]|[2][0-3]):([0-5]\d)$/;
+
+    if(!numRegex.test($('#numeroTreno').val())) {
+        erroriJS.push("Il numero treno può contenere solo caratteri numerici!");
+    }
+    if(!dateRegex.test($('#giornoPartenza').val())) {
+        erroriJS.push("Inserire il giorno della partenza in formato dd/mm/yyyy!");
+    }
+    if(!timeRegex.test($('#oraPartenza').val())) {
+        erroriJS.push("Inserire l'ora della partenza in formato hh:mm!");
+    }
+    if(!numRegex.test($('#binario').val())) {
+        erroriJS.push("Il binario può contenere solo caratteri numerici!");
+    }
+
+    if ( erroriJS.length == 0 ){
+        return true;
+    }
+    return false;
 }
 
 function appendStazioniToSelect(selectId) {

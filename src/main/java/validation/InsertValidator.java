@@ -51,7 +51,7 @@ public class InsertValidator implements AbstractValidator {
         if (rejectIfNullOrWhiteSpace(binario)) {
             errors.put("binario", "Inserire binario!");
         } else {
-            if (!numeroTreno.matches(NUMERIC_REGEX)) {
+            if (!binario.matches(NUMERIC_REGEX)) {
                 errors.put("binario", "Il binario può contenere solo caratteri numerici!");
             }
         }
