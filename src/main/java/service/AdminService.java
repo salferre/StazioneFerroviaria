@@ -3,6 +3,7 @@ package service;
 import com.google.gson.Gson;
 import controller.LoginController;
 import controller.StazioneController;
+import controller.TrenoController;
 import dao.models.Stazione;
 import validation.InsertValidator;
 
@@ -51,10 +52,16 @@ public class AdminService extends HttpServlet {
             }
         }
         tappe.add(stazioneArrivo);
+
         Map<String, String> errors = InsertValidator.validate(numeroTreno, stazionePartenza, stazioneArrivo, giornoPartenza, oraPartenza, binario, tappe);
         if(errors.isEmpty()){
-            Boolean result = true;
+
+            String tratta = stazionePartenza.substring(0, 2).toUpperCase() + "_" + stazioneArrivo.substring(0, 2).toUpperCase();
+            Boolean result = TrenoController.insertTreno(numeroTreno, tratta, tappe, giornoPartenza, oraPartenza, binario);
             request.setAttribute("result", result);
+            if(!result){
+                request.setAttribute("errors", "Impossibile inserire treno! Errore DB!");
+            }
         } else {
             Boolean result = false;
             request.setAttribute("result", result);

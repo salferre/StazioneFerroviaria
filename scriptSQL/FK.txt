@@ -1,0 +1,61 @@
+CALENDARIO
+
+ALTER TABLE `StazioneFerroviaria`.`Calendario`
+CHANGE COLUMN `idTreno` `idTreno` INT(10) UNSIGNED NOT NULL ,
+ADD INDEX `FK_idTreno_idx` (`idTreno` ASC) VISIBLE;
+;
+ALTER TABLE `StazioneFerroviaria`.`Calendario`
+ADD CONSTRAINT `FK_idTreno`
+  FOREIGN KEY (`idTreno`)
+  REFERENCES `StazioneFerroviaria`.`Treno` (`idTreno`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+
+
+ALTER TABLE `StazioneFerroviaria`.`Calendario`
+CHANGE COLUMN `idTratta` `idTratta` INT(10) UNSIGNED NOT NULL ,
+ADD INDEX `FK_idTratta_idx` (`idTratta` ASC) VISIBLE;
+;
+ALTER TABLE `StazioneFerroviaria`.`Calendario`
+ADD CONSTRAINT `FK_idTratta`
+  FOREIGN KEY (`idTratta`)
+  REFERENCES `StazioneFerroviaria`.`Tratta` (`idTratta`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+____________________________________________________________________
+
+PERCORSO
+
+//NON DOVREBBE FUNZIONARE
+ALTER TABLE `StazioneFerroviaria`.`Percorso`
+CHANGE COLUMN `idTratta` `idTratta` INT(10) UNSIGNED NOT NULL ,
+CHANGE COLUMN `idStazione` `idStazione` INT(10) UNSIGNED NOT NULL ,
+ADD INDEX `FK_idTratta_idx` (`idTratta` ASC) VISIBLE,
+ADD INDEX `FK_idStazione_idx` (`idStazione` ASC) VISIBLE;
+;
+ALTER TABLE `StazioneFerroviaria`.`Percorso`
+ADD CONSTRAINT `FK_idTrattaPercorso`
+  FOREIGN KEY (`idTratta`)
+  REFERENCES `StazioneFerroviaria`.`Tratta` (`idTratta`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION,
+ADD CONSTRAINT `FK_idStazione`
+  FOREIGN KEY (`idStazione`)
+  REFERENCES `StazioneFerroviaria`.`Stazione` (`idStazione`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+
+
+alter table Percorso
+add constraint Percorso_Stazione_idStazione_fk
+	foreign key (idStazione) references Stazione (idStazione);
+
+	alter table Percorso
+add constraint Percorso_Tratta_idTratta_fk
+	foreign key (idTratta) references Tratta (idTratta);
+
+
+commit;
