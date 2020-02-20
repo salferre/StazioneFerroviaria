@@ -79,10 +79,10 @@ public class TrenoController implements AbstractController {
         return idTratta;
     }
 
-    private static Timestamp buildMYSQLDateTime(String data, String orario){
+    private static String buildMYSQLDateTime(String data, String orario){
         data = data.replace("/", "-");
         orario = orario.concat(":00");
-        return Timestamp.valueOf(data+orario);
+        return Timestamp.valueOf(data+orario).toString();
     }
 
 }
