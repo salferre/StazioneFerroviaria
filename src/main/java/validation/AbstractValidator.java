@@ -11,8 +11,6 @@ public interface AbstractValidator {
     public static final String DATE_REGEX = "^([0-9]{2})\\/([0-9]{2})\\/([0-9]{4})$";
     public static final String TIME_REGEX = "^([01][0-9]|[2][0-3]):([0-5]\\d)$";
     public static final String NUMERIC_REGEX = "^[0-9]+$";
-    public static final String NAME_REGEX = "^[^\\^!\"£$%\\&/()=|\\<\\>\\[\\]\\{\\}@#°§_:.;,^+0-9]+$";
-    public static final String NAMENUM_REGEX = "^[^\\^!\"£$%\\&/()=|\\<\\>\\[\\]\\{\\}@#°§_:.;,^]+$";
     public static final String ALPHANUM_REGEX = "^[a-zA-Z0-9]+$";
 
 //    public Map<String, String> validate (String ... s);
