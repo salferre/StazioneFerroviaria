@@ -19,39 +19,39 @@ Cosa vuoi fare?
 <div id="forms">
     <div id="insert-form" >
 
-        <form action="/StazioneFerroviaria/admin" method="POST" onsubmit="return validateForm('insert')">
+        <form action="/StazioneFerroviaria/admin" method="POST" onsubmit="return validateForm('Insert')">
 
             <h5>Insert Treno</h5>
 
-            <label for="numeroTreno">Numero: </label>
-            <input required type="text" name="numeroTreno" id="numeroTreno" placeholder="Inserire numero treno">
+            <label for="numeroTrenoInsert">Numero: </label>
+            <input required type="text" name="numeroTrenoInsert" id="numeroTrenoInsert" placeholder="Inserire numero treno">
             <br/><br/>
 
-            <label for="stazionePartenza">Stazione di Partenza: </label>
-            <select id="stazionePartenza" name="stazionePartenza" required>
+            <label for="stazionePartenzaInsert">Stazione di Partenza: </label>
+            <select id="stazionePartenzaInsert" name="stazionePartenzaInsert" required>
                 <option selected disabled value> -- Seleziona una stazione -- </option>
             </select>
-            <button id="addStazione" type="button" onclick="addStazioneIntermedia()">Aggiungi stazione intermedia</button>
+            <button id="addStazioneInsert" type="button" onclick="addStazioneIntermedia('Insert')">Aggiungi stazione intermedia</button>
             <br/><br/>
 
-            <div id="scali"></div>
+            <div id="scaliInsert"></div>
 
-            <label for="stazioneArrivo">Stazione di Arrivo: </label>
-            <select id="stazioneArrivo" name="stazioneArrivo" required>
+            <label for="stazioneArrivoInsert">Stazione di Arrivo: </label>
+            <select id="stazioneArrivoInsert" name="stazioneArrivoInsert" required>
                 <option selected disabled value> -- Seleziona una stazione -- </option>
             </select>
             <br/><br/>
 
-            <label for="giornoPartenza">Giorno: </label>
-            <input type="text" name="giornoPartenza" id="giornoPartenza" required placeholder="gg/mm/aaaa">
+            <label for="giornoPartenzaInsert">Giorno: </label>
+            <input type="text" name="giornoPartenzaInsert" id="giornoPartenzaInsert" required placeholder="gg/mm/aaaa">
             <br/><br/>
 
-            <label for="oraPartenza">Ora Partenza: </label>
-            <input type="text" name="oraPartenza" id="oraPartenza" required placeholder="hh:mm">
+            <label for="oraPartenzaInsert">Ora Partenza: </label>
+            <input type="text" name="oraPartenzaInsert" id="oraPartenzaInsert" required placeholder="hh:mm">
             <br/><br/>
 
-            <label for="binario">Binario: </label>
-            <input type="text" name="binario" id="binario" required placeholder="Inserire binario">
+            <label for="binarioInsert">Binario: </label>
+            <input type="text" name="binarioInsert" id="binarioInsert" required placeholder="Inserire binario">
 
             <input type="submit" id="insertButton" value="Inserisci treno">
 
@@ -61,18 +61,41 @@ Cosa vuoi fare?
 
     <div id="update-form" >
 
-        <form action="UpdateTreno" method="POST">
+        <form action="/StazioneFerroviaria/admin" method="POST" onsubmit="return validateForm('Update')">
 
             <h5>Update Treno</h5>
 
-            <label for="numero">Numero:</label> <input type="text" name="numero" id="numero" ><br /><br />
-            <label for="stazionePartenza">Stazione di Partenza:</label><input type="text" name="stazionePartenza" id="stazionePartenza" ><br /><br />
-            <label for="stazioneArrivo">Stazione di Arrivo:</label><input type="text" name="stazioneArrivo" id="stazioneArrivo" ><br /><br />
-            <label for="giorno">Giorno:</label><input type="text" name="giorno" id="giorno" ><br /><br />
-            <label for="oraPartenza">Ora Partenza:</label><input type="text" name="oraPartenza" id="oraPartenza" ><br /><br />
-            <label for="binario">Binario:</label><input type="text" name="binario" id="binario" >
+            <label for="numeroTrenoUpdate">Numero: </label>
+            <input required type="text" name="numeroTrenoUpdate" id="numeroTrenoUpdate" placeholder="Inserire numero treno">
+            <br/><br/>
 
-            <input type="submit" value="Update">
+            <label for="stazionePartenzaUpdate">Stazione di Partenza: </label>
+            <select id="stazionePartenzaUpdate" name="stazionePartenzaUpdate" required>
+                <option selected disabled value> -- Seleziona una stazione -- </option>
+            </select>
+            <button id="addStazioneUpdate" type="button" onclick="addStazioneIntermedia('Update')">Aggiungi stazione intermedia</button>
+            <br/><br/>
+
+            <div id="scaliUpdate"></div>
+
+            <label for="stazioneArrivoUpdate">Stazione di Arrivo: </label>
+            <select id="stazioneArrivoUpdate" name="stazioneArrivoUpdate" required>
+                <option selected disabled value> -- Seleziona una stazione -- </option>
+            </select>
+            <br/><br/>
+
+            <label for="giornoPartenzaUpdate">Giorno: </label>
+            <input type="text" name="giornoPartenzaUpdate" id="giornoPartenzaUpdate" required placeholder="gg/mm/aaaa">
+            <br/><br/>
+
+            <label for="oraPartenzaUpdate">Ora Partenza: </label>
+            <input type="text" name="oraPartenzaUpdate" id="oraPartenzaUpdate" required placeholder="hh:mm">
+            <br/><br/>
+
+            <label for="binarioUpdate">Binario: </label>
+            <input type="text" name="binarioUpdate" id="binarioUpdate" required placeholder="Inserire binario">
+
+            <input type="submit" id="updateButton" value="Modifica treno">
 
         </form>
 
@@ -80,18 +103,41 @@ Cosa vuoi fare?
 
     <div id="delete-form">
 
-        <form action="DeleteTreno" method="POST">
+        <form action="/StazioneFerroviaria/admin" method="POST" onsubmit="return validateForm('Delete')">
 
             <h5>Delete Treno</h5>
 
-            <label for="numero">Numero:</label> <input type="text" name="numero" id="numero" ><br /><br />
-            <label for="stazionePartenza">Stazione di Partenza:</label><input type="text" name="stazionePartenza" id="stazionePartenza" ><br /><br />
-            <label for="stazioneArrivo">Stazione di Arrivo:</label><input type="text" name="stazioneArrivo" id="stazioneArrivo" ><br /><br />
-            <label for="giorno">Giorno:</label><input type="text" name="giorno" id="giorno" ><br /><br />
-            <label for="oraPartenza">Ora Partenza:</label><input type="text" name="oraPartenza" id="oraPartenza" ><br /><br />
-            <label for="binario">Binario:</label><input type="text" name="binario" id="binario" >
+            <label for="numeroTrenoDelete">Numero: </label>
+            <input required type="text" name="numeroTrenoDelete" id="numeroTrenoDelete" placeholder="Inserire numero treno">
+            <br/><br/>
 
-            <input type="submit" value="Delete">
+            <label for="stazionePartenzaDelete">Stazione di Partenza: </label>
+            <select id="stazionePartenzaDelete" name="stazionePartenzaDelete" required>
+                <option selected disabled value> -- Seleziona una stazione -- </option>
+            </select>
+            <button id="addStazioneDelete" type="button" onclick="addStazioneIntermedia('Delete')">Aggiungi stazione intermedia</button>
+            <br/><br/>
+
+            <div id="scaliDelete"></div>
+
+            <label for="stazioneArrivoDelete">Stazione di Arrivo: </label>
+            <select id="stazioneArrivoDelete" name="stazioneArrivoDelete" required>
+                <option selected disabled value> -- Seleziona una stazione -- </option>
+            </select>
+            <br/><br/>
+
+            <label for="giornoPartenzaDelete">Giorno: </label>
+            <input type="text" name="giornoPartenzaDelete" id="giornoPartenzaDelete" required placeholder="gg/mm/aaaa">
+            <br/><br/>
+
+            <label for="oraPartenzaDelete">Ora Partenza: </label>
+            <input type="text" name="oraPartenzaDelete" id="oraPartenzaDelete" required placeholder="hh:mm">
+            <br/><br/>
+
+            <label for="binarioDelete">Binario: </label>
+            <input type="text" name="binarioDelete" id="binarioDelete" required placeholder="Inserire binario">
+
+            <input type="submit" id="DeleteButton" value="Elimina treno">
 
         </form>
     </div>
@@ -127,8 +173,8 @@ Cosa vuoi fare?
 
         $.get("admin", function(responseJson) {
             stazioni = responseJson;
-            appendStazioniToSelect(${"stazionePartenza"});
-            appendStazioniToSelect(${"stazioneArrivo"});
+            appendStazioniToSelect(${"stazionePartenzaInsert"});
+            appendStazioniToSelect(${"stazioneArrivoInsert"});
         });
 
     });

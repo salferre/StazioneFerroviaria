@@ -36,16 +36,16 @@ function validateForm(tipoForm) {
     var dateRegex = /^([0-9]{2})\/([0-9]{2})\/([0-9]{4})$/;
     var timeRegex = /^([01][0-9]|[2][0-3]):([0-5]\d)$/;
 
-    if(!numRegex.test($('#numeroTreno').val())) {
+    if(!numRegex.test($('#numeroTreno'+tipoForm).val())) {
         erroriJS.push("Il numero treno può contenere solo caratteri numerici!");
     }
-    if(!dateRegex.test($('#giornoPartenza').val())) {
+    if(!dateRegex.test($('#giornoPartenza'+tipoForm).val())) {
         erroriJS.push("Inserire il giorno della partenza in formato dd/mm/yyyy!");
     }
-    if(!timeRegex.test($('#oraPartenza').val())) {
+    if(!timeRegex.test($('#oraPartenza'+tipoForm).val())) {
         erroriJS.push("Inserire l'ora della partenza in formato hh:mm!");
     }
-    if(!numRegex.test($('#binario').val())) {
+    if(!numRegex.test($('#binario'+tipoForm).val())) {
         erroriJS.push("Il binario può contenere solo caratteri numerici!");
     }
 
@@ -63,11 +63,11 @@ function appendStazioniToSelect(selectId) {
 
 var idSelect = 0;
 
-function addStazioneIntermedia() {
+function addStazioneIntermedia(tipoForm) {
     if(idSelect < 8){
         var select = document.createElement("select");
-        select.id = "tappaIntermedia"+idSelect;
-        select.name = "tappaIntermedia";
+        select.id = "tappaIntermedia"+tipoForm+idSelect;
+        select.name = "tappaIntermedia"+tipoForm;
         idSelect++;
         select.innerHTML = '<option disabled selected value> -- Seleziona una stazione -- </option>';
 
@@ -78,10 +78,10 @@ function addStazioneIntermedia() {
         var br = document.createElement("br");
         var br2 = document.createElement("br");
 
-        document.getElementById("scali").appendChild(label);
-        document.getElementById("scali").appendChild(select);
-        document.getElementById("scali").appendChild(br);
-        document.getElementById("scali").appendChild(br2);
+        document.getElementById("scali"+tipoForm).appendChild(label);
+        document.getElementById("scali"+tipoForm).appendChild(select);
+        document.getElementById("scali"+tipoForm).appendChild(br);
+        document.getElementById("scali"+tipoForm).appendChild(br2);
 
         appendStazioniToSelect(select);
     }

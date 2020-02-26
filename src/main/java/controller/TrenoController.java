@@ -8,19 +8,10 @@ import dao.repositories.TrenoRepository;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 public class TrenoController implements AbstractController {
-
-    public static HashMap <String, Integer> durate;
-    static {
-        durate = new HashMap<>();
-        durate.put("PA_ME", 60);
-        durate.put("PA_CA", 90);
-    }
 
     public TrenoController() {
     }
@@ -45,21 +36,24 @@ public class TrenoController implements AbstractController {
             statement = connection.prepareStatement(SQL_INSERT_CALENDARIO);
             Integer idTratta = getIdTratta(connection, tratta);
             statement.setInt(1, idTratta);
-            statement.setObject(2, getIdTreno(connection, buildMYSQLDateTime(giornoPartenza, oraPartenza)));
+            statement.setTimestamp(2, buildMySQLDateTime(giornoPartenza, oraPartenza) );
             statement.setInt(3, getIdTreno(connection, numeroTreno));
             statement.setInt(4, Integer.valueOf(binario));
             statement.executeUpdate();
 
             int numProgessivoTappa = 1;
             for (String tappa : tappe ) {
-                String SQL_INSERT_PERCORSO = "INSERT INTO Percorso (idTratta, idStazione, Progressivo, durata) VALUES (?,?,?,?)";
-                statement = connection.prepareStatement(SQL_INSERT_PERCORSO);
-                statement.setInt(1, idTratta);
-                statement.setInt(2, getIdStazione(connection, tappa));
-                statement.setInt(3, numProgessivoTappa);
-                statement.setInt(4, getDurata(connection, tratta));
-                statement.executeUpdate();
-                numProgessivoTappa++;
+                //controllo che non sia la stazione di arrivo
+                if(!tappa.equalsIgnoreCase(tappe.get(tappe.size() - 1))){
+                    String SQL_INSERT_PERCORSO = "INSERT INTO Percorso (idTratta, idStazione, Progressivo, durata) VALUES (?,?,?,?)";
+                    statement = connection.prepareStatement(SQL_INSERT_PERCORSO);
+                    statement.setInt(1, idTratta);
+                    statement.setInt(2, getIdStazione(connection, tappa));
+                    statement.setInt(3, numProgessivoTappa);
+                    statement.setInt(4, getDurata(connection, tratta));
+                    statement.executeUpdate();
+                    numProgessivoTappa++;
+                }
             }
 
             statement.close();
@@ -143,7 +137,7 @@ public class TrenoController implements AbstractController {
         return duarata;
     }
 
-    private static String buildMYSQLDateTime(String data, String orario) throws ParseException {
+    private static Timestamp buildMySQLDateTime(String data, String orario) throws ParseException {
 
         final String OLD_FORMAT = "dd/MM/yyyy";
         final String NEW_FORMAT = "yyyy/MM/dd";
@@ -159,26 +153,7 @@ public class TrenoController implements AbstractController {
         newDateString = newDateString.replace("/", "-");
 
         orario = orario.concat(":00");
-        return Timestamp.valueOf(newDateString + " " + orario).toString();
-    }
-
-    public static void main(String[] args) throws ParseException {
-        final String OLD_FORMAT = "dd/MM/yyyy";
-        final String NEW_FORMAT = "yyyy/MM/dd";
-
-        String oldDateString = "12/08/2010";
-        String newDateString;
-
-        SimpleDateFormat sdf = new SimpleDateFormat(OLD_FORMAT);
-        Date d = sdf.parse(oldDateString);
-        sdf.applyPattern(NEW_FORMAT);
-        newDateString = sdf.format(d);
-
-        newDateString = newDateString.replace("/", "-");
-
-        String orario = "12:00:00";
-        String ts = Timestamp.valueOf(newDateString + " " + orario).toString();
-        System.out.println(ts);
+        return Timestamp.valueOf(newDateString + " " + orario);
     }
 
 }
