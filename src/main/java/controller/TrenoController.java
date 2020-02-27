@@ -1,5 +1,6 @@
 package controller;
 
+import dao.models.Calendario;
 import dao.models.Treno;
 import dao.repositories.DurataRepository;
 import dao.repositories.StazioneRepository;
@@ -19,21 +20,23 @@ public class TrenoController implements AbstractController {
 
     public static Treno getTreno (String numeroTreno){
 
+        Treno treno = new Treno();
         try{
             Class.forName(DRIVER).newInstance();
-            Connection connection= DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+            Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
 
             Integer idTreno = getIdTreno(connection, numeroTreno);
-
+            Calendario calendario = CalendarioController.getCalendarioFromidTreno(connection, idTreno.toString());
 
         } catch (Exception ex){
             ex.printStackTrace();
         }
 
-        return null;
+        return treno;
     }
 
-    public static Boolean insertTreno(String numeroTreno, String tratta, List<String> tappe, String giornoPartenza, String oraPartenza, String binario) {
+    public static Boolean insertTreno(String numeroTreno, String tratta, List<String> tappe, String giornoPartenza, String oraPartenza,
+                                      String binario) {
 
         try{
             Class.forName(DRIVER).newInstance();
@@ -62,12 +65,17 @@ public class TrenoController implements AbstractController {
             for (String tappa : tappe ) {
                 //controllo che non sia la stazione di arrivo
                 if(!tappa.equalsIgnoreCase(tappe.get(tappe.size() - 1))){
+
+                    String trattaIntermedia = tappa.substring(0, 2).toUpperCase() + "_"
+                            + tappe.get(numProgessivoTappa).substring(0, 2).toUpperCase();
+
+
                     String SQL_INSERT_PERCORSO = "INSERT INTO Percorso (idTratta, idStazione, Progressivo, durata) VALUES (?,?,?,?)";
                     statement = connection.prepareStatement(SQL_INSERT_PERCORSO);
                     statement.setInt(1, idTratta);
                     statement.setInt(2, getIdStazione(connection, tappa));
                     statement.setInt(3, numProgessivoTappa);
-                    statement.setInt(4, getDurata(connection, tratta));
+                    statement.setInt(4, getDurata(connection, trattaIntermedia));
                     statement.executeUpdate();
                     numProgessivoTappa++;
                 }

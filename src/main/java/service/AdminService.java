@@ -56,7 +56,8 @@ public class AdminService extends HttpServlet {
         }
         tappe.add(stazioneArrivo);
 
-        Map<String, String> errors = InsertValidator.validate(numeroTreno, stazionePartenza, stazioneArrivo, giornoPartenza, oraPartenza, binario, tappe);
+        Map<String, String> errors = InsertValidator.validate(numeroTreno, stazionePartenza, stazioneArrivo,
+                                                                giornoPartenza, oraPartenza, binario, tappe);
         if(errors.isEmpty()){
             String tratta = stazionePartenza.substring(0, 2).toUpperCase() + "_" + stazioneArrivo.substring(0, 2).toUpperCase();
             Boolean result = TrenoController.insertTreno(numeroTreno, tratta, tappe, giornoPartenza, oraPartenza, binario);
