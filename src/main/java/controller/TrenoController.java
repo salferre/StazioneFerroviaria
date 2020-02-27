@@ -1,5 +1,6 @@
 package controller;
 
+import dao.models.Treno;
 import dao.repositories.DurataRepository;
 import dao.repositories.StazioneRepository;
 import dao.repositories.TrattaRepository;
@@ -14,6 +15,22 @@ import java.util.List;
 public class TrenoController implements AbstractController {
 
     public TrenoController() {
+    }
+
+    public static Treno getTreno (String numeroTreno){
+
+        try{
+            Class.forName(DRIVER).newInstance();
+            Connection connection= DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+
+            Integer idTreno = getIdTreno(connection, numeroTreno);
+
+
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+        return null;
     }
 
     public static Boolean insertTreno(String numeroTreno, String tratta, List<String> tappe, String giornoPartenza, String oraPartenza, String binario) {

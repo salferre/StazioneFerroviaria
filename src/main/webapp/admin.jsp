@@ -53,7 +53,7 @@ Cosa vuoi fare?
             <label for="binarioInsert">Binario: </label>
             <input type="text" name="binarioInsert" id="binarioInsert" required placeholder="Inserire binario">
 
-            <input type="submit" id="insertButton" value="Inserisci treno">
+            <input type="submit" name="tipoForm" id="insertButton" value="Inserisci treno">
 
         </form>
 
@@ -95,7 +95,7 @@ Cosa vuoi fare?
             <label for="binarioUpdate">Binario: </label>
             <input type="text" name="binarioUpdate" id="binarioUpdate" required placeholder="Inserire binario">
 
-            <input type="submit" id="updateButton" value="Modifica treno">
+            <input type="submit" name="tipoForm" id="updateButton" value="Modifica treno">
 
         </form>
 
@@ -137,7 +137,7 @@ Cosa vuoi fare?
             <label for="binarioDelete">Binario: </label>
             <input type="text" name="binarioDelete" id="binarioDelete" required placeholder="Inserire binario">
 
-            <input type="submit" id="DeleteButton" value="Elimina treno">
+            <input type="submit" name="tipoForm" id="DeleteButton" value="Elimina treno">
 
         </form>
     </div>
@@ -171,7 +171,7 @@ Cosa vuoi fare?
 <script>
     $(document).ready(function() {
 
-        $.get("admin", function(responseJson) {
+        $.get("stazioni", function(responseJson) {
             stazioni = responseJson;
             appendStazioniToSelect(${"stazionePartenzaInsert"});
             appendStazioniToSelect(${"stazioneArrivoInsert"});

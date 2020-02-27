@@ -3,7 +3,7 @@ var erroriJS = [];
 
 $(document).ready(function() {
 
-    // $.get("admin", function(responseJson) {
+    // $.get("stazioni", function(responseJson) {
     //     stazioni = responseJson;
     //     appendStazioniToSelect(stazionePartenza);
     //     appendStazioniToSelect(stazioneArrivo);

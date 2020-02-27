@@ -1,0 +1,2 @@
+1) controllare connessioni a DB - web.xml(?)
+2) fixare la retrieve della durata delle tratte
