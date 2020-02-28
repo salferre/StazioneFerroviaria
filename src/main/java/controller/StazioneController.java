@@ -1,7 +1,9 @@
 package controller;
 
 import com.google.gson.Gson;
+import dao.models.Calendario;
 import dao.models.Stazione;
+import dao.repositories.CalendarioRepository;
 import dao.repositories.StazioneRepository;
 
 import java.sql.Connection;
@@ -37,6 +39,32 @@ public class StazioneController implements AbstractController {
             return null;
         }
 
+    }
+
+    public static String getNomeStazioneFromidStazione (Connection connection, String idStazione){
+
+        String nomeStazione = "";
+
+        try {
+            if (connection == null) {
+                Class.forName(DRIVER).newInstance();
+                connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+            }
+
+            PreparedStatement statement = connection.prepareStatement(StazioneRepository.GET_NOME_STAZIONE);
+            statement.setString(1, idStazione);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                nomeStazione = rs.getString("nomeStazione");
+            }
+            rs.close();
+            statement.close();
+            connection.close();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return nomeStazione;
     }
 
 }

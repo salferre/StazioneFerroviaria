@@ -1,6 +1,7 @@
 package controller;
 
 import dao.models.Calendario;
+import dao.models.Percorso;
 import dao.models.Treno;
 import dao.repositories.DurataRepository;
 import dao.repositories.StazioneRepository;
@@ -10,6 +11,7 @@ import dao.repositories.TrenoRepository;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,6 +29,15 @@ public class TrenoController implements AbstractController {
 
             Integer idTreno = getIdTreno(connection, numeroTreno);
             Calendario calendario = CalendarioController.getCalendarioFromidTreno(connection, idTreno.toString());
+            List<Percorso> percorsi = PercorsoController.getPercorsoFromidTratta(connection, calendario.getIdTratta());
+
+            List<String> tappe = new ArrayList<>();
+            for ( Percorso p : percorsi ) {
+                tappe.add(StazioneController.getNomeStazioneFromidStazione(connection, p.getIdStazione()));
+            }
+
+            treno.setNumeroTreno(numeroTreno);
+            treno.setTappe(tappe);
 
         } catch (Exception ex){
             ex.printStackTrace();
@@ -89,6 +100,14 @@ public class TrenoController implements AbstractController {
             return false;
         }
     }
+
+    /**
+     *
+     *
+     * TODO SMISTARE QUESTI METODI NEI CONTROLLER APPROPRIATI
+     *
+     *
+     * **/
 
     private static Integer getIdTreno(Connection connection, String codiceTreno) {
         Integer idTreno = 0;
