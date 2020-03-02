@@ -61,41 +61,43 @@ Cosa vuoi fare?
 
     <div id="update-form" >
 
-        <form action="/StazioneFerroviaria/admin" method="POST" onsubmit="return validateForm('Update')">
+        <%--        <form action="/StazioneFerroviaria/admin" method="PUT" onsubmit="return validateForm('Update')">--%>
 
+        <form action="/StazioneFerroviaria/admin" method="PUT">
             <h5>Update Treno</h5>
 
             <label for="numeroTrenoUpdate">Numero: </label>
             <input required type="text" name="numeroTrenoUpdate" id="numeroTrenoUpdate" placeholder="Inserire numero treno">
+            <input type="submit" name="caricaTreno" id="caricaTreno" value="Carica treno">
             <br/><br/>
 
-            <label for="stazionePartenzaUpdate">Stazione di Partenza: </label>
-            <select id="stazionePartenzaUpdate" name="stazionePartenzaUpdate" required>
-                <option selected disabled value> -- Seleziona una stazione -- </option>
-            </select>
-            <button id="addStazioneUpdate" type="button" onclick="addStazioneIntermedia('Update')">Aggiungi stazione intermedia</button>
-            <br/><br/>
+<%--            <label for="stazionePartenzaUpdate">Stazione di Partenza: </label>--%>
+<%--            <select id="stazionePartenzaUpdate" name="stazionePartenzaUpdate">--%>
+<%--                <option selected disabled value> -- Seleziona una stazione -- </option>--%>
+<%--            </select>--%>
+<%--            <button id="addStazioneUpdate" type="button" onclick="addStazioneIntermedia('Update')">Aggiungi stazione intermedia</button>--%>
+<%--            <br/><br/>--%>
 
-            <div id="scaliUpdate"></div>
+<%--            <div id="scaliUpdate"></div>--%>
 
-            <label for="stazioneArrivoUpdate">Stazione di Arrivo: </label>
-            <select id="stazioneArrivoUpdate" name="stazioneArrivoUpdate" required>
-                <option selected disabled value> -- Seleziona una stazione -- </option>
-            </select>
-            <br/><br/>
+<%--            <label for="stazioneArrivoUpdate">Stazione di Arrivo: </label>--%>
+<%--            <select id="stazioneArrivoUpdate" name="stazioneArrivoUpdate">--%>
+<%--                <option selected disabled value> -- Seleziona una stazione -- </option>--%>
+<%--            </select>--%>
+<%--            <br/><br/>--%>
 
-            <label for="giornoPartenzaUpdate">Giorno: </label>
-            <input type="text" name="giornoPartenzaUpdate" id="giornoPartenzaUpdate" required placeholder="gg/mm/aaaa">
-            <br/><br/>
+<%--            <label for="giornoPartenzaUpdate">Giorno: </label>--%>
+<%--            <input type="text" name="giornoPartenzaUpdate" id="giornoPartenzaUpdate" placeholder="gg/mm/aaaa">--%>
+<%--            <br/><br/>--%>
 
-            <label for="oraPartenzaUpdate">Ora Partenza: </label>
-            <input type="text" name="oraPartenzaUpdate" id="oraPartenzaUpdate" required placeholder="hh:mm">
-            <br/><br/>
+<%--            <label for="oraPartenzaUpdate">Ora Partenza: </label>--%>
+<%--            <input type="text" name="oraPartenzaUpdate" id="oraPartenzaUpdate" placeholder="hh:mm">--%>
+<%--            <br/><br/>--%>
 
-            <label for="binarioUpdate">Binario: </label>
-            <input type="text" name="binarioUpdate" id="binarioUpdate" required placeholder="Inserire binario">
+<%--            <label for="binarioUpdate">Binario: </label>--%>
+<%--            <input type="text" name="binarioUpdate" id="binarioUpdate" placeholder="Inserire binario">--%>
 
-            <input type="submit" name="tipoForm" id="updateButton" value="Modifica treno">
+<%--            <input type="submit" name="tipoForm" id="updateButton" value="Modifica treno">--%>
 
         </form>
 
@@ -103,7 +105,7 @@ Cosa vuoi fare?
 
     <div id="delete-form">
 
-        <form action="/StazioneFerroviaria/admin" method="POST" onsubmit="return validateForm('Delete')">
+        <form action="/StazioneFerroviaria/admin" method="DELETE" onsubmit="return validateForm('Delete')">
 
             <h5>Delete Treno</h5>
 

@@ -39,6 +39,21 @@ public class TrenoController implements AbstractController {
             treno.setNumeroTreno(numeroTreno);
             treno.setTappe(tappe);
 
+            final String OLD_FORMAT = "yyyy/MM/dd";
+            final String NEW_FORMAT = "dd/MM/yyyy";
+            String giornoPartenza = calendario.getDataPartenza();
+            giornoPartenza = giornoPartenza.split(" ")[0].replace("-","/");
+            SimpleDateFormat dateFormat = new SimpleDateFormat(OLD_FORMAT);
+            Date parsedDate = dateFormat.parse(giornoPartenza);
+            dateFormat.applyPattern(NEW_FORMAT);
+            giornoPartenza = dateFormat.format(dateFormat);
+            treno.setGiornoPartenza(giornoPartenza);
+
+            String oraPartenza = calendario.getDataPartenza().split(" ")[1].substring(0, 5);
+            treno.setOraPartenza(oraPartenza);
+
+            treno.setBinario(calendario.getBinario());
+
         } catch (Exception ex){
             ex.printStackTrace();
         }

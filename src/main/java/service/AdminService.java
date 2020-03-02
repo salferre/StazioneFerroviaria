@@ -31,8 +31,17 @@ public class AdminService extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(json);
 
+
         Boolean result = false;
         request.setAttribute("result", result);
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String numeroTreno = request.getParameter("numeroTrenoUpdate");
+        if(!numeroTreno.isEmpty() && numeroTreno != null){
+            TrenoController.getTreno(numeroTreno);
+        }
     }
 
     @Override
@@ -73,6 +82,10 @@ public class AdminService extends HttpServlet {
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin.jsp");
         dispatcher.forward(request, response);
     }
+
+
+
+
 
     private String checkTipoForm (String tipoForm){
         String result = "";
