@@ -22,12 +22,16 @@ public class TrenoController implements AbstractController {
 
     public static Treno getTreno (String numeroTreno){
 
+        if(numeroTreno == null || numeroTreno.equalsIgnoreCase("")){
+            return null;
+        }
+
         Treno treno = new Treno();
         try{
             Class.forName(DRIVER).newInstance();
             Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
 
-            Integer idTreno = getIdTreno(connection, numeroTreno);
+            Integer idTreno = TrenoController.getIdTreno(connection, numeroTreno);
             Calendario calendario = CalendarioController.getCalendarioFromidTreno(connection, idTreno.toString());
             List<Percorso> percorsi = PercorsoController.getPercorsoFromidTratta(connection, calendario.getIdTratta());
 
@@ -46,7 +50,7 @@ public class TrenoController implements AbstractController {
             SimpleDateFormat dateFormat = new SimpleDateFormat(OLD_FORMAT);
             Date parsedDate = dateFormat.parse(giornoPartenza);
             dateFormat.applyPattern(NEW_FORMAT);
-            giornoPartenza = dateFormat.format(dateFormat);
+            giornoPartenza = dateFormat.format(parsedDate);
             treno.setGiornoPartenza(giornoPartenza);
 
             String oraPartenza = calendario.getDataPartenza().split(" ")[1].substring(0, 5);
@@ -126,7 +130,11 @@ public class TrenoController implements AbstractController {
 
     private static Integer getIdTreno(Connection connection, String codiceTreno) {
         Integer idTreno = 0;
+
         try{
+            if (connection == null) {
+                connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+            }
             Class.forName(DRIVER).newInstance();
             PreparedStatement statement = connection.prepareStatement(TrenoRepository.GET_ID_TRENO);
             statement.setString(1, codiceTreno);

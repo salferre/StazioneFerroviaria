@@ -47,10 +47,10 @@ public class StazioneController implements AbstractController {
 
         try {
             if (connection == null) {
-                Class.forName(DRIVER).newInstance();
                 connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
             }
 
+            Class.forName(DRIVER).newInstance();
             PreparedStatement statement = connection.prepareStatement(StazioneRepository.GET_NOME_STAZIONE);
             statement.setString(1, idStazione);
             ResultSet rs = statement.executeQuery();
@@ -59,8 +59,6 @@ public class StazioneController implements AbstractController {
             }
             rs.close();
             statement.close();
-            connection.close();
-
         } catch (Exception ex) {
             ex.printStackTrace();
         }

@@ -1,4 +1,5 @@
 var stazioni = {};
+var treno = {};
 var erroriJS = [];
 
 $(document).ready(function() {

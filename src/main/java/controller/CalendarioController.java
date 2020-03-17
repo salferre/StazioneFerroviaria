@@ -21,25 +21,23 @@ public class CalendarioController implements AbstractController {
 
         try {
             if (connection == null) {
-                Class.forName(DRIVER).newInstance();
                 connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
             }
 
+            Class.forName(DRIVER).newInstance();
             PreparedStatement statement = connection.prepareStatement(CalendarioRepository.GET_CALENDARIO_FROM_IDTRENO);
             statement.setString(1, idTreno);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 calendario = new Calendario( String.valueOf(rs.getInt("idCalendario")),
-                                             String.valueOf(rs.getInt("idTratta")),
-                                             String.valueOf(rs.getTimestamp("dataPartenza")),
-                                             String.valueOf(rs.getInt("idTreno")),
-                                             String.valueOf(rs.getInt("binario"))
-                                            );
+                        String.valueOf(rs.getInt("idTratta")),
+                        String.valueOf(rs.getTimestamp("dataPartenza")),
+                        String.valueOf(rs.getInt("idTreno")),
+                        String.valueOf(rs.getInt("binario"))
+                );
             }
             rs.close();
             statement.close();
-            connection.close();
-
         } catch (Exception ex) {
             ex.printStackTrace();
         }

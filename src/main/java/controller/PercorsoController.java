@@ -20,17 +20,17 @@ public class PercorsoController implements AbstractController {
 
         try {
             if (connection == null) {
-                Class.forName(DRIVER).newInstance();
                 connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
             }
 
+            Class.forName(DRIVER).newInstance();
             PreparedStatement statement = connection.prepareStatement(PercorsoRepository.GET_PERCORSO_FROM_IDTRATTA);
             statement.setString(1, idTratta);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Percorso percorso = new Percorso( String.valueOf(rs.getInt("idPercorso")),
                         String.valueOf(rs.getInt("idTratta")),
-                        String.valueOf(rs.getTimestamp("idStazione")),
+                        String.valueOf(rs.getInt("idStazione")),
                         String.valueOf(rs.getInt("progressivo")),
                         String.valueOf(rs.getInt("durata"))
                 );
@@ -38,8 +38,6 @@ public class PercorsoController implements AbstractController {
             }
             rs.close();
             statement.close();
-            connection.close();
-
         } catch (Exception ex) {
             ex.printStackTrace();
         }

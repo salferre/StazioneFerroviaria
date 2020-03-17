@@ -63,19 +63,19 @@ Cosa vuoi fare?
 
         <%--        <form action="/StazioneFerroviaria/admin" method="PUT" onsubmit="return validateForm('Update')">--%>
 
-        <form action="/StazioneFerroviaria/admin" method="PUT">
+        <form action="/StazioneFerroviaria/admin" method="GET"> <%--TODO capire come richiamare l'update lato server--%>
             <h5>Update Treno</h5>
 
             <label for="numeroTrenoUpdate">Numero: </label>
             <input required type="text" name="numeroTrenoUpdate" id="numeroTrenoUpdate" placeholder="Inserire numero treno">
-            <input type="submit" name="caricaTreno" id="caricaTreno" value="Carica treno">
+            <input type="button" name="caricaTreno" id="caricaTreno" value="Carica treno">
             <br/><br/>
 
 <%--            <label for="stazionePartenzaUpdate">Stazione di Partenza: </label>--%>
 <%--            <select id="stazionePartenzaUpdate" name="stazionePartenzaUpdate">--%>
 <%--                <option selected disabled value> -- Seleziona una stazione -- </option>--%>
 <%--            </select>--%>
-<%--            <button id="addStazioneUpdate" type="button" onclick="addStazioneIntermedia('Update')">Aggiungi stazione intermedia</button>--%>
+<%--            <button id="addStazioneUpdate" type="button" io="addStazioneIntermedia('Update')">Aggiungi stazione intermedia</button>--%>
 <%--            <br/><br/>--%>
 
 <%--            <div id="scaliUpdate"></div>--%>
@@ -180,6 +180,28 @@ Cosa vuoi fare?
         });
 
     });
+
+    $("#caricaTreno").click(function(e) {
+        e.preventDefault();
+        var numeroTrenoUpdate = $("#numeroTrenoUpdate").val();
+
+        $.ajax({
+            url: "treno",
+            type: "get", //send it through get method
+            data: {
+                numeroTrenoUpdate: numeroTrenoUpdate,
+            },
+            success: function(responseJson) {
+                treno = responseJson;
+            },
+            error: function(xhr) {
+                //Do Something to handle error
+            }
+        });
+
+
+    });
+
 </script>
 
 </html>

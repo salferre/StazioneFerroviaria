@@ -4,7 +4,8 @@ import java.util.*;
 
 public class InsertValidator implements AbstractValidator {
 
-    public static Map<String, String> validate(String numeroTreno, String stazionePartenza, String stazioneArrivo, String giornoPartenza, String oraPartenza, String binario, List<String> tappe) {
+    public static Map<String, String> validate(String numeroTreno, String stazionePartenza, String stazioneArrivo,
+                                               String giornoPartenza, String oraPartenza, String binario, List<String> tappe) {
 
         Map<String, String> errors = new HashMap<>();
 
