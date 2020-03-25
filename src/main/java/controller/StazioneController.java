@@ -1,9 +1,6 @@
 package controller;
 
-import com.google.gson.Gson;
-import dao.models.Calendario;
 import dao.models.Stazione;
-import dao.repositories.CalendarioRepository;
 import dao.repositories.StazioneRepository;
 
 import java.sql.Connection;
@@ -27,7 +24,7 @@ public class StazioneController implements AbstractController {
             PreparedStatement statement = connection.prepareStatement(StazioneRepository.GET_ALL_STAZIONI);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                Stazione stazione = new Stazione( rs.getInt("idStazione") ,rs.getString("nomeStazione"));
+                Stazione stazione = new Stazione( rs.getInt("idStazione") ,rs.getString("nomeStazione"), rs.getString("provinciaStazione"));
                 stazioni.add(stazione);
             }
             rs.close();
@@ -51,7 +48,7 @@ public class StazioneController implements AbstractController {
             }
 
             Class.forName(DRIVER).newInstance();
-            PreparedStatement statement = connection.prepareStatement(StazioneRepository.GET_NOME_STAZIONE);
+            PreparedStatement statement = connection.prepareStatement(StazioneRepository.GET_NOME_STAZIONE_FROM_IDSTAZIONE);
             statement.setString(1, idStazione);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
@@ -63,6 +60,48 @@ public class StazioneController implements AbstractController {
             ex.printStackTrace();
         }
         return nomeStazione;
+    }
+
+    public static String getNomeStazioneFromProvinciaStazione (Connection connection, String provinciaStazione){
+
+        String nomeStazione = "";
+
+        try {
+            if (connection == null) {
+                connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+            }
+
+            Class.forName(DRIVER).newInstance();
+            PreparedStatement statement = connection.prepareStatement(StazioneRepository.GET_NOME_STAZIONE_FROM_PROVINCIASTAZIONE);
+            statement.setString(1, provinciaStazione);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                nomeStazione = rs.getString("nomeStazione");
+            }
+            rs.close();
+            statement.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return nomeStazione;
+    }
+
+    public static Integer getIdStazione(Connection connection, String nomeStazione) {
+        Integer idStazione = 0;
+        try{
+            Class.forName(DRIVER).newInstance();
+            PreparedStatement statement = connection.prepareStatement(StazioneRepository.GET_ID_STAZIONE);
+            statement.setString(1, nomeStazione);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                idStazione = rs.getInt("idStazione");
+            }
+            rs.close();
+            statement.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return idStazione;
     }
 
 }

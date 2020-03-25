@@ -2,18 +2,47 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Stazione di Palermo - Admin</title>
+    <title>Stazione di Palermo - Admin Console</title>
 </head>
 <body>
-Cosa vuoi fare?
+<div id="choiceMenu">
+    <button id="arriviButton">Arrivi</button>
+    <button id="partenzeButton">Partenze</button>
+    <button id="ruoliButton">Ruoli</button>
+</div>
+
+
+<table id="tableArrivi">
+    <tbody>
+        <tr>
+            <th>Numero Treno</th>
+            <th>Stazione di Partenza</th>
+            <th>Arrivo Previsto</th>
+            <th>Stato</th>
+            <th>Ritardo(?)</th>
+            <th>Binario</th>
+        </tr>
+        <c:forEach items="${treniArrivo}" var="trenoArrivo">
+            <tr>
+                <td>${treno.numeroTreno}</td>
+                <td>${treno.numeroTreno}</td>
+                <td>${treno.numeroTreno}</td>
+                <td>${treno.numeroTreno}</td>
+                <td>${treno.numeroTreno}</td>
+                <td>${treno.binario}</td>
+            </tr>
+        </c:forEach>
+    </tbody>
+</table>
+
+
+
+
+
 <div id="buttons">
     <button id="insert-button">Insert</button>
     <button id="update-button">Update</button>
     <button id="delete-button">Delete</button>
-</div>
-
-<div id="errors">
-
 </div>
 
 <div id="forms">
@@ -71,33 +100,33 @@ Cosa vuoi fare?
             <input type="button" name="caricaTreno" id="caricaTreno" value="Carica treno">
             <br/><br/>
 
-<%--            <label for="stazionePartenzaUpdate">Stazione di Partenza: </label>--%>
-<%--            <select id="stazionePartenzaUpdate" name="stazionePartenzaUpdate">--%>
-<%--                <option selected disabled value> -- Seleziona una stazione -- </option>--%>
-<%--            </select>--%>
-<%--            <button id="addStazioneUpdate" type="button" io="addStazioneIntermedia('Update')">Aggiungi stazione intermedia</button>--%>
-<%--            <br/><br/>--%>
+            <%--            <label for="stazionePartenzaUpdate">Stazione di Partenza: </label>--%>
+            <%--            <select id="stazionePartenzaUpdate" name="stazionePartenzaUpdate">--%>
+            <%--                <option selected disabled value> -- Seleziona una stazione -- </option>--%>
+            <%--            </select>--%>
+            <%--            <button id="addStazioneUpdate" type="button" io="addStazioneIntermedia('Update')">Aggiungi stazione intermedia</button>--%>
+            <%--            <br/><br/>--%>
 
-<%--            <div id="scaliUpdate"></div>--%>
+            <%--            <div id="scaliUpdate"></div>--%>
 
-<%--            <label for="stazioneArrivoUpdate">Stazione di Arrivo: </label>--%>
-<%--            <select id="stazioneArrivoUpdate" name="stazioneArrivoUpdate">--%>
-<%--                <option selected disabled value> -- Seleziona una stazione -- </option>--%>
-<%--            </select>--%>
-<%--            <br/><br/>--%>
+            <%--            <label for="stazioneArrivoUpdate">Stazione di Arrivo: </label>--%>
+            <%--            <select id="stazioneArrivoUpdate" name="stazioneArrivoUpdate">--%>
+            <%--                <option selected disabled value> -- Seleziona una stazione -- </option>--%>
+            <%--            </select>--%>
+            <%--            <br/><br/>--%>
 
-<%--            <label for="giornoPartenzaUpdate">Giorno: </label>--%>
-<%--            <input type="text" name="giornoPartenzaUpdate" id="giornoPartenzaUpdate" placeholder="gg/mm/aaaa">--%>
-<%--            <br/><br/>--%>
+            <%--            <label for="giornoPartenzaUpdate">Giorno: </label>--%>
+            <%--            <input type="text" name="giornoPartenzaUpdate" id="giornoPartenzaUpdate" placeholder="gg/mm/aaaa">--%>
+            <%--            <br/><br/>--%>
 
-<%--            <label for="oraPartenzaUpdate">Ora Partenza: </label>--%>
-<%--            <input type="text" name="oraPartenzaUpdate" id="oraPartenzaUpdate" placeholder="hh:mm">--%>
-<%--            <br/><br/>--%>
+            <%--            <label for="oraPartenzaUpdate">Ora Partenza: </label>--%>
+            <%--            <input type="text" name="oraPartenzaUpdate" id="oraPartenzaUpdate" placeholder="hh:mm">--%>
+            <%--            <br/><br/>--%>
 
-<%--            <label for="binarioUpdate">Binario: </label>--%>
-<%--            <input type="text" name="binarioUpdate" id="binarioUpdate" placeholder="Inserire binario">--%>
+            <%--            <label for="binarioUpdate">Binario: </label>--%>
+            <%--            <input type="text" name="binarioUpdate" id="binarioUpdate" placeholder="Inserire binario">--%>
 
-<%--            <input type="submit" name="tipoForm" id="updateButton" value="Modifica treno">--%>
+            <%--            <input type="submit" name="tipoForm" id="updateButton" value="Modifica treno">--%>
 
         </form>
 
@@ -177,6 +206,10 @@ Cosa vuoi fare?
             stazioni = responseJson;
             appendStazioniToSelect(${"stazionePartenzaInsert"});
             appendStazioniToSelect(${"stazioneArrivoInsert"});
+        });
+
+        $.get("partenze", function(responseJson) {
+            partenze = responseJson;
         });
 
     });

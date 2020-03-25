@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CalendarioController implements AbstractController {
 
@@ -42,6 +44,31 @@ public class CalendarioController implements AbstractController {
             ex.printStackTrace();
         }
         return calendario;
+    }
+
+
+    public static Integer getIdTrenoFromIdTratta(Connection connection, String idTratta) {
+
+        Integer idTreno = 0;
+
+        try {
+            if (connection == null) {
+                connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+            }
+
+            Class.forName(DRIVER).newInstance();
+            PreparedStatement statement = connection.prepareStatement(CalendarioRepository.GET_IDTRENO_FROM_IDTRATTA);
+            statement.setString(1, idTratta);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                idTreno = rs.getInt("idTreno");
+            }
+            rs.close();
+            statement.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return idTreno;
     }
 
 }

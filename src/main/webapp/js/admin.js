@@ -1,4 +1,6 @@
 var stazioni = {};
+var partenze = {};
+var arrivi = {};
 var treno = {};
 var erroriJS = [];
 
