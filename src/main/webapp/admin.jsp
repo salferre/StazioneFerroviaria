@@ -134,40 +134,13 @@
 
     <div id="delete-form">
 
-        <form action="/StazioneFerroviaria/admin" method="DELETE" onsubmit="return validateForm('Delete')">
+        <form action="/StazioneFerroviaria/admin" method="GET"><%--            onsubmit="return validateForm('Delete')">--%>
 
             <h5>Delete Treno</h5>
 
             <label for="numeroTrenoDelete">Numero: </label>
             <input required type="text" name="numeroTrenoDelete" id="numeroTrenoDelete" placeholder="Inserire numero treno">
             <br/><br/>
-
-            <label for="stazionePartenzaDelete">Stazione di Partenza: </label>
-            <select id="stazionePartenzaDelete" name="stazionePartenzaDelete" required>
-                <option selected disabled value> -- Seleziona una stazione -- </option>
-            </select>
-            <button id="addStazioneDelete" type="button" onclick="addStazioneIntermedia('Delete')">Aggiungi stazione intermedia</button>
-            <br/><br/>
-
-            <div id="scaliDelete"></div>
-
-            <label for="stazioneArrivoDelete">Stazione di Arrivo: </label>
-            <select id="stazioneArrivoDelete" name="stazioneArrivoDelete" required>
-                <option selected disabled value> -- Seleziona una stazione -- </option>
-            </select>
-            <br/><br/>
-
-            <label for="giornoPartenzaDelete">Giorno: </label>
-            <input type="text" name="giornoPartenzaDelete" id="giornoPartenzaDelete" required placeholder="gg/mm/aaaa">
-            <br/><br/>
-
-            <label for="oraPartenzaDelete">Ora Partenza: </label>
-            <input type="text" name="oraPartenzaDelete" id="oraPartenzaDelete" required placeholder="hh:mm">
-            <br/><br/>
-
-            <label for="binarioDelete">Binario: </label>
-            <input type="text" name="binarioDelete" id="binarioDelete" required placeholder="Inserire binario">
-
             <input type="submit" name="tipoForm" id="DeleteButton" value="Elimina treno">
 
         </form>

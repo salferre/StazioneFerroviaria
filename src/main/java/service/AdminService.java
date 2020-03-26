@@ -20,20 +20,12 @@ import java.util.Map;
 @WebServlet("/admin")
 public class AdminService extends HttpServlet {
 
-    private static final long serialVersionUID = 1L;
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        List<Stazione> stazioni = StazioneController.getAllStazioni();
-        String json = new Gson().toJson(stazioni);
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(json);
-        Boolean result = false;
-        request.setAttribute("result", result);
+        super.doGet(request, response);
     }
 
+    //TODO CAPIRE SE LA CREATE TRENO VA QUI O MENO
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String tipoForm = request.getParameter("tipoForm");

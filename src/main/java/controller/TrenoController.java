@@ -17,7 +17,7 @@ public class TrenoController implements AbstractController {
     public TrenoController() {
     }
 
-    public static Treno getTreno (String numeroTreno){
+    public static Treno getTreno (String numeroTreno) {
 
         if(numeroTreno == null || numeroTreno.equalsIgnoreCase("")){
             return null;
@@ -74,9 +74,10 @@ public class TrenoController implements AbstractController {
             Class.forName(DRIVER).newInstance();
             Connection connection= DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
 
-            String SQL_INSERT_TRENO = "INSERT INTO Treno (codiceTreno) VALUES (?)";
+            String SQL_INSERT_TRENO = "INSERT INTO Treno (codiceTreno, statoTreno) VALUES (?, ?)";
             PreparedStatement statement = connection.prepareStatement(SQL_INSERT_TRENO);
             statement.setString(1, numeroTreno);
+            statement.setString(2, "C"); //CONFERMATO
             statement.executeUpdate();
 
             String SQL_INSERT_TRATTA = "INSERT INTO Tratta (nomeTratta) VALUES (?)";
@@ -120,6 +121,25 @@ public class TrenoController implements AbstractController {
             ex.printStackTrace();
             return false;
         }
+    }
+
+    public static Boolean deleteTreno (String codiceTreno) throws ClassNotFoundException {
+        Boolean result = false;
+        try{
+            Class.forName(DRIVER).newInstance();
+            Connection connection= DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+            String SQL_DELETE_TRENO = "UPDATE Treno SET statoTreno=? where codiceTreno=?";
+            PreparedStatement statement = connection.prepareStatement(SQL_DELETE_TRENO);
+            statement.setString(1, "D"); //DELETED
+            statement.setString(2, codiceTreno);
+            statement.executeUpdate();
+            statement.close();
+            connection.close();
+            result = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
 

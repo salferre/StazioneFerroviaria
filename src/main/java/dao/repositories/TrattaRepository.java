@@ -8,4 +8,6 @@ public interface TrattaRepository {
 
     public static final String GET_PARTENZE_PA = "SELECT * FROM Tratta t WHERE t.nometratta LIKE 'PA_%' ORDER BY idTratta";
 
+    public static final String GET_ARRIVI_PA = "SELECT * FROM Tratta t WHERE t.nometratta LIKE '%_PA' ORDER BY idTratta";
+
 }

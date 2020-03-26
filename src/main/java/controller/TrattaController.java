@@ -18,13 +18,13 @@ public class TrattaController implements AbstractController {
     public TrattaController() {
     }
 
-    public static List<Treno> getAllPartenze() {
+    public static List<Treno> getArriviOrPartenzePA(String arrivoOrPartenza) {
         List<Treno> treni = new ArrayList<>();
         List<Tratta> tratte = new ArrayList<>();
         try{
             Class.forName(DRIVER).newInstance();
             Connection connection= DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
-            PreparedStatement statement = connection.prepareStatement(TrattaRepository.GET_PARTENZE_PA);
+            PreparedStatement statement = connection.prepareStatement(arrivoOrPartenza);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Tratta tratta = new Tratta( rs.getInt("idTratta") ,rs.getString("nomeTratta"));

@@ -13,13 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/partenze")
-public class PartenzeService extends HttpServlet  {
+@WebServlet("/arrivi")
+public class ArriviService extends HttpServlet  {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Treno> partenze = TrattaController.getArriviOrPartenzePA(TrattaRepository.GET_PARTENZE_PA);
-        String json = new Gson().toJson(partenze);
+        List<Treno> arrivi = TrattaController.getArriviOrPartenzePA(TrattaRepository.GET_ARRIVI_PA);
+        String json = new Gson().toJson(arrivi);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(json);
