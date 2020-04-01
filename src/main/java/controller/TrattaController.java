@@ -1,53 +1,14 @@
 package controller;
 
-import dao.models.Stazione;
-import dao.models.Tratta;
-import dao.models.Treno;
-import dao.repositories.StazioneRepository;
 import dao.repositories.TrattaRepository;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
 
 public class TrattaController implements AbstractController {
 
     public TrattaController() {
-    }
-
-    public static List<Treno> getArriviOrPartenzePA(String arrivoOrPartenza) {
-        List<Treno> treni = new ArrayList<>();
-        List<Tratta> tratte = new ArrayList<>();
-        try{
-            Class.forName(DRIVER).newInstance();
-            Connection connection= DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
-            PreparedStatement statement = connection.prepareStatement(arrivoOrPartenza);
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                Tratta tratta = new Tratta( rs.getInt("idTratta") ,rs.getString("nomeTratta"));
-                tratte.add(tratta);
-            }
-
-            List<Integer> idTreni = new ArrayList<>();
-            for (Tratta t : tratte) {
-                idTreni.add(CalendarioController.getIdTrenoFromIdTratta(connection, t.getIdTratta().toString()));
-            }
-
-            for (Integer id : idTreni){
-                Integer numeroTreno = TrenoController.getCodiceTrenoFromIdTreno(connection, id.toString());
-                treni.add(TrenoController.getTreno(numeroTreno.toString()));
-            }
-
-            rs.close();
-            statement.close();
-            connection.close();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return treni;
     }
 
     public static Integer getIdTrattaFromNomeTratta(Connection connection, String tratta) {

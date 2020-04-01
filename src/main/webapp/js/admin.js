@@ -6,12 +6,6 @@ var erroriJS = [];
 
 $(document).ready(function() {
 
-    // $.get("stazioni", function(responseJson) {
-    //     stazioni = responseJson;
-    //     appendStazioniToSelect(stazionePartenza);
-    //     appendStazioniToSelect(stazioneArrivo);
-    // });
-
     $(forms).children('div').each(function () {
         $(this).hide();
     });

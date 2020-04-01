@@ -17,12 +17,12 @@
         ERRATO!!!
     </c:if>
 
-<%--    <%--%>
-<%--        Boolean result = (Boolean) request.getAttribute("result");--%>
-<%--        if(result != null && !result) {--%>
-<%--            out.println("ERRATO!");--%>
-<%--        }--%>
-<%--    %>--%>
+<%--
+        Boolean result = (Boolean) request.getAttribute("result");
+        if(result != null && !result) {
+            out.println("ERRATO!");
+        }
+--%>
 </form>
 </body>
 </html>

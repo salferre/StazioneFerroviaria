@@ -3,3 +3,4 @@
 3) aggiungere logica stato treno (ON TIME - DELAYED - CANCELLED - CONFIRMED - LANDED)
 4) aggiungere logica ruoli utenti (chi può vedere cosa - chi può modificare cosa)
 6) aggiungere .trim() alla validazione
+6) aggiungere controllo --> non modificare o cancellare voli in corso

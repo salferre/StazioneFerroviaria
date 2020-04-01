@@ -1,63 +1,41 @@
 package dao.models;
 
-import java.util.List;
-
 public class Treno {
 
-    private String numeroTreno;
-    private List<String> tappe;
-    private String giornoPartenza;
-    private String oraPartenza;
-    private String binario;
+    private Integer idTreno;
+    private String codiceTreno;
+    private String statoTreno;
 
     public Treno() {
     }
 
-    public Treno(String numeroTreno, List<String> tappe, String giornoPartenza, String oraPartenza, String binario) {
-        this.numeroTreno = numeroTreno;
-        this.tappe = tappe;
-        this.giornoPartenza = giornoPartenza;
-        this.oraPartenza = oraPartenza;
-        this.binario = binario;
+    public Treno(Integer idTreno, String codiceTreno, String statoTreno) {
+        this.idTreno = idTreno;
+        this.codiceTreno = codiceTreno;
+        this.statoTreno = statoTreno;
     }
 
-    public String getNumeroTreno() {
-        return numeroTreno;
+    public Integer getIdTreno() {
+        return idTreno;
     }
 
-    public void setNumeroTreno(String numeroTreno) {
-        this.numeroTreno = numeroTreno;
+    public void setIdTreno(Integer idTreno) {
+        this.idTreno = idTreno;
     }
 
-    public List<String> getTappe() {
-        return tappe;
+    public String getCodiceTreno() {
+        return codiceTreno;
     }
 
-    public void setTappe(List<String> tappe) {
-        this.tappe = tappe;
+    public void setCodiceTreno(String codiceTreno) {
+        this.codiceTreno = codiceTreno;
     }
 
-    public String getGiornoPartenza() {
-        return giornoPartenza;
+    public String getStatoTreno() {
+        return statoTreno;
     }
 
-    public void setGiornoPartenza(String giornoPartenza) {
-        this.giornoPartenza = giornoPartenza;
-    }
-
-    public String getOraPartenza() {
-        return oraPartenza;
-    }
-
-    public void setOraPartenza(String oraPartenza) {
-        this.oraPartenza = oraPartenza;
-    }
-
-    public String getBinario() {
-        return binario;
-    }
-
-    public void setBinario(String binario) {
-        this.binario = binario;
+    public void setStatoTreno(String statoTreno) {
+        this.statoTreno = statoTreno;
     }
 }

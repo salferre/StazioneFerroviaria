@@ -1,8 +1,8 @@
 package service;
 
 import com.google.gson.Gson;
-import controller.TrattaController;
-import dao.models.Treno;
+import controller.TrenoController;
+import dao.models.TrenoExtended;
 import dao.repositories.TrattaRepository;
 
 import javax.servlet.ServletException;
@@ -18,7 +18,7 @@ public class ArriviService extends HttpServlet  {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Treno> arrivi = TrattaController.getArriviOrPartenzePA(TrattaRepository.GET_ARRIVI_PA);
+        List<TrenoExtended> arrivi = TrenoController.getArriviOrPartenzePA(TrattaRepository.GET_ARRIVI_PA);
         String json = new Gson().toJson(arrivi);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

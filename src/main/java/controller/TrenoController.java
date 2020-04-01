@@ -1,29 +1,29 @@
 package controller;
 
-import dao.models.Calendario;
-import dao.models.Percorso;
-import dao.models.Treno;
+import dao.models.*;
 import dao.repositories.TrenoRepository;
 
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 
 public class TrenoController implements AbstractController {
 
     public TrenoController() {
     }
 
-    public static Treno getTreno (String numeroTreno) {
+    public static TrenoForm getTreno (String numeroTreno) {
 
         if(numeroTreno == null || numeroTreno.equalsIgnoreCase("")){
             return null;
         }
 
-        Treno treno = new Treno();
+        TrenoForm treno = new TrenoForm();
         try{
             Class.forName(DRIVER).newInstance();
             Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
@@ -65,6 +65,62 @@ public class TrenoController implements AbstractController {
         }
 
         return treno;
+    }
+
+    public static List<TrenoExtended> getArriviOrPartenzePA(String arrivoOrPartenza) {
+        List<TrenoExtended> treni = new ArrayList<>();
+        List<Tratta> tratte = new ArrayList<>();
+        try{
+            Class.forName(DRIVER).newInstance();
+            Connection connection= DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+            PreparedStatement statement = connection.prepareStatement(arrivoOrPartenza);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Tratta tratta = new Tratta( rs.getInt("idTratta") ,rs.getString("nomeTratta"));
+                tratte.add(tratta);
+            }
+
+            List<Integer> idTreni = new ArrayList<>();
+            for (Tratta t : tratte) {
+                idTreni.add(CalendarioController.getIdTrenoFromIdTratta(connection, t.getIdTratta().toString()));
+            }
+
+            treni = buildListTrenoExtended(connection, idTreni);
+
+            rs.close();
+            statement.close();
+            connection.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return treni;
+    }
+
+    public static List<TrenoExtended> buildListTrenoExtended (Connection connection, List<Integer> idTreni) throws ParseException {
+        List<TrenoExtended> treni = new ArrayList<>();
+        for (Integer idTreno : idTreni) {
+            TrenoExtended treno = new TrenoExtended();
+            Treno trenoDB = TrenoController.getTrenoFromIdTreno(connection, idTreno.toString());
+            treno.setNumeroTreno(trenoDB.getCodiceTreno()); //1
+            Calendario calendario = CalendarioController.getCalendarioFromidTreno(connection, idTreno.toString());
+            String idTratta = calendario.getIdTratta();
+            String nomeTratta = TrattaController.getNomeTrattaFromIdTratta(connection, idTratta);
+            treno.setStazionePartenza(StazioneController.getNomeStazioneFromProvinciaStazione(connection, nomeTratta.split("_")[0])); //2
+            treno.setStazioneArrivo(StazioneController.getNomeStazioneFromProvinciaStazione(connection, nomeTratta.split("_")[1])); //3
+
+            String oraPartenza = calendario.getDataPartenza().split(" ")[1].substring(0, 6);
+            SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+            Date d = df.parse(oraPartenza);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(d);
+            cal.add(Calendar.MINUTE, PercorsoController.getDurataViaggio(connection, idTratta));
+            treno.setArrivoPrevisto(df.format(cal.getTime())); //4
+
+            treno.setStato(trenoDB.getStatoTreno()); //5
+            treno.setBinario(calendario.getBinario()); //6
+            treni.add(treno);
+        }
+        return treni;
     }
 
     public static Boolean insertTreno(String numeroTreno, String tratta, List<String> tappe, String giornoPartenza, String oraPartenza,
@@ -165,8 +221,32 @@ public class TrenoController implements AbstractController {
         return idTreno;
     }
 
-    public static Integer getCodiceTrenoFromIdTreno(Connection connection, String idTreno) {
-        Integer codiceTreno = 0;
+    public static Treno getTrenoFromIdTreno(Connection connection, String idTreno) {
+        Treno treno = null;
+        try{
+            if (connection == null) {
+                connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+            }
+            Class.forName(DRIVER).newInstance();
+            PreparedStatement statement = connection.prepareStatement(TrenoRepository.GET_TRENO_FROM_IDTRENO);
+            statement.setString(1, idTreno);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                treno = new Treno();
+                treno.setIdTreno(rs.getInt("idTreno"));
+                treno.setCodiceTreno(rs.getString("codiceTreno"));
+                treno.setStatoTreno(rs.getString("statoTreno"));
+            }
+            rs.close();
+            statement.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return treno;
+    }
+
+    public static String getCodiceTrenoFromIdTreno(Connection connection, String idTreno) {
+        String codiceTreno = "";
 
         try{
             if (connection == null) {
@@ -177,7 +257,7 @@ public class TrenoController implements AbstractController {
             statement.setString(1, idTreno);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                codiceTreno = rs.getInt("codiceTreno");
+                codiceTreno = rs.getString("codiceTreno");
             }
             rs.close();
             statement.close();
@@ -185,6 +265,30 @@ public class TrenoController implements AbstractController {
             ex.printStackTrace();
         }
         return codiceTreno;
+    }
+
+    public static List<Treno> getAllTreni(Connection connection) {
+        List<Treno> treni = new ArrayList<>();
+        try{
+            if (connection == null) {
+                connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+            }
+            Class.forName(DRIVER).newInstance();
+            PreparedStatement statement = connection.prepareStatement(TrenoRepository.GET_ALL_TRENI);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Treno treno = new Treno();
+                treno.setIdTreno(rs.getInt("idTreno"));
+                treno.setCodiceTreno(rs.getString("codiceTreno"));
+                treno.setStatoTreno(rs.getString("statoTreno"));
+                treni.add(treno);
+            }
+            rs.close();
+            statement.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return treni;
     }
 
     private static Timestamp buildMySQLDateTime(String data, String orario) throws ParseException {

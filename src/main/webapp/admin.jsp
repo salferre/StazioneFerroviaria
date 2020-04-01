@@ -1,8 +1,14 @@
+<%@ page import="dao.models.TrenoForm" %>
+<%@ page import="java.util.List" %>
+<%@ page import="controller.TrattaController" %>
+<%@ page import="dao.repositories.TrattaRepository" %>
+<%@ page import="java.util.Map" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Stazione di Palermo - Admin Console</title>
+    <link href="css/custom.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div id="choiceMenu">
@@ -11,32 +17,19 @@
     <button id="ruoliButton">Ruoli</button>
 </div>
 
-
 <table id="tableArrivi">
     <tbody>
-        <tr>
-            <th>Numero Treno</th>
-            <th>Stazione di Partenza</th>
-            <th>Arrivo Previsto</th>
-            <th>Stato</th>
-            <th>Ritardo(?)</th>
-            <th>Binario</th>
-        </tr>
-        <c:forEach items="${treniArrivo}" var="trenoArrivo">
-            <tr>
-                <td>${treno.numeroTreno}</td>
-                <td>${treno.numeroTreno}</td>
-                <td>${treno.numeroTreno}</td>
-                <td>${treno.numeroTreno}</td>
-                <td>${treno.numeroTreno}</td>
-                <td>${treno.binario}</td>
-            </tr>
-        </c:forEach>
+    <tr>
+        <th>Numero Treno</th>
+        <th>Stazione di Partenza</th>
+        <th>Arrivo Previsto</th>
+        <th>Stato</th>
+        <%--            <th>Ritardo(?)</th>--%>
+        <th>Binario</th>
+        <th>Azioni</th>
+    </tr>
     </tbody>
 </table>
-
-
-
 
 
 <div id="buttons">
@@ -147,6 +140,17 @@
     </div>
 </div>
 
+<div id="deleteModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Vuoi davvero eliminare questo treno?</p>
+        <button id="eliminaTreno">ELIMINA</button>
+    </div>
+
+</div>
+
 <c:choose>
     <c:when test="${empty result}"></c:when>
     <c:when test="${not empty result && result == true}">
@@ -160,19 +164,15 @@
     </c:otherwise>
 </c:choose>
 
-<script>
-
-    <%--var stazionePartenza = ${"stazionePartenza"};--%>
-    <%--var stazioneArrivo = ${"stazioneArrivo"};--%>
-
-</script>
-
 <script src="js/jquery-3.4.1.js"></script>
 <script src="js/admin.js" type="text/javascript"></script>
 
 </body>
 
 <script>
+
+    var toDelete = 0;
+
     $(document).ready(function() {
 
         $.get("stazioni", function(responseJson) {
@@ -183,7 +183,89 @@
 
         $.get("partenze", function(responseJson) {
             partenze = responseJson;
+
+            partenze.forEach( element => {
+                $(tableArrivi).find('tbody').append("" +
+                    "<tr>\n" +
+                    "<td>"+element.numeroTreno+"</td>\n" +
+                    "<td>"+element.stazionePartenza+"</td>\n" +
+                    "<td>"+element.arrivoPrevisto+"</td>\n" +
+                    "<td>"+element.stato+"</td>\n" +
+                    // "<td>"+element.ritardo+"</td>\n" +
+                    "<td>"+element.binario+"</td>\n" +
+                    "<td><button id=\"modificaTreno"+element.numeroTreno+"\">MODIFICA</button><button id=\"eliminaTreno"+element.numeroTreno+"\">ELIMINA</button></td>\n" +
+                    "</tr>"
+                );
+            })
+
+            openModalTreno();
         });
+
+        $.get("arrivi", function(responseJson) {
+            arrivi = responseJson;
+        });
+
+    });
+
+
+    function openModalTreno() {
+        $('[id^=modificaTreno]').each(function() {
+            $(this).on("click", function(){
+                console.log('MODIFICA!');
+            });
+        });
+
+        $('[id^=eliminaTreno]').each(function() {
+            $(this).on("click", function(){
+                console.log(this.id);
+                toDelete = this.id.substring(12);
+
+                // Get the modal
+                var modal = document.getElementById("deleteModal");
+
+                // Get the button that opens the modal
+                var btn = document.getElementById("myBtn");
+
+                // Get the <span> element that closes the modal
+                var span = document.getElementsByClassName("close")[0];
+
+                // When the user clicks on the button, open the modal
+                modal.style.display = "block";
+
+                // When the user clicks on <span> (x), close the modal
+                span.onclick = function() {
+                    modal.style.display = "none";
+                }
+
+                // When the user clicks anywhere outside of the modal, close it
+                window.onclick = function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+
+
+            });
+        });
+    }
+
+    $("#eliminaTreno").click(function(e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: "deleteTreno",
+            type: "post", //send it through get method
+            data: {
+                toDelete: toDelete,
+            },
+            success: function(responseJson) {
+                location.reload();
+            },
+            error: function(xhr) {
+                //Do Something to handle error
+            }
+        });
+
 
     });
 
@@ -204,8 +286,6 @@
                 //Do Something to handle error
             }
         });
-
-
     });
 
 </script>

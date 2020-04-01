@@ -44,4 +44,28 @@ public class PercorsoController implements AbstractController {
         return percorsi;
     }
 
+    public static Integer getDurataViaggio(Connection connection, String idTratta) {
+
+        Integer durata = 0;
+
+        try {
+            if (connection == null) {
+                connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+            }
+
+            Class.forName(DRIVER).newInstance();
+            PreparedStatement statement = connection.prepareStatement(PercorsoRepository.GET_DURATA_VIAGGIO);
+            statement.setString(1, idTratta);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                durata = rs.getInt("cnt");
+            }
+            rs.close();
+            statement.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return durata;
+    }
+
 }
