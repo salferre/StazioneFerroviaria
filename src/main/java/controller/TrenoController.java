@@ -180,14 +180,58 @@ public class TrenoController implements AbstractController {
     }
 
     public static Boolean deleteTreno (String codiceTreno) throws ClassNotFoundException {
+
+        if(codiceTreno == null || codiceTreno.trim().equalsIgnoreCase(""))
+            return false;
+
         Boolean result = false;
         try{
             Class.forName(DRIVER).newInstance();
             Connection connection= DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+            Treno treno = getTrenoFromCodiceTreno(connection, "16");
+            if (treno.getStatoTreno().equalsIgnoreCase("C")) {
+                Calendario calendario = CalendarioController.getCalendarioFromidTreno(connection, treno.getIdTreno().toString());
+                String oraPartenza = calendario.getDataPartenza();
+                String oraArrivo = oraPartenza;
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                Date d = df.parse(oraArrivo);
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(d);
+                cal.add(Calendar.MINUTE, PercorsoController.getDurataViaggio(connection, calendario.getIdTratta()));
+                oraArrivo = df.format(cal.getTime());
+
+                Date partenza = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(oraPartenza);
+                Date arrivo = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(oraArrivo);
+                Date now = new Date();
+
+                if(now.after(partenza) && now.before(arrivo))
+                    return false;
+            }
             String SQL_DELETE_TRENO = "UPDATE Treno SET statoTreno=? where codiceTreno=?";
             PreparedStatement statement = connection.prepareStatement(SQL_DELETE_TRENO);
             statement.setString(1, "D"); //DELETED
             statement.setString(2, codiceTreno);
+            statement.executeUpdate();
+            statement.close();
+            connection.close();
+            result = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = false;
+        }
+        return result;
+    }
+
+    public static Boolean updateTreno (String numeroTreno, String giornoPartenza, String oraPartenza, String binario) throws ClassNotFoundException {
+        Boolean result = false;
+        try{
+            Class.forName(DRIVER).newInstance();
+            Connection connection= DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+            String SQL_UPDATE_TRENO = "UPDATE Calendario SET dataPartenza=?, binario=? where idTreno=?";
+            PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_TRENO);
+            statement.setTimestamp(1, buildMySQLDateTime(giornoPartenza, oraPartenza));
+            statement.setString(2, binario);
+            statement.setInt(2, getIdTrenoFromCodiceTreno(connection, numeroTreno));
             statement.executeUpdate();
             statement.close();
             connection.close();
@@ -230,6 +274,30 @@ public class TrenoController implements AbstractController {
             Class.forName(DRIVER).newInstance();
             PreparedStatement statement = connection.prepareStatement(TrenoRepository.GET_TRENO_FROM_IDTRENO);
             statement.setString(1, idTreno);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                treno = new Treno();
+                treno.setIdTreno(rs.getInt("idTreno"));
+                treno.setCodiceTreno(rs.getString("codiceTreno"));
+                treno.setStatoTreno(rs.getString("statoTreno"));
+            }
+            rs.close();
+            statement.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return treno;
+    }
+
+    public static Treno getTrenoFromCodiceTreno(Connection connection, String codiceTreno) {
+        Treno treno = null;
+        try{
+            if (connection == null) {
+                connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+            }
+            Class.forName(DRIVER).newInstance();
+            PreparedStatement statement = connection.prepareStatement(TrenoRepository.GET_TRENO_FROM_CODICETRENO);
+            statement.setString(1, codiceTreno);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 treno = new Treno();

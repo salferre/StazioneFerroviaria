@@ -3,21 +3,26 @@ package service;
 import com.google.gson.Gson;
 import controller.TrenoController;
 import dao.models.TrenoForm;
+import validation.InsertValidator;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @WebServlet("/treno")
 public class TrenoService extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String numeroTreno = request.getParameter("numeroTrenoUpdate");
-        TrenoForm treno = TrenoController.getTreno(numeroTreno);
+        String toUpdate = request.getParameter("toUpdate");
+        TrenoForm treno = TrenoController.getTreno(toUpdate);
         if (treno == null) {
             request.setAttribute("error", "Treno non trovato, inserire un treno esistente!!!");
         } else {
@@ -30,7 +35,79 @@ public class TrenoService extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        super.doPost(request, response);
+        String tipoForm = request.getParameter("tipoForm");
+        tipoForm = checkTipoForm(tipoForm);
+
+        String numeroTreno = request.getParameter("numeroTreno"+tipoForm);
+        String stazionePartenza = request.getParameter("stazionePartenza"+tipoForm);
+        String[] tappaIntermedia = request.getParameterValues("tappaIntermedia"+tipoForm);
+        String stazioneArrivo = request.getParameter("stazioneArrivo"+tipoForm);
+        String giornoPartenza = request.getParameter("giornoPartenza"+tipoForm);
+        String oraPartenza = request.getParameter("oraPartenza"+tipoForm);
+        String binario = request.getParameter("binario"+tipoForm);
+        List<String> tappe = new ArrayList<>();
+        tappe.add(stazionePartenza);
+        if (tappaIntermedia != null && tappaIntermedia.length > 0){
+            for ( String s : tappaIntermedia ) {
+                tappe.add(s);
+            }
+        }
+        tappe.add(stazioneArrivo);
+
+        Map<String, String> errors = InsertValidator.validate(numeroTreno, stazionePartenza, stazioneArrivo,
+                giornoPartenza, oraPartenza, binario, tappe);
+        if(errors.isEmpty()){
+            String tratta = stazionePartenza.substring(0, 2).toUpperCase() + "_" + stazioneArrivo.substring(0, 2).toUpperCase();
+            Boolean result = TrenoController.insertTreno(numeroTreno, tratta, tappe, giornoPartenza, oraPartenza, binario);
+            request.setAttribute("result", result);
+            if(!result){
+                request.setAttribute("errors", "Impossibile inserire treno! Errore DB!");
+            }
+        } else {
+            Boolean result = false;
+            request.setAttribute("result", result);
+            request.setAttribute("errors", errors);
+        }
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String toDelete = request.getParameter("toDelete");
+        try {
+            Boolean result = TrenoController.deleteTreno(toDelete);
+            if(!result)
+                throw new Exception("IMPOSSIBILE ELIMINARE TRENO N." + toDelete);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String numeroTreno = request.getParameter("numeroTreno");
+        String giornoPartenza = request.getParameter("giornoPartenza");
+        String oraPartenza = request.getParameter("oraPartenza");
+        String binario = request.getParameter("binario");
+        try {
+            Boolean result = TrenoController.updateTreno(numeroTreno, giornoPartenza, oraPartenza, binario);
+            if(!result)
+                throw new Exception("IMPOSSIBILE MODIFICARE TRENO N." + numeroTreno);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String checkTipoForm (String tipoForm){
+        String result = "";
+        if(tipoForm != null && !tipoForm.equalsIgnoreCase("")){
+            if(tipoForm.equalsIgnoreCase("Inserisci treno"))
+                result = "Insert";
+            else
+                result = "Update";
+        }
+        return result;
     }
 
 }

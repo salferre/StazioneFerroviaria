@@ -16,6 +16,8 @@
     <button id="partenzeButton">Partenze</button>
     <button id="ruoliButton">Ruoli</button>
 </div>
+<br/>
+<button id="createTreno">Inserisci un nuovo treno!</button>
 
 <table id="tableArrivi">
     <tbody>
@@ -40,10 +42,27 @@
 
 <div id="forms">
     <div id="insert-form" >
-
         <form action="/StazioneFerroviaria/admin" method="POST" onsubmit="return validateForm('Insert')">
+        </form>
+    </div>
+    <div id="update-form" >
+        <form action="/StazioneFerroviaria/admin" method="GET"> <%--TODO capire come richiamare l'update lato server--%>
+        </form>
+    </div>
+    <div id="delete-form">
+        <form action="/StazioneFerroviaria/admin" method="GET"><%-- onsubmit="return validateForm('Delete')">--%>
+        </form>
+    </div>
+</div>
 
-            <h5>Insert Treno</h5>
+<div id="createModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span id="closeCreateModal" class="close">&times;</span>
+        <form action="/StazioneFerroviaria/treno" method="POST" onsubmit="return validateForm('Insert')">
+
+            <h5>Inserisci un nuovo Treno</h5>
 
             <label for="numeroTrenoInsert">Numero: </label>
             <input required type="text" name="numeroTrenoInsert" id="numeroTrenoInsert" placeholder="Inserire numero treno">
@@ -81,70 +100,60 @@
 
     </div>
 
-    <div id="update-form" >
+</div>
 
-        <%--        <form action="/StazioneFerroviaria/admin" method="PUT" onsubmit="return validateForm('Update')">--%>
+<div id="updateModal" class="modal">
 
-        <form action="/StazioneFerroviaria/admin" method="GET"> <%--TODO capire come richiamare l'update lato server--%>
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span id="closeUpdateModal" class="close">&times;</span>
+        <form action="/StazioneFerroviaria/treno" method="POST" onsubmit="return validateForm('Update')">
+
             <h5>Update Treno</h5>
 
             <label for="numeroTrenoUpdate">Numero: </label>
-            <input required type="text" name="numeroTrenoUpdate" id="numeroTrenoUpdate" placeholder="Inserire numero treno">
-            <input type="button" name="caricaTreno" id="caricaTreno" value="Carica treno">
+            <input required disabled type="text" name="numeroTrenoUpdate" id="numeroTrenoUpdate" placeholder="Inserire numero treno">
             <br/><br/>
 
-            <%--            <label for="stazionePartenzaUpdate">Stazione di Partenza: </label>--%>
-            <%--            <select id="stazionePartenzaUpdate" name="stazionePartenzaUpdate">--%>
-            <%--                <option selected disabled value> -- Seleziona una stazione -- </option>--%>
-            <%--            </select>--%>
-            <%--            <button id="addStazioneUpdate" type="button" io="addStazioneIntermedia('Update')">Aggiungi stazione intermedia</button>--%>
-            <%--            <br/><br/>--%>
 
-            <%--            <div id="scaliUpdate"></div>--%>
+<%--            <label for="stazionePartenzaUpdate">Stazione di Partenza: </label>--%>
+<%--            <select id="stazionePartenzaUpdate" name="stazionePartenzaUpdate" required disabled>--%>
+<%--                <option selected disabled value> -- Seleziona una stazione -- </option>--%>
+<%--            </select>--%>
+<%--            <br/><br/>--%>
 
-            <%--            <label for="stazioneArrivoUpdate">Stazione di Arrivo: </label>--%>
-            <%--            <select id="stazioneArrivoUpdate" name="stazioneArrivoUpdate">--%>
-            <%--                <option selected disabled value> -- Seleziona una stazione -- </option>--%>
-            <%--            </select>--%>
-            <%--            <br/><br/>--%>
+            <div id="scaliUpdate"></div>
 
-            <%--            <label for="giornoPartenzaUpdate">Giorno: </label>--%>
-            <%--            <input type="text" name="giornoPartenzaUpdate" id="giornoPartenzaUpdate" placeholder="gg/mm/aaaa">--%>
-            <%--            <br/><br/>--%>
+<%--            <label for="stazioneArrivoUpdate">Stazione di Arrivo: </label>--%>
+<%--            <select id="stazioneArrivoUpdate" name="stazioneArrivoUpdate" required disabled>--%>
+<%--                <option selected disabled value> -- Seleziona una stazione -- </option>--%>
+<%--            </select>--%>
+<%--            <br/><br/>--%>
 
-            <%--            <label for="oraPartenzaUpdate">Ora Partenza: </label>--%>
-            <%--            <input type="text" name="oraPartenzaUpdate" id="oraPartenzaUpdate" placeholder="hh:mm">--%>
-            <%--            <br/><br/>--%>
+            <label for="giornoPartenzaUpdate">Giorno: </label>
+            <input type="text" name="giornoPartenzaUpdate" id="giornoPartenzaUpdate" required placeholder="gg/mm/aaaa">
+            <br/><br/>
 
-            <%--            <label for="binarioUpdate">Binario: </label>--%>
-            <%--            <input type="text" name="binarioUpdate" id="binarioUpdate" placeholder="Inserire binario">--%>
+            <label for="oraPartenzaUpdate">Ora Partenza: </label>
+            <input type="text" name="oraPartenzaUpdate" id="oraPartenzaUpdate" required placeholder="hh:mm">
+            <br/><br/>
 
-            <%--            <input type="submit" name="tipoForm" id="updateButton" value="Modifica treno">--%>
+            <label for="binarioUpdate">Binario: </label>
+            <input type="text" name="binarioUpdate" id="binarioUpdate" required placeholder="Inserire binario">
+
+            <input type="submit" name="tipoForm" id="updateButton" value="Modifica treno">
 
         </form>
 
     </div>
 
-    <div id="delete-form">
-
-        <form action="/StazioneFerroviaria/admin" method="GET"><%--            onsubmit="return validateForm('Delete')">--%>
-
-            <h5>Delete Treno</h5>
-
-            <label for="numeroTrenoDelete">Numero: </label>
-            <input required type="text" name="numeroTrenoDelete" id="numeroTrenoDelete" placeholder="Inserire numero treno">
-            <br/><br/>
-            <input type="submit" name="tipoForm" id="DeleteButton" value="Elimina treno">
-
-        </form>
-    </div>
 </div>
 
 <div id="deleteModal" class="modal">
 
     <!-- Modal content -->
     <div class="modal-content">
-        <span class="close">&times;</span>
+        <span id="closeDeleteModal" class="close">&times;</span>
         <p>Vuoi davvero eliminare questo treno?</p>
         <button id="eliminaTreno">ELIMINA</button>
     </div>
@@ -172,6 +181,11 @@
 <script>
 
     var toDelete = 0;
+    var toUpdate = 0;
+    var numeroTreno = "";
+    var giornoPartenza = "";
+    var oraPartenza = "";
+    var binario = "";
 
     $(document).ready(function() {
 
@@ -197,7 +211,6 @@
                     "</tr>"
                 );
             })
-
             openModalTreno();
         });
 
@@ -211,52 +224,110 @@
     function openModalTreno() {
         $('[id^=modificaTreno]').each(function() {
             $(this).on("click", function(){
-                console.log('MODIFICA!');
-            });
-        });
+                toUpdate = this.id.substring(13);
 
-        $('[id^=eliminaTreno]').each(function() {
-            $(this).on("click", function(){
-                console.log(this.id);
-                toDelete = this.id.substring(12);
+                $.ajax({
+                    url: "treno",
+                    type: "get", //send it through get method
+                    data: {
+                        toUpdate: toUpdate,
+                    },
+                    success: function(responseJson) {
+                        treno = responseJson;
+                        $("#numeroTrenoUpdate").val(treno.numeroTreno);
+                        $("#giornoPartenzaUpdate").val(treno.giornoPartenza);
+                        $("#oraPartenzaUpdate").val(treno.oraPartenza);
+                        $("#binarioUpdate").val(treno.binario);
+                        var idSelect = 0;
+                        document.getElementById("scaliUpdate").innerHTML = "";
 
-                // Get the modal
-                var modal = document.getElementById("deleteModal");
+                        treno.tappe.forEach( function (element) {
 
-                // Get the button that opens the modal
-                var btn = document.getElementById("myBtn");
+                            var select = document.createElement("select");
+                            select.id = "tappaIntermediaUpdate"+idSelect;
+                            select.name = "tappaIntermediaUpdate";
+                            select.setAttribute("disabled", true);
+                            idSelect++;
+                            select.innerHTML = '<option disabled selected value>' + element + ' </option>';
 
-                // Get the <span> element that closes the modal
-                var span = document.getElementsByClassName("close")[0];
+                            var label = document.createElement("label");
+                            label.setAttribute("for", select.id);
+                            if(idSelect == 1){
+                                label.innerHTML = "Stazione di Partenza: ";
+                            } else if ( idSelect == treno.tappe.length) {
+                                label.innerHTML = "Stazione di Arrivo: ";
+                            } else {
+                                label.innerHTML = "Stazione Intermedia " + idSelect + ": ";
+                            }
 
-                // When the user clicks on the button, open the modal
+                            var br = document.createElement("br");
+                            var br2 = document.createElement("br");
+
+                            document.getElementById("scaliUpdate").appendChild(label);
+                            document.getElementById("scaliUpdate").appendChild(select);
+                            document.getElementById("scaliUpdate").appendChild(br);
+                            document.getElementById("scaliUpdate").appendChild(br2);
+                        })
+
+                    },
+                    error: function(xhr) {
+                        //Do Something to handle error
+                    }
+                });
+
+                var modal = document.getElementById("updateModal");
+                var span = document.getElementById("closeUpdateModal");
                 modal.style.display = "block";
-
-                // When the user clicks on <span> (x), close the modal
                 span.onclick = function() {
                     modal.style.display = "none";
                 }
-
-                // When the user clicks anywhere outside of the modal, close it
                 window.onclick = function(event) {
                     if (event.target == modal) {
                         modal.style.display = "none";
                     }
                 }
+            });
+        });
 
-
+        $('[id^=eliminaTreno]').each(function() {
+            $(this).on("click", function(){
+                toDelete = this.id.substring(12);
+                var modal = document.getElementById("deleteModal");
+                var span = document.getElementById("closeDeleteModal");
+                modal.style.display = "block";
+                span.onclick = function() {
+                    modal.style.display = "none";
+                }
+                window.onclick = function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
             });
         });
     }
 
+    $('#createTreno').on("click", function(){
+        var modal = document.getElementById("createModal");
+        var span = document.getElementById("closeCreateModal");
+        modal.style.display = "block";
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    });
+
     $("#eliminaTreno").click(function(e) {
         e.preventDefault();
-
         $.ajax({
-            url: "deleteTreno",
-            type: "post", //send it through get method
+            url: "treno",
+            type: "delete", //send it through get method
             data: {
-                toDelete: toDelete,
+                toDelete : toDelete,
             },
             success: function(responseJson) {
                 location.reload();
@@ -265,22 +336,27 @@
                 //Do Something to handle error
             }
         });
-
-
     });
 
-    $("#caricaTreno").click(function(e) {
+    $("#updateButton").click(function(e) {
         e.preventDefault();
-        var numeroTrenoUpdate = $("#numeroTrenoUpdate").val();
+
+        numeroTreno = toUpdate;
+        giornoPartenza = $("#giornoPartenzaUpdate").val();
+        oraPartenza = $("#oraPartenzaUpdate").val();
+        binario = $("#binarioUpdate").val();
 
         $.ajax({
             url: "treno",
-            type: "get", //send it through get method
+            type: "put", //send it through get method
             data: {
-                numeroTrenoUpdate: numeroTrenoUpdate,
+                numeroTreno : numeroTreno,
+                giornoPartenza : giornoPartenza,
+                oraPartenza : oraPartenza,
+                binario : binario
             },
             success: function(responseJson) {
-                treno = responseJson;
+                location.reload();
             },
             error: function(xhr) {
                 //Do Something to handle error
