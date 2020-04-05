@@ -1,4 +1,6 @@
 1) controllare connessioni a DB - web.xml(?)
 2) gestire sessioni e cookies in base all'utente loggato
-3) aggiungere logica stato treno (ON TIME - DELAYED - CANCELLED - CONFIRMED - LANDED)
+3) aggiungere logica stato treno (ON TIME - DELAYED - CANCELLED - CONFIRMED - LANDED) //semi fatto - vediamo se implementare i ritardi (?)
 4) aggiungere logica ruoli utenti (chi può vedere cosa - chi può modificare cosa)
+5) aggiungere paginazione alle tabelle
+6) customizzare messaggi di errore

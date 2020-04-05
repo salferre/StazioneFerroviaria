@@ -5,10 +5,7 @@ import controller.LoginController;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -25,14 +22,21 @@ public class LoginService extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         Boolean result = LoginController.checkUser(username, password);
-        request.setAttribute("result", result);
+        request.setAttribute("loginResult", result);
         String redirectURL = "";
         if(result){
             HttpSession session = request.getSession();
             session.setAttribute("username", username);
+            //setting session to expiry in 30 mins
+            session.setMaxInactiveInterval(30*60);
+            Cookie userName = new Cookie("user", username);
+            response.addCookie(userName);
+            //Get the encoded URL string
+//            String encodedURL = response.encodeRedirectURL("/admin.jsp");
+//            response.sendRedirect(encodedURL);
             redirectURL = "/admin.jsp";
         } else {
-            redirectURL = "/login.jsp";
+            redirectURL = "/";
         }
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(redirectURL);
         dispatcher.forward(request, response);

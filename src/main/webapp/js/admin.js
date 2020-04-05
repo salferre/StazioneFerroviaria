@@ -6,8 +6,10 @@ var erroriJS = [];
 
 $(document).ready(function() {
 
-    $(forms).children('div').each(function () {
-        $(this).hide();
+    $(pageTable).children('div').each(function () {
+        if(this.id != "partenze-table"){
+            $(this).hide();
+        }
     });
 
 });
@@ -15,12 +17,12 @@ $(document).ready(function() {
 toggleFunctions();
 
 function toggleFunctions() {
-    $(buttons).children('button').each(function () {
+    $(choiceMenu).children('button').each(function () {
         $(this).click(function () {
-            form = $(this).attr('id').split('-')[0]+'-form';
-            closeOthers(form);
-            form = '#'+form;
-            $(form).toggle();
+            table = $(this).attr('id').split('-')[0]+'-table';
+            closeOthers(table);
+            table = '#'+table;
+            $(table).show();
         });
     });
 }
@@ -85,7 +87,7 @@ function addStazioneIntermedia(tipoForm) {
 }
 
 function closeOthers(nonChiudere) {
-    $(forms).children('div').each(function () {
+    $(pageTable).children('div').each(function () {
         if($(this).is(":visible") && $(this).attr('id') != nonChiudere){
             $(this).hide();
         }
