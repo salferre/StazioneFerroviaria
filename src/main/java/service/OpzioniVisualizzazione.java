@@ -8,10 +8,9 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.io.PrintWriter;
 
-@WebServlet("/Login")
-public class LoginService extends HttpServlet {
+@WebServlet("/OpzioniVisualizzazione")
+public class OpzioniVisualizzazione extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -20,24 +19,18 @@ public class LoginService extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        Boolean result = LoginController.checkUser(username, password);
-        request.setAttribute("loginResult", result);
+        String opzioniVisualizzazione = request.getParameter("opzioniVisualizzazione");
         String redirectURL = "";
-        if(result){
+        if(opzioniVisualizzazione != null && !opzioniVisualizzazione.trim().equalsIgnoreCase("")) {
             HttpSession session = request.getSession();
-            Utente utente = LoginController.checkUserPrivileges(username);
-            session.setAttribute("username", utente.getUsername());
-            session.setAttribute("privileges", utente.getPrivileges());
-            session.setMaxInactiveInterval(30*60);
-            Cookie userName = new Cookie("user", username);
-            response.addCookie(userName);
+
+            Cookie visualizzazione = new Cookie("opzioniVisualizzazione", opzioniVisualizzazione);
+            response.addCookie(visualizzazione);
 //            String encodedURL = response.encodeRedirectURL("/admin.jsp");
 //            response.sendRedirect(encodedURL);
-            redirectURL = "/home.jsp";
+            redirectURL = "/admin.jsp";
         } else {
-            redirectURL = "/";
+            redirectURL = "/home.jsp";
         }
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(redirectURL);
         dispatcher.forward(request, response);

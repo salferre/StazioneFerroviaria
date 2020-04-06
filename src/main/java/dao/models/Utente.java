@@ -1,21 +1,19 @@
 package dao.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Utente {
 
-    private Integer idUtente;
     private String username;
-    private String password;
-    private Boolean isAdmin;
+    private List<String> privileges;
 
     public Utente() {
     }
 
-    public Integer getIdUtente() {
-        return idUtente;
-    }
-
-    public void setIdUtente(Integer idUtente) {
-        this.idUtente = idUtente;
+    public Utente(String username, List<String> privileges) {
+        this.username = username;
+        this.privileges = privileges;
     }
 
     public String getUsername() {
@@ -26,19 +24,11 @@ public class Utente {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    public List<String> getPrivileges() {
+        return privileges;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Boolean getAdmin() {
-        return isAdmin;
-    }
-
-    public void setAdmin(Boolean admin) {
-        isAdmin = admin;
+    public void setPrivileges(List<String> privileges) {
+        this.privileges = privileges;
     }
 }

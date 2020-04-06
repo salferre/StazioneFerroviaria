@@ -4,3 +4,4 @@
 4) aggiungere logica ruoli utenti (chi può vedere cosa - chi può modificare cosa)
 5) aggiungere paginazione alle tabelle
 6) customizzare messaggi di errore
+7) implementare logout
