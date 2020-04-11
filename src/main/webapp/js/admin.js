@@ -1,6 +1,7 @@
 var stazioni = {};
 var partenze = {};
 var arrivi = {};
+var binari = {};
 var treno = {};
 var erroriJS = [];
 
@@ -29,6 +30,7 @@ function toggleFunctions() {
 
 function validateForm(tipoForm) {
 
+    $(errors).empty();
     erroriJS = [];
 
     var numRegex = /^\d+$/;
@@ -41,6 +43,11 @@ function validateForm(tipoForm) {
     if(!dateRegex.test($('#giornoPartenza'+tipoForm).val())) {
         erroriJS.push("Inserire il giorno della partenza in formato dd/mm/yyyy!");
     }
+    var today = new Date();
+    var giornoPartenza = new Date($('#giornoPartenza'+tipoForm).val());
+    if (today < giornoPartenza){
+        erroriJS.push("Il giorno della partenza deve essere posteriore o uguale alla data odierna!");
+    }
     if(!timeRegex.test($('#oraPartenza'+tipoForm).val())) {
         erroriJS.push("Inserire l'ora della partenza in formato hh:mm!");
     }
@@ -51,6 +58,9 @@ function validateForm(tipoForm) {
     if ( erroriJS.length == 0 ){
         return true;
     }
+    erroriJS.forEach(element => {
+        $(errors).append(element);
+    });
     return false;
 }
 

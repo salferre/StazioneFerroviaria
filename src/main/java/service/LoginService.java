@@ -36,6 +36,13 @@ public class LoginService extends HttpServlet {
 //            String encodedURL = response.encodeRedirectURL("/admin.jsp");
 //            response.sendRedirect(encodedURL);
             redirectURL = "/home.jsp";
+            Cookie[] cookies = request.getCookies();
+            if(cookies.length > 0){
+                for ( Cookie c : cookies) {
+                    if(c.getName().equalsIgnoreCase("opzioniVisualizzazione"))
+                        redirectURL = "/admin.jsp";
+                }
+            }
         } else {
             redirectURL = "/";
         }

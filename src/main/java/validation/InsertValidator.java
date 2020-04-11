@@ -39,6 +39,10 @@ public class InsertValidator implements AbstractValidator {
             if(!giornoPartenza.matches(DATE_REGEX)) {
                 errors.put("giornoPartenza", "Inserire il giorno della partenza in formato dd/mm/yyyy!");
             }
+            Date now = new Date();
+            Date partenza = new Date(giornoPartenza);
+            if(now.after(partenza))
+                errors.put("giornoPartenza", "Il giorno della partenza deve essere posteriore o uguale alla data odierna!");
         }
 
         if(rejectIfNullOrWhiteSpace(oraPartenza)) {

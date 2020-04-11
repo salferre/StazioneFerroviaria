@@ -1,6 +1,7 @@
 package controller;
 
 import dao.models.*;
+import dao.repositories.CalendarioRepository;
 import dao.repositories.TrenoRepository;
 
 import java.sql.*;
@@ -96,6 +97,32 @@ public class TrenoController implements AbstractController {
         return treni;
     }
 
+    public static List<TrenoExtended> getTreniBinario(String binario) {
+        List<TrenoExtended> treni = new ArrayList<>();
+        List<Integer> idTreni = new ArrayList<>();
+        try{
+            Class.forName(DRIVER).newInstance();
+            Connection connection= DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+            PreparedStatement statement = connection.prepareStatement(CalendarioRepository.GET_IDTRENO_FROM_BINARIO);
+            statement.setString(1, binario);
+            statement.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Integer idTreno = rs.getInt("idTreno");
+                idTreni.add(idTreno);
+            }
+
+            treni = buildListTrenoExtended(connection, idTreni);
+
+            rs.close();
+            statement.close();
+            connection.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return treni;
+    }
+
     public static List<TrenoExtended> buildListTrenoExtended (Connection connection, List<Integer> idTreni) throws ParseException {
         List<TrenoExtended> treni = new ArrayList<>();
         for (Integer idTreno : idTreni) {
@@ -108,15 +135,18 @@ public class TrenoController implements AbstractController {
             treno.setStazionePartenza(StazioneController.getNomeStazioneFromProvinciaStazione(connection, nomeTratta.split("_")[0])); //2
             treno.setStazioneArrivo(StazioneController.getNomeStazioneFromProvinciaStazione(connection, nomeTratta.split("_")[1])); //3
 
-            String oraPartenza = calendario.getDataPartenza().split(" ")[1].substring(0, 6);
-            SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+            String oraPartenza = calendario.getDataPartenza();// .split(" ")[1].substring(0, 6);
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date d = df.parse(oraPartenza);
             Calendar cal = Calendar.getInstance();
             cal.setTime(d);
             cal.add(Calendar.MINUTE, PercorsoController.getDurataViaggio(connection, idTratta));
             treno.setArrivoPrevisto(df.format(cal.getTime())); //4
 
-            treno.setStato(trenoDB.getStatoTreno()); //5
+            if(trenoDB.getStatoTreno().equalsIgnoreCase("C") && cal.getTime().before(new Date(System.currentTimeMillis())) )
+                treno.setStato("A"); //5
+            else
+                treno.setStato(trenoDB.getStatoTreno()); //5
             treno.setBinario(calendario.getBinario()); //6
             treni.add(treno);
         }
