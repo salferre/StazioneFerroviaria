@@ -31,21 +31,23 @@
     <div class="splash">
         <h1 class="splash-head">Stazione Palermo Centrale</h1>
         <div class="l-box-lrg pure-u-1 white-center pure-u-md-2-5">
-            <h4 class="content-subhead">
-                Effettua il login per accedere ai servizi a te dedicati.
-            </h4>
-            <form class="pure-form pure-form-stacked" action="/StazioneFerroviaria/Login" method="POST">
+            <%--            <h4 class="content-subhead">--%>
+            <%--                Effettua il login per accedere ai servizi a te dedicati.--%>
+            <%--            </h4>--%>
+            <form class="pure-form pure-form-aligned" action="/StazioneFerroviaria/Login" method="POST">
                 <fieldset>
+                    <legend>Effettua il login per accedere ai servizi a te dedicati.</legend>
 
-                    <label for="username">Username</label>
-                    <input id="username" name="username" type="text" placeholder="Inserisci l'username...">
+                    <div class="pure-control-group">
+                        <label for="username">Username</label>
+                        <input required id="username" name="username" type="text" placeholder="Inserisci l'username...">
+                    </div>
+                    <div class="pure-control-group">
+                        <label for="password">Password</label>
+                        <input required id="password" name="password" type="password" placeholder="Inserisci la password...">
+                    </div>
 
-                    <label for="password">Password</label>
-                    <input id="password" name="password" type="password" placeholder="Inserisci la password...">
-
-                    <br>
-
-                    <button type="submit" class="button-success pure-button">Accedi</button>
+                    <button type="submit" class="pure-button pure-button-primary">Accedi</button>
                 </fieldset>
             </form>
             <c:choose>

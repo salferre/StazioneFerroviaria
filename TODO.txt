@@ -1,5 +1,8 @@
 1) controllare connessioni a DB - web.xml(?)
-2) gestire sessioni e cookies in base all'utente loggato
+2) gestire sessioni e cookies in base all'utente loggato //semifatto - CONTROLLARE
 3) aggiungere logica stato treno (ON TIME - DELAYED - CANCELLED - CONFIRMED - LANDED) //semi fatto - vediamo se implementare i ritardi (?)
-5) aggiungere paginazione alle tabelle
-6) customizzare messaggi di errore //semifatto
+4) ricerca treni (?)
+5) customizzare messaggi di errore //semifatto
+6) logica ruoli utenti
+7) aggiustare binari/stazione partenza/arrivo --> CONTROLLARE QUERY IN MODO CHE SIANO SOLO TRENI IN PARTENZA/ARRIVO PA
+8) delete stazione intermedia

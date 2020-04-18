@@ -55,17 +55,18 @@ public class TrenoService extends HttpServlet {
         tappe.add(stazioneArrivo);
 
         Map<String, String> errors = InsertValidator.validate(numeroTreno, stazionePartenza, stazioneArrivo,
-                giornoPartenza, oraPartenza, binario, tappe);
+                                                                giornoPartenza, oraPartenza, binario, tappe);
         if(errors.isEmpty()){
             String tratta = stazionePartenza.substring(0, 2).toUpperCase() + "_" + stazioneArrivo.substring(0, 2).toUpperCase();
-            Boolean result = TrenoController.insertTreno(numeroTreno, tratta, tappe, giornoPartenza, oraPartenza, binario);
-            request.setAttribute("result", result);
-            if(!result){
-                request.setAttribute("errors", "Impossibile inserire treno! Errore DB!");
+            Boolean insert = TrenoController.insertTreno(numeroTreno, tratta, tappe, giornoPartenza, oraPartenza, binario);
+            request.setAttribute("result", true);
+            request.setAttribute("insert", insert);
+            if(!insert){
+                request.setAttribute("errors", "Errore nell'inserimento del treno nel database!");
             }
         } else {
-            Boolean result = false;
-            request.setAttribute("result", result);
+            request.setAttribute("result", false);
+            request.setAttribute("insert", false);
             request.setAttribute("errors", errors);
         }
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin.jsp");

@@ -18,7 +18,7 @@ public class BinariService extends HttpServlet  {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String binario = "4"; //TODO FIXARE request.getParameter("binario");
+        String binario = request.getParameter("binario");
         List<TrenoExtended> treniBinario = TrenoController.getTreniBinario(binario);
         String json = new Gson().toJson(treniBinario);
         response.setContentType("application/json");

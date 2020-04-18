@@ -1,7 +1,9 @@
 var stazioni = {};
 var partenze = {};
 var arrivi = {};
-var binari = {};
+var partenzePassivo = [];
+var arriviPassivo = [];
+var binari = [];
 var treno = {};
 var erroriJS = [];
 
@@ -74,6 +76,8 @@ var idSelect = 0;
 
 function addStazioneIntermedia(tipoForm) {
     if(idSelect < 8){
+        var div = document.createElement("div");
+        div.setAttribute("class", "pure-control-group")
         var select = document.createElement("select");
         select.id = "tappaIntermedia"+tipoForm+idSelect;
         select.name = "tappaIntermedia"+tipoForm;
@@ -84,13 +88,9 @@ function addStazioneIntermedia(tipoForm) {
         label.setAttribute("for", select.id);
         label.innerHTML = "Stazione Intermedia " + idSelect + ": ";
 
-        var br = document.createElement("br");
-        var br2 = document.createElement("br");
-
-        document.getElementById("scali"+tipoForm).appendChild(label);
-        document.getElementById("scali"+tipoForm).appendChild(select);
-        document.getElementById("scali"+tipoForm).appendChild(br);
-        document.getElementById("scali"+tipoForm).appendChild(br2);
+        document.getElementById("scali"+tipoForm).appendChild(div);
+        div.appendChild(label);
+        div.appendChild(select);
 
         appendStazioniToSelect(select);
     }

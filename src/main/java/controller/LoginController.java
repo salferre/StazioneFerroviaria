@@ -58,7 +58,10 @@ public class LoginController implements AbstractController {
                     privileges.add("Partenze");
                 }
                 if(rs.getBoolean("isBinari")){
-                    privileges.add("Binari");
+                    privileges.add("Binario1");
+                    privileges.add("Binario2");
+                    privileges.add("Binario3");
+                    privileges.add("Binario4");
                 }
                 result.setPrivileges(privileges);
             }
