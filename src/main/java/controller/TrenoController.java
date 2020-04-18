@@ -143,10 +143,13 @@ public class TrenoController implements AbstractController {
             cal.add(Calendar.MINUTE, PercorsoController.getDurataViaggio(connection, idTratta));
             treno.setArrivoPrevisto(df.format(cal.getTime())); //4
 
-            if(trenoDB.getStatoTreno().equalsIgnoreCase("C") && cal.getTime().before(new Date(System.currentTimeMillis())) )
-                treno.setStato("A"); //5
-            else
-                treno.setStato(trenoDB.getStatoTreno()); //5
+            if(trenoDB.getStatoTreno().equalsIgnoreCase("C")){
+                if(cal.getTime().before(new Date(System.currentTimeMillis())))
+                    treno.setStato("Atterrato");
+                else
+                    treno.setStato("Confermato");
+            } else
+                treno.setStato("Cancellato"); //5
             treno.setBinario(calendario.getBinario()); //6
             treni.add(treno);
         }

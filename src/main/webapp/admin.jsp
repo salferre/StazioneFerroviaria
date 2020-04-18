@@ -58,7 +58,7 @@
     <div class="splash">
         <div class="l-box-lrg pure-u-1 pure-u-md-2-5">
             <div id="views">
-                <div id="Admin-view">
+                <div id="Admin-view" style="display: none;">
                     <div id="choiceMenu">
                         <button class="pure-button pure-button-primary" id="partenze-button">Partenze</button>
                         <button class="pure-button pure-button-primary" id="arrivi-button">Arrivi</button>
@@ -260,7 +260,7 @@
 
                     </div>
                 </div>
-                <div id="Partenze-view">
+                <div id="Partenze-view" style="display: none;">
                     <div id="partenze-view-table">
                         <table class="pure-table center-table" id="tablePartenzeView">
                             <thead>
@@ -278,7 +278,7 @@
                         </table>
                     </div>
                 </div>
-                <div id="Arrivi-view">
+                <div id="Arrivi-view" style="display: none;">
                     <div id="arrivi-view-table">
                         <table class="pure-table center-table" id="tableArriviView">
                             <thead>
@@ -296,7 +296,7 @@
                         </table>
                     </div>
                 </div>
-                <div id="Binario1-view">
+                <div id="Binario1-view" style="display: none;">
                     <div id="binario1-view-table">
                         <table class="pure-table center-table" id="tableBinario1View">
                             <thead>
@@ -314,7 +314,7 @@
                         </table>
                     </div>
                 </div>
-                <div id="Binario2-view">
+                <div id="Binario2-view" style="display: none;">
                     <div id="binario2-view-table">
                         <table class="pure-table center-table" id="tableBinario2View">
                             <thead>
@@ -332,7 +332,7 @@
                         </table>
                     </div>
                 </div>
-                <div id="Binario3-view">
+                <div id="Binario3-view" style="display: none;">
                     <div id="binario3-view-table">
                         <table class="pure-table center-table" id="tableBinario3View">
                             <thead>
@@ -350,7 +350,7 @@
                         </table>
                     </div>
                 </div>
-                <div id="Binario4-view">
+                <div id="Binario4-view" style="display: none;">
                     <div id="binario4-view-table">
                         <table class="pure-table center-table" id="tableBinario4View">
                             <thead>
@@ -415,13 +415,7 @@
     var timeoutTime = 1000;
 
     $(document).ready(function() {
-
-        $(views).children('div').each(function () {
-            $(this).hide();
-        });
-
         showView();
-
     });
 
     startLoadData();
@@ -502,28 +496,28 @@
         var numarriviPassivoPages = Math.ceil(arriviPassivo.length/trainsPerPage);
         var numbinariPages = Math.ceil(binari.length/trainsPerPage);
         for(var p = 0; p < numpartenzePages; p++){
-            partenzePages.push(createPartenzePage(p));
+            partenzePages.push(createTreniPage(p, partenze, "partenza", true));
         }
         for(var p = 0; p < numpartenzePassivoPages; p++){
-            partenzePassivoPages.push(createPartenzePassivoPage(p));
+            partenzePassivoPages.push(createTreniPage(p, partenzePassivo, "partenza", false));
         }
         for(var p = 0; p < numarriviPages; p++){
-            arriviPages.push(createArriviPage(p));
+            arriviPages.push(createTreniPage(p, arrivi, "arrivo", true));
         }
         for(var p = 0; p < numarriviPassivoPages; p++){
-            arriviPassivoPages.push(createArriviPassivoPage(p));
+            arriviPassivoPages.push(createTreniPage(p, arriviPassivo, "arrivo", false));
         }
         for(var p = 0; p < numbinariPages; p++){
-            binariPages.push(createBinariPage(p));
+            binariPages.push(createTreniPage(p, binari, "binari", false));
         }
     }
 
-    function createPartenzePage(n){
+    function createTreniPage(n, treniArray, arrivoOrPartenza, isAdmin){
         var count = 1;
         var classTable = "";
 
         var s = "";
-        for(var i = n*trainsPerPage; i<(n+1)*trainsPerPage && i<partenze.length; i++){
+        for(var i = n*trainsPerPage; i<(n+1)*trainsPerPage && i<treniArray.length; i++){
 
             if(count%2 == 0){
                 classTable = "pure-table-odd";
@@ -533,113 +527,21 @@
             count++;
 
             s = s + "<tr class=\"" + classTable + "\" >\n";
-            s = s + "<td>" + partenze[i].numeroTreno + "</td>";
-            s = s + "<td>" + partenze[i].stazioneArrivo + "</td>";
-            s = s + "<td>" + partenze[i].arrivoPrevisto + "</td>";
-            s = s + "<td>" + partenze[i].stato + "</td>";
-            s = s + "<td>" + partenze[i].binario + "</td>";
-            s = s + "<td id='actionPartenzeButtons'><button class='button-warning pure-button' id=\"modificaTreno"+partenze[i].numeroTreno+"\">MODIFICA</button><button class='button-error pure-button' id=\"eliminaTreno"+partenze[i].numeroTreno+"\">ELIMINA</button></td>\n";
-            s = s + "</tr>";
-        }
-        return s;
-    }
+            s = s + "<td>" + treniArray[i].numeroTreno + "</td>";
 
-    function createPartenzePassivoPage(n){
-        var count = 1;
-        var classTable = "";
+            if(arrivoOrPartenza === "arrivo")
+                s = s + "<td>" + treniArray[i].stazionePartenza + "</td>";
+            else
+                s = s + "<td>" + treniArray[i].stazioneArrivo + "</td>";
 
-        var s = "";
-        for(var i = n*trainsPerPage; i<(n+1)*trainsPerPage && i<partenzePassivo.length; i++){
+            s = s + "<td>" + treniArray[i].arrivoPrevisto + "</td>";
+            s = s + "<td>" + treniArray[i].stato + "</td>";
+            s = s + "<td>" + treniArray[i].binario + "</td>";
 
-            if(count%2 == 0){
-                classTable = "pure-table-odd";
-            } else {
-                classTable = "pure-table-even";
-            }
-            count++;
-
-            s = s + "<tr class=\"" + classTable + "\" >\n";
-            s = s + "<td>" + partenzePassivo[i].numeroTreno + "</td>";
-            s = s + "<td>" + partenzePassivo[i].stazioneArrivo + "</td>";
-            s = s + "<td>" + partenzePassivo[i].arrivoPrevisto + "</td>";
-            s = s + "<td>" + partenzePassivo[i].stato + "</td>";
-            s = s + "<td>" + partenzePassivo[i].binario + "</td>";
-            s = s + "</tr>";
-        }
-        return s;
-    }
-
-    function createArriviPage(n){
-        var count = 1;
-        var classTable = "";
-
-        var s = "";
-        for(var i = n*trainsPerPage; i<(n+1)*trainsPerPage && i<arrivi.length; i++){
-
-            if(count%2 == 0){
-                classTable = "pure-table-odd";
-            } else {
-                classTable = "pure-table-even";
-            }
-            count++;
-
-            s = s + "<tr class=\"" + classTable + "\" >\n";
-            s = s + "<td>" + arrivi[i].numeroTreno + "</td>";
-            s = s + "<td>" + arrivi[i].stazionePartenza + "</td>";
-            s = s + "<td>" + arrivi[i].arrivoPrevisto + "</td>";
-            s = s + "<td>" + arrivi[i].stato + "</td>";
-            s = s + "<td>" + arrivi[i].binario + "</td>";
-            s = s + "<td id='actionPartenzeButtons'><button class='button-warning pure-button' id=\"modificaTreno"+arrivi[i].numeroTreno+"\">MODIFICA</button><button class='button-error pure-button' id=\"eliminaTreno"+arrivi[i].numeroTreno+"\">ELIMINA</button></td>\n";
-            s = s + "</tr>";
-        }
-        return s;
-    }
-
-    function createArriviPassivoPage(n){
-        var count = 1;
-        var classTable = "";
-
-        var s = "";
-        for(var i = n*trainsPerPage; i<(n+1)*trainsPerPage && i<arriviPassivo.length; i++){
-
-            if(count%2 == 0){
-                classTable = "pure-table-odd";
-            } else {
-                classTable = "pure-table-even";
-            }
-            count++;
-
-            s = s + "<tr class=\"" + classTable + "\" >\n";
-            s = s + "<td>" + arriviPassivo[i].numeroTreno + "</td>";
-            s = s + "<td>" + arriviPassivo[i].stazioneArrivo + "</td>";
-            s = s + "<td>" + arriviPassivo[i].arrivoPrevisto + "</td>";
-            s = s + "<td>" + arriviPassivo[i].stato + "</td>";
-            s = s + "<td>" + arriviPassivo[i].binario + "</td>";
-            s = s + "</tr>";
-        }
-        return s;
-    }
-
-    function createBinariPage(n){
-        var count = 1;
-        var classTable = "";
-
-        var s = "";
-        for(var i = n*trainsPerPage; i<(n+1)*trainsPerPage && i<binari.length; i++){
-
-            if(count%2 == 0){
-                classTable = "pure-table-odd";
-            } else {
-                classTable = "pure-table-even";
-            }
-            count++;
-
-            s = s + "<tr class=\"" + classTable + "\" >\n";
-            s = s + "<td>" + binari[i].numeroTreno + "</td>";
-            s = s + "<td>" + binari[i].stazioneArrivo + "</td>";
-            s = s + "<td>" + binari[i].arrivoPrevisto + "</td>";
-            s = s + "<td>" + binari[i].stato + "</td>";
-            s = s + "<td>" + binari[i].binario + "</td>";
+            if(arrivoOrPartenza === "arrivo" && isAdmin)
+                s = s + "<td id='actionArriviButtons'><button class='button-warning pure-button' id=\"modificaTreno"+treniArray[i].numeroTreno+"\">MODIFICA</button><button class='button-error pure-button' id=\"eliminaTreno"+treniArray[i].numeroTreno+"\">ELIMINA</button></td>\n";
+            else if (arrivoOrPartenza === "partenza" && isAdmin)
+                s = s + "<td id='actionPartenzeButtons'><button class='button-warning pure-button' id=\"modificaTreno"+treniArray[i].numeroTreno+"\">MODIFICA</button><button class='button-error pure-button' id=\"eliminaTreno"+treniArray[i].numeroTreno+"\">ELIMINA</button></td>\n";
             s = s + "</tr>";
         }
         return s;
@@ -684,13 +586,8 @@
                                 label.innerHTML = "Stazione Intermedia " + idSelect + ": ";
                             }
 
-                            var br = document.createElement("br");
-                            var br2 = document.createElement("br");
-
                             document.getElementById("scaliUpdate").appendChild(label);
                             document.getElementById("scaliUpdate").appendChild(select);
-                            document.getElementById("scaliUpdate").appendChild(br);
-                            document.getElementById("scaliUpdate").appendChild(br2);
                         })
 
                     },
@@ -893,7 +790,7 @@
                 responseJson.forEach( element => {
                     var today = new Date();
                     var arrivoPrevisto = new Date(element.arrivoPrevisto);
-                    if (today < arrivoPrevisto) {
+                    if (today < arrivoPrevisto && element.stazioneArrivo != "Palermo") {
                         binari.push(element);
                     }
                 });

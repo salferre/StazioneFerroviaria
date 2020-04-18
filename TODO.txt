@@ -4,5 +4,4 @@
 4) ricerca treni (?)
 5) customizzare messaggi di errore //semifatto
 6) logica ruoli utenti
-7) aggiustare binari/stazione partenza/arrivo --> CONTROLLARE QUERY IN MODO CHE SIANO SOLO TRENI IN PARTENZA/ARRIVO PA
-8) delete stazione intermedia
+7) correggere success ed error (in caso di error restituire errore generico)

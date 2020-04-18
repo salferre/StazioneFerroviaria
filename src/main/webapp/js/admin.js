@@ -75,25 +75,57 @@ function appendStazioniToSelect(selectId) {
 var idSelect = 0;
 
 function addStazioneIntermedia(tipoForm) {
-    if(idSelect < 8){
+    if(idSelect < 9){
+        idSelect++;
+
         var div = document.createElement("div");
+        div.id = "stazIntermedia" + idSelect;
         div.setAttribute("class", "pure-control-group")
+
         var select = document.createElement("select");
         select.id = "tappaIntermedia"+tipoForm+idSelect;
         select.name = "tappaIntermedia"+tipoForm;
-        idSelect++;
         select.innerHTML = '<option disabled selected value> -- Seleziona una stazione -- </option>';
 
         var label = document.createElement("label");
         label.setAttribute("for", select.id);
         label.innerHTML = "Stazione Intermedia " + idSelect + ": ";
 
+        var span = document.createElement("span");
+        span.setAttribute("class", "pure-form-message-inline");
+        span.id = "rimuovi"+idSelect;
+
+        var img = document.createElement("img");
+        img.setAttribute("src", "./img/delete.png");
+        img.setAttribute("style", "width: 30px; height: 30px;");
+
+        span.appendChild(img);
+
         document.getElementById("scali"+tipoForm).appendChild(div);
         div.appendChild(label);
         div.appendChild(select);
+        div.appendChild(span);
+
+        span.onclick = eliminaStazioneIntermedia;
 
         appendStazioniToSelect(select);
     }
+}
+
+function eliminaStazioneIntermedia() {
+    var stazioneToDelete = this.id.substring(7);
+
+    for ( i = stazioneToDelete; i < idSelect ; i++){
+        k = +i +1;
+        var cancellare = "stazIntermedia" + i;
+        var spostare = "stazIntermedia" + k;
+        $('#' + cancellare).children("select").val($('#' + spostare).children("select").val());
+    }
+
+    var canc = "stazIntermedia" + idSelect;
+    $('#' + canc).remove();
+
+    idSelect--;
 }
 
 function closeOthers(nonChiudere) {
