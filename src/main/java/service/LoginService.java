@@ -39,7 +39,7 @@ public class LoginService extends HttpServlet {
             Cookie[] cookies = request.getCookies();
             if(cookies.length > 0){
                 for ( Cookie c : cookies) {
-                    if(c.getName().equalsIgnoreCase("opzioniVisualizzazione"))
+                    if(c.getName().equalsIgnoreCase(username+"opzioniVisualizzazione"))
                         redirectURL = "/admin.jsp";
                 }
             }

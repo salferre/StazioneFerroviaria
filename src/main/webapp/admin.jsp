@@ -11,21 +11,10 @@
 </head>
 <body>
 <%
-    //allow access only if session exists
-    String user = null;
-    if(session.getAttribute("username") == null){
+    String username = (String) session.getAttribute("username");
+    if(username == null){
         response.sendRedirect("/StazioneFerroviaria/");
         return;
-    }else user = (String) session.getAttribute("user");
-    String userName = null;
-    String sessionID = null;
-    Cookie[] cookies = request.getCookies();
-    if(cookies !=null){
-        for(Cookie cookie : cookies){
-            if(cookie.getName().equals(user)) userName = cookie.getValue();
-        }
-    }else{
-        sessionID = session.getId();
     }
 
     Boolean result = (Boolean) request.getAttribute("result");
@@ -39,16 +28,15 @@
             errors = (HashMap<String, String>)  request.getAttribute("errors");
         }
     }
-
 %>
 
 <div class="header">
-    <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
-        <a class="pure-menu-heading" style="padding: 0;"><img src="./img/logo.png"></a>
+    <div class="home-menu salvo-menu salvo-menu-horizontal salvo-menu-fixed">
+        <a class="salvo-menu-heading" style="padding: 0;"><img src="./img/logo.png"></a>
 
-        <ul class="pure-menu-list">
-            <li class="pure-menu-item pure-menu-selected"><a href="home.jsp" class="pure-menu-link">Home</a></li>
-            <li class="pure-menu-item cursor-pointer"><a onclick="logoutFunction()" class="pure-menu-link">Logout</a></li>
+        <ul class="salvo-menu-list">
+            <li class="salvo-menu-item salvo-menu-selected"><a href="home.jsp" class="salvo-menu-link">Home</a></li>
+            <li class="salvo-menu-item cursor-pointer"><a onclick="logoutFunction()" class="salvo-menu-link">Logout</a></li>
         </ul>
     </div>
 </div>
@@ -56,39 +44,46 @@
 
 <div class="splash-container">
     <div class="splash">
-        <div class="l-box-lrg pure-u-1 pure-u-md-2-5">
+        <div class="l-box-lrg salvo-u-1 salvo-u-md-2-5">
             <div id="views">
                 <div id="Admin-view" style="display: none;">
-                    <div id="choiceMenu">
-                        <button class="pure-button pure-button-primary" id="partenze-button">Partenze</button>
-                        <button class="pure-button pure-button-primary" id="arrivi-button">Arrivi</button>
-                        <button class="pure-button pure-button-primary" id="ruoli-button">Ruoli</button>
+                    <div id="choiceMenu" class="marginino-sotto">
+                        <button class="salvo-button salvo-button-primary" id="partenze-button">Partenze</button>
+                        <button class="salvo-button salvo-button-primary" id="arrivi-button">Arrivi</button>
                     </div>
 
                     <div id="BEerrors">
-                        <ul>
-                            <c:if test="${(result) and (!insert)}">
-                                <li>
-                                    <%=error%>
-                                </li>
-                            </c:if>
-                            <c:if test="${(!result) and (!insert)}">
+                        <c:if test="${(not empty result) and (not empty insert) and (result) and (not insert)}">
+                            <div class="alert-login marginino-sopra-sotto">
+                                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                                <%=error%>
+                            </div>
+                        </c:if>
+                        <c:if test="${(not empty result) and (not empty insert) and (not result) and (not insert)}">
+                            <div class="alert-login marginino-sopra-sotto">
+                                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
                                 <%
                                     Set<String> chiavi = errors.keySet();
                                     for ( String chiave : chiavi) {
                                 %>
-                                <li><%=chiave%>:<%=errors.get(chiave)%></li>
+                                <strong><%=chiave%></strong>:<%=errors.get(chiave)%>
+                                <br>
                                 <% } %>
-                            </c:if>
-                        </ul>
+                            </div>
+                        </c:if>
+                        <c:if test="${(not empty result) and (not empty insert) and (result) and (insert)}">
+                            <div class="alert success">
+                                <span class="closebtn" onclick="this.parentElement.style.display='none';">×</span>
+                                <strong>OK!</strong> Il treno è stato inserito correttamente.
+                            </div>
+                        </c:if>
                     </div>
 
-                    <br/>
                     <div id="pageTable">
                         <div id="partenze-table">
-                            <button class="pure-button pure-button-primary" id="createTrenoPartenza" onclick="openCreateModal(this.id)">Inserisci un nuovo treno in partenza!</button>
+                            <button class="w3-button w3-xlarge w3-circle w3-red marginino-sotto" id="createTrenoPartenza" onclick="openCreateModal(this.id)">+</button>
                             <br>
-                            <table class="pure-table center-table" id="tablePartenze">
+                            <table class="salvo-table center-table" id="tablePartenze">
                                 <thead>
                                 <tr>
                                     <th>Numero Treno</th>
@@ -106,8 +101,8 @@
                             <div id="tablePartenzePages"></div>
                         </div>
                         <div id="arrivi-table">
-                            <button class="pure-button pure-button-primary" id="createTrenoArrivo" onclick="openCreateModal(this.id)">Inserisci un nuovo treno in arrivo!</button>
-                            <table class="pure-table center-table" id="tableArrivi">
+                            <button class="w3-button w3-xlarge w3-circle w3-red marginino-sotto" id="createTrenoArrivo" onclick="openCreateModal(this.id)">+</button>
+                            <table class="salvo-table center-table" id="tableArrivi">
                                 <thead>
                                 <tr>
                                     <th>Numero Treno</th>
@@ -124,23 +119,6 @@
                             </table>
                             <div id="tableArriviPages"></div>
                         </div>
-                        <div id="ruoli-table">
-                            <table class="pure-table center-table" id="tableRuoli">
-                                <thead>
-                                <tr>
-                                    <th>Numero Treno</th>
-                                    <th>Stazione di Partenza</th>
-                                    <th>Arrivo Previsto</th>
-                                    <th>Stato</th>
-                                    <%--            <th>Ritardo(?)</th>--%>
-                                    <th>Binario</th>
-                                    <th>Azioni</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
 
                     <div id="createModal" class="modal">
@@ -148,45 +126,49 @@
                         <!-- Modal content -->
                         <div class="modal-content">
                             <span id="closeCreateModal" class="close">&times;</span>
-                            <form class="pure-form pure-form-aligned" action="/StazioneFerroviaria/treno" method="POST" onsubmit="return validateForm('Insert')">
+                            <form class="salvo-form salvo-form-aligned" action="/StazioneFerroviaria/treno" method="POST" onsubmit="return validateForm('Insert')">
                                 <fieldset>
                                     <legend>Inserisci un nuovo treno</legend>
-                                    <div id="errors"></div>
+                                    <div id="errorsCreateModal">
+                                        <ul id="errCrMod" class="alert" style="display: none;">
 
-                                    <div class="pure-control-group">
+                                        </ul>
+                                    </div>
+
+                                    <div class="salvo-control-group">
                                         <label for="numeroTrenoInsert">Numero: </label>
                                         <input required type="text" name="numeroTrenoInsert" id="numeroTrenoInsert" placeholder="Inserire numero treno">
                                     </div>
 
 
-                                    <div class="pure-control-group">
+                                    <div class="salvo-control-group">
                                         <label for="stazionePartenzaInsert">Stazione di Partenza: </label>
                                         <select id="stazionePartenzaInsert" name="stazionePartenzaInsert" required>
                                             <option selected disabled value> -- Seleziona una stazione -- </option>
                                         </select>
-                                        <button id="addStazioneInsert" type="button" onclick="addStazioneIntermedia('Insert')">Aggiungi stazione intermedia</button>
+                                        <button id="addStazioneInsert" class="salvo-button-primary salvo-button" type="button" onclick="addStazioneIntermedia('Insert')">Aggiungi stazione intermedia</button>
                                     </div>
 
                                     <div id="scaliInsert"></div>
 
-                                    <div class="pure-control-group">
+                                    <div class="salvo-control-group">
                                         <label for="stazioneArrivoInsert">Stazione di Arrivo: </label>
                                         <select id="stazioneArrivoInsert" name="stazioneArrivoInsert" required>
                                             <option selected disabled value> -- Seleziona una stazione -- </option>
                                         </select>
                                     </div>
 
-                                    <div class="pure-control-group">
+                                    <div class="salvo-control-group">
                                         <label for="giornoPartenzaInsert">Giorno: </label>
                                         <input type="text" name="giornoPartenzaInsert" id="giornoPartenzaInsert" required placeholder="gg/mm/aaaa">
                                     </div>
 
-                                    <div class="pure-control-group">
+                                    <div class="salvo-control-group">
                                         <label for="oraPartenzaInsert">Ora Partenza: </label>
                                         <input type="text" name="oraPartenzaInsert" id="oraPartenzaInsert" required placeholder="hh:mm">
                                     </div>
 
-                                    <div class="pure-control-group">
+                                    <div class="salvo-control-group">
                                         <label for="binarioInsert">Binario: </label>
                                         <select id="binarioInsert" name="binarioInsert" required>
                                             <option selected disabled value> -- Seleziona un binario -- </option>
@@ -197,7 +179,7 @@
                                         </select>
                                     </div>
                                     <br>
-                                    <button id="insertButton" type="submit" name="tipoForm" value="Inserisci treno">Inserisci treno</button>
+                                    <button id="insertButton" class="button-success salvo-button" type="submit" name="tipoForm" value="Inserisci treno">Inserisci treno</button>
                                 </fieldset>
                             </form>
 
@@ -209,42 +191,46 @@
                         <!-- Modal content -->
                         <div class="modal-content">
                             <span id="closeUpdateModal" class="close">&times;</span>
-                            <form class="pure-form pure-form-aligned" action="/StazioneFerroviaria/treno" method="POST" onsubmit="return validateForm('Update')">
+                            <form class="salvo-form salvo-form-aligned" action="/StazioneFerroviaria/treno" method="POST" onsubmit="return validateForm('Update')">
 
                                 <fieldset>
                                     <legend>Modifica treno</legend>
 
-                                    <%--<div id="errors"></div> TODO aggiungere logica errori UPDATE--%>
+                                    <div id="errorsUpdateModal">
+                                        <ul id="errUpMod" class="alert" style="display: none;">
 
-                                    <div class="pure-control-group">
+                                        </ul>
+                                    </div>
+
+                                    <div class="salvo-control-group">
                                         <label for="numeroTrenoUpdate">Numero: </label>
                                         <input required disabled type="text" name="numeroTrenoUpdate" id="numeroTrenoUpdate" placeholder="Inserire numero treno">
                                     </div>
 
                                     <div id="scaliUpdate"></div>
 
-                                    <div class="pure-control-group">
+                                    <div class="salvo-control-group">
                                         <label for="giornoPartenzaUpdate">Giorno: </label>
                                         <input type="text" name="giornoPartenzaUpdate" id="giornoPartenzaUpdate" required placeholder="gg/mm/aaaa">
                                     </div>
 
-                                        <div class="pure-control-group">
-                                            <label for="oraPartenzaUpdate">Ora Partenza: </label>
-                                            <input type="text" name="oraPartenzaUpdate" id="oraPartenzaUpdate" required placeholder="hh:mm">
-                                        </div>
+                                    <div class="salvo-control-group">
+                                        <label for="oraPartenzaUpdate">Ora Partenza: </label>
+                                        <input type="text" name="oraPartenzaUpdate" id="oraPartenzaUpdate" required placeholder="hh:mm">
+                                    </div>
 
-                                            <div class="pure-control-group">
-                                                <label for="binarioUpdate">Binario: </label>
-                                                <select id="binarioUpdate" name="binarioUpdate" required>
-                                                    <option selected disabled value> -- Seleziona un binario -- </option>
-                                                    <option value="1"> 1 </option>
-                                                    <option value="2"> 2 </option>
-                                                    <option value="3"> 3 </option>
-                                                    <option value="4"> 4 </option>
-                                                </select>
-                                            </div>
+                                    <div class="salvo-control-group">
+                                        <label for="binarioUpdate">Binario: </label>
+                                        <select id="binarioUpdate" name="binarioUpdate" required>
+                                            <option selected disabled value> -- Seleziona un binario -- </option>
+                                            <option value="1"> 1 </option>
+                                            <option value="2"> 2 </option>
+                                            <option value="3"> 3 </option>
+                                            <option value="4"> 4 </option>
+                                        </select>
+                                    </div>
                                     <br>
-                                    <button id="updateButton" type="submit" name="tipoForm" value="Modifica treno">Modifica treno</button>
+                                    <button class="button-success salvo-button" id="updateButton" type="submit" name="tipoForm" value="Modifica treno">Modifica treno</button>
                                 </fieldset>
                             </form>
 
@@ -255,14 +241,15 @@
                         <div class="modal-content">
                             <span id="closeDeleteModal" class="close">&times;</span>
                             <p>Vuoi davvero eliminare questo treno?</p>
-                            <button id="modalEliminaTreno">ELIMINA</button>
+                            <button class="button-error salvo-button" id="modalEliminaTreno">ELIMINA</button>
                         </div>
 
                     </div>
                 </div>
                 <div id="Partenze-view" style="display: none;">
                     <div id="partenze-view-table">
-                        <table class="pure-table center-table" id="tablePartenzeView">
+                        <h2>PARTENZE</h2>
+                        <table class="salvo-table center-table" id="tablePartenzeView">
                             <thead>
                             <tr>
                                 <th>Numero Treno</th>
@@ -276,11 +263,13 @@
                             <tbody>
                             </tbody>
                         </table>
+                        <div id="pagPartPass"></div>
                     </div>
                 </div>
                 <div id="Arrivi-view" style="display: none;">
                     <div id="arrivi-view-table">
-                        <table class="pure-table center-table" id="tableArriviView">
+                        <h2>ARRIVI</h2>
+                        <table class="salvo-table center-table" id="tableArriviView">
                             <thead>
                             <tr>
                                 <th>Numero Treno</th>
@@ -294,11 +283,13 @@
                             <tbody>
                             </tbody>
                         </table>
+                        <div id="pagArrPass"></div>
                     </div>
                 </div>
                 <div id="Binario1-view" style="display: none;">
                     <div id="binario1-view-table">
-                        <table class="pure-table center-table" id="tableBinario1View">
+                        <h2>BINARIO 1</h2>
+                        <table class="salvo-table center-table" id="tableBinario1View">
                             <thead>
                             <tr>
                                 <th>Numero Treno</th>
@@ -312,11 +303,13 @@
                             <tbody>
                             </tbody>
                         </table>
+                        <div id="pagBin1Pass"></div>
                     </div>
                 </div>
                 <div id="Binario2-view" style="display: none;">
                     <div id="binario2-view-table">
-                        <table class="pure-table center-table" id="tableBinario2View">
+                        <h2>BINARIO 2</h2>
+                        <table class="salvo-table center-table" id="tableBinario2View">
                             <thead>
                             <tr>
                                 <th>Numero Treno</th>
@@ -330,11 +323,13 @@
                             <tbody>
                             </tbody>
                         </table>
+                        <div id="pagBin2Pass"></div>
                     </div>
                 </div>
                 <div id="Binario3-view" style="display: none;">
                     <div id="binario3-view-table">
-                        <table class="pure-table center-table" id="tableBinario3View">
+                        <h2>BINARIO 3</h2>
+                        <table class="salvo-table center-table" id="tableBinario3View">
                             <thead>
                             <tr>
                                 <th>Numero Treno</th>
@@ -348,11 +343,13 @@
                             <tbody>
                             </tbody>
                         </table>
+                        <div id="pagBin3Pass"></div>
                     </div>
                 </div>
                 <div id="Binario4-view" style="display: none;">
                     <div id="binario4-view-table">
-                        <table class="pure-table center-table" id="tableBinario4View">
+                        <h2>BINARIO 4</h2>
+                        <table class="salvo-table center-table" id="tableBinario4View">
                             <thead>
                             <tr>
                                 <th>Numero Treno</th>
@@ -366,23 +363,13 @@
                             <tbody>
                             </tbody>
                         </table>
+                        <div id="pagBin4Pass"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<c:choose>
-    <c:when test="${not empty result && result == true}">
-        INSERT ESEGUITA!!!
-    </c:when>
-    <c:otherwise>
-        <c:forEach items="${errors}" var="errore">
-            ${errore}
-        </c:forEach>
-    </c:otherwise>
-</c:choose>
 
 <script src="js/jquery-3.4.1.js"></script>
 <script src="js/admin.js" type="text/javascript"></script>
@@ -458,6 +445,11 @@
             currentpartenzePassivoPage = -1;
             currentarriviPassivoPage = -1;
             currentbinariPage = -1;
+            $(tablePartenze).find('tbody').empty();
+            $(tablePartenze).find('tbody').html(partenzePages[currentpartenzePage]);
+            $(tableArrivi).find('tbody').empty();
+            $(tableArrivi).find('tbody').html(arriviPages[currentarriviPage]);
+            openModalTreno();
         }
 
         currentpartenzePassivoPage++;
@@ -466,12 +458,8 @@
         currentpartenzePassivoPage = currentpartenzePassivoPage % partenzePassivoPages.length;
         currentarriviPassivoPage = currentarriviPassivoPage % arriviPassivoPages.length;
         currentbinariPage = currentbinariPage % binariPages.length;
-        $(tablePartenze).find('tbody').empty();
-        $(tablePartenze).find('tbody').html(partenzePages[currentpartenzePage]);
         $(tablePartenzeView).find('tbody').empty();
         $(tablePartenzeView).find('tbody').html(partenzePassivoPages[currentpartenzePassivoPage]);
-        $(tableArrivi).find('tbody').empty();
-        $(tableArrivi).find('tbody').html(arriviPages[currentarriviPage]);
         $(tableArriviView).find('tbody').empty();
         $(tableArriviView).find('tbody').html(arriviPassivoPages[currentarriviPassivoPage]);
 
@@ -479,9 +467,20 @@
         $('#' + tabtmp).find('tbody').empty();
         $('#' + tabtmp).find('tbody').html(binariPages[currentbinariPage]);
 
-        openModalTreno();
+        changePagesNum();
     }
 
+    function changePagesNum() {
+        if(!isNaN(currentpartenzePassivoPage))
+            $('#pagPartPass').html("Pagina " + (+currentpartenzePassivoPage +1) + "/" + partenzePassivoPages.length);
+
+        if(!isNaN(currentarriviPassivoPage))
+            $('#pagArrPass').html("Pagina " + (+currentarriviPassivoPage +1) + "/" + arriviPassivoPages.length);
+        $('[id^=pagBin]').each(function () {
+            if(!isNaN(currentbinariPage))
+                $(this).html("Pagina " + (+currentbinariPage + 1) + "/" + binariPages.length);
+        });
+    }
 
 
     function createNewPages(){
@@ -520,9 +519,9 @@
         for(var i = n*trainsPerPage; i<(n+1)*trainsPerPage && i<treniArray.length; i++){
 
             if(count%2 == 0){
-                classTable = "pure-table-odd";
+                classTable = "salvo-table-odd";
             } else {
-                classTable = "pure-table-even";
+                classTable = "salvo-table-even";
             }
             count++;
 
@@ -538,94 +537,108 @@
             s = s + "<td>" + treniArray[i].stato + "</td>";
             s = s + "<td>" + treniArray[i].binario + "</td>";
 
-            if(arrivoOrPartenza === "arrivo" && isAdmin)
-                s = s + "<td id='actionArriviButtons'><button class='button-warning pure-button' id=\"modificaTreno"+treniArray[i].numeroTreno+"\">MODIFICA</button><button class='button-error pure-button' id=\"eliminaTreno"+treniArray[i].numeroTreno+"\">ELIMINA</button></td>\n";
-            else if (arrivoOrPartenza === "partenza" && isAdmin)
-                s = s + "<td id='actionPartenzeButtons'><button class='button-warning pure-button' id=\"modificaTreno"+treniArray[i].numeroTreno+"\">MODIFICA</button><button class='button-error pure-button' id=\"eliminaTreno"+treniArray[i].numeroTreno+"\">ELIMINA</button></td>\n";
+            if(isAdmin){
+                if(treniArray[i].stato === "Confermato"){
+                    if(arrivoOrPartenza === "arrivo")
+                        s = s + "<td id='actionArriviButtons'><button class='button-warning salvo-button' style='margin-right: 10px;' id=\"modificaTreno"+treniArray[i].numeroTreno+"\">MODIFICA</button><button class='button-error salvo-button' id=\"eliminaTreno"+treniArray[i].numeroTreno+"\">ELIMINA</button></td>\n";
+                    else if (arrivoOrPartenza === "partenza")
+                        s = s + "<td id='actionPartenzeButtons'><button class='button-warning salvo-button' style='margin-right: 10px;' id=\"modificaTreno"+treniArray[i].numeroTreno+"\">MODIFICA</button><button class='button-error salvo-button' id=\"eliminaTreno"+treniArray[i].numeroTreno+"\">ELIMINA</button></td>\n";
+                } else {
+                    if(arrivoOrPartenza === "arrivo")
+                        s = s + "<td id='actionArriviButtons'><button class='button-warning salvo-button salvo-bottone-disabled' disabled style='margin-right: 10px;' id=\"modificaTreno"+treniArray[i].numeroTreno+"\">MODIFICA</button><button class='button-error salvo-button salvo-bottone-disabled' disabled id=\"eliminaTreno"+treniArray[i].numeroTreno+"\">ELIMINA</button></td>\n";
+                    else if (arrivoOrPartenza === "partenza")
+                        s = s + "<td id='actionPartenzeButtons'><button class='button-warning salvo-button salvo-bottone-disabled' disabled style='margin-right: 10px;' id=\"modificaTreno"+treniArray[i].numeroTreno+"\">MODIFICA</button><button class='button-error salvo-button salvo-bottone-disabled' disabled id=\"eliminaTreno"+treniArray[i].numeroTreno+"\">ELIMINA</button></td>\n";
+                }
+            }
             s = s + "</tr>";
         }
         return s;
     }
 
     function openModalTreno() {
-        $('[id^=modificaTreno]').each(function () {
-            $(this).on("click", function () {
-                toUpdate = this.id.substring(13);
+        // $('[id^=modificaTreno]').each(function () {
+        $('.button-warning').on("click", function () {
+            toUpdate = this.id.substring(13);
 
-                $.ajax({
-                    url: "treno",
-                    type: "get", //send it through get method
-                    data: {
-                        toUpdate: toUpdate,
-                    },
-                    success: function (responseJson) {
-                        treno = responseJson;
-                        $("#numeroTrenoUpdate").val(treno.numeroTreno);
-                        $("#giornoPartenzaUpdate").val(treno.giornoPartenza);
-                        $("#oraPartenzaUpdate").val(treno.oraPartenza);
-                        $("#binarioUpdate").val(treno.binario);
-                        var idSelect = -1;
-                        document.getElementById("scaliUpdate").innerHTML = "";
+            $.ajax({
+                url: "treno",
+                type: "get", //send it through get method
+                data: {
+                    toUpdate: toUpdate,
+                },
+                success: function (responseJson) {
+                    treno = responseJson;
+                    $("#numeroTrenoUpdate").val(treno.numeroTreno);
+                    $("#giornoPartenzaUpdate").val(treno.giornoPartenza);
+                    $("#oraPartenzaUpdate").val(treno.oraPartenza);
+                    $("#binarioUpdate").val(treno.binario);
+                    var idSelect = 0;
+                    document.getElementById("scaliUpdate").innerHTML = "";
 
-                        treno.tappe.forEach(function (element) {
+                    treno.tappe.forEach(function (element) {
 
-                            var select = document.createElement("select");
-                            select.id = "tappaIntermediaUpdate" + idSelect;
-                            select.name = "tappaIntermediaUpdate";
-                            select.setAttribute("disabled", true);
-                            idSelect++;
-                            select.innerHTML = '<option disabled selected value>' + element + ' </option>';
+                        var div = document.createElement("div");
+                        div.id = "stazIntermediaUpdMod" + idSelect;
+                        div.setAttribute("class", "salvo-control-group")
 
-                            var label = document.createElement("label");
-                            label.setAttribute("for", select.id);
-                            if (idSelect == 0) {
-                                label.innerHTML = "Stazione di Partenza: ";
-                            } else if (idSelect == treno.tappe.length - 1) {
-                                label.innerHTML = "Stazione di Arrivo: ";
-                            } else {
-                                label.innerHTML = "Stazione Intermedia " + idSelect + ": ";
+                        var select = document.createElement("select");
+                        select.id = "tappaIntermediaUpdate" + idSelect;
+                        select.name = "tappaIntermediaUpdate";
+                        select.setAttribute("disabled", true);
+                        idSelect++;
+                        select.innerHTML = '<option disabled selected value>' + element + ' </option>';
+
+                        var label = document.createElement("label");
+                        label.setAttribute("for", select.id);
+                        if (idSelect == 0) {
+                            label.innerHTML = "Stazione di Partenza: ";
+                        } else if (idSelect == treno.tappe.length - 1) {
+                            label.innerHTML = "Stazione di Arrivo: ";
+                        } else {
+                            label.innerHTML = "Stazione Intermedia " + idSelect + ": ";
+                        }
+
+                        document.getElementById("scaliUpdate").appendChild(div);
+                        div.appendChild(label);
+                        div.appendChild(select);
+                        var modal = document.getElementById("updateModal");
+                        var span = document.getElementById("closeUpdateModal");
+                        modal.style.display = "block";
+                        span.onclick = function () {
+                            modal.style.display = "none";
+                        }
+                        window.onclick = function (event) {
+                            if (event.target == modal) {
+                                modal.style.display = "none";
                             }
+                        }
+                    })
 
-                            document.getElementById("scaliUpdate").appendChild(label);
-                            document.getElementById("scaliUpdate").appendChild(select);
-                        })
-
-                    },
-                    error: function (xhr) {
-                        //Do Something to handle error
-                    }
-                });
-
-                var modal = document.getElementById("updateModal");
-                var span = document.getElementById("closeUpdateModal");
-                modal.style.display = "block";
-                span.onclick = function () {
-                    modal.style.display = "none";
-                }
-                window.onclick = function (event) {
-                    if (event.target == modal) {
-                        modal.style.display = "none";
-                    }
+                },
+                error: function (xhr) {
+                    //Do Something to handle error
                 }
             });
+
+
         });
 
-        $('[id^=eliminaTreno]').each(function () {
-            $(this).on("click", function () {
-                toDelete = this.id.substring(12);
-                var modal = document.getElementById("deleteModal");
-                var span = document.getElementById("closeDeleteModal");
-                modal.style.display = "block";
-                span.onclick = function () {
+
+        $('[id^=eliminaTreno]').on("click", function () {
+            toDelete = this.id.substring(12);
+            var modal = document.getElementById("deleteModal");
+            var span = document.getElementById("closeDeleteModal");
+            modal.style.display = "block";
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+            window.onclick = function (event) {
+                if (event.target == modal) {
                     modal.style.display = "none";
                 }
-                window.onclick = function (event) {
-                    if (event.target == modal) {
-                        modal.style.display = "none";
-                    }
-                }
-            });
+            }
         });
+
     }
 
     function openCreateModal(buttonId) {
@@ -653,9 +666,6 @@
             idSelect = 0;
         }
 
-        // <option selected disabled value> -- Seleziona una stazione -- </option>
-        //     $("<option>").val(category.nomeStazione).text(category.nomeStazione).appendTo(selectId);
-
         var modal = document.getElementById("createModal");
         var span = document.getElementById("closeCreateModal");
         modal.style.display = "block";
@@ -672,9 +682,8 @@
     $("#modalEliminaTreno").click(function (e) {
         e.preventDefault();
         $.ajax({
-            url: "treno", //sala="+vsala.valueOf();
-            dataType: 'application/json',
-            type: "delete", //send it through get method
+            url: "treno",
+            type: "delete",
             data: {
                 "toDelete": toDelete,
             },
@@ -690,27 +699,31 @@
     $("#updateButton").click(function (e) {
         e.preventDefault();
 
-        numeroTreno = toUpdate;
-        giornoPartenza = $("#giornoPartenzaUpdate").val();
-        oraPartenza = $("#oraPartenzaUpdate").val();
-        binario = $("#binarioUpdate").val();
+        var result = validateForm('Update');
 
-        $.ajax({
-            url: "treno",
-            type: "put", //send it through get method
-            data: {
-                numeroTreno: numeroTreno,
-                giornoPartenza: giornoPartenza,
-                oraPartenza: oraPartenza,
-                binario: binario
-            },
-            success: function (responseJson) {
-                location.reload();
-            },
-            error: function (xhr) {
-                //Do Something to handle error
-            }
-        });
+        if(result){
+            numeroTreno = toUpdate;
+            giornoPartenza = $("#giornoPartenzaUpdate").val();
+            oraPartenza = $("#oraPartenzaUpdate").val();
+            binario = $("#binarioUpdate").val();
+
+            $.ajax({
+                url: "treno",
+                type: "put", //send it through get method
+                data: {
+                    numeroTreno: numeroTreno,
+                    giornoPartenza: giornoPartenza,
+                    oraPartenza: oraPartenza,
+                    binario: binario
+                },
+                success: function (responseJson) {
+                    location.reload();
+                },
+                error: function (xhr) {
+                    //Do Something to handle error
+                }
+            });
+        }
     });
 
     function getCookie(name) {
@@ -720,13 +733,15 @@
     }
 
     function showView() {
-        visualizzazione = getCookie('opzioniVisualizzazione');
+        var utenteloggato = '<%= username %>';
+        visualizzazione = getCookie(utenteloggato+'opzioniVisualizzazione');
         if(visualizzazione.startsWith("Binario")){
             binario = visualizzazione.substring(7);
         }
         mostrare = visualizzazione + '-view';
         $("body").find('#' + mostrare).show();
         ajaxCall();
+        reloadPassivi();
     }
 
     function ajaxCall() {
@@ -749,12 +764,13 @@
             });
             var numPaginePartenze = Math.ceil(partenze.length/trainsPerPage);
             for ( i = 1; i < numPaginePartenze+1 ; i++ )
-                $(tablePartenzePages).append("<button id=\"partenzePagina"+i+"\">"+i+"</button>");
+                $(tablePartenzePages).append("<button class=\"salvo-button salvo-button-primary margine-alto-dx\" id=\"partenzePagina"+i+"\">"+i+"</button>");
             $('[id^=partenzePagina]').each(function () {
                 $(this).on("click", function () {
                     var num = this.id.substring(14);
                     currentpartenzePage = num-1;
                     $(tablePartenze).find('tbody').html(partenzePages[num-1]);
+                    openModalTreno();
                 })
             });
         });
@@ -770,12 +786,13 @@
             });
             var numPagineArrivi = Math.ceil(arrivi.length/trainsPerPage);
             for ( i = 1; i < numPagineArrivi+1 ; i++ )
-                $(tableArriviPages).append("<button id=\"arriviPagina"+i+"\">"+i+"</button>");
+                $(tableArriviPages).append("<button class=\"salvo-button salvo-button-primary margine-alto-dx\" id=\"arriviPagina"+i+"\">"+i+"</button>");
             $('[id^=arriviPagina]').each(function () {
                 $(this).on("click", function () {
                     var num = this.id.substring(12);
                     currentarriviPage = num-1;
                     $(tableArrivi).find('tbody').html(arriviPages[num-1]);
+                    openModalTreno();
                 })
             });
         });
@@ -799,6 +816,14 @@
                 //Do Something to handle error
             }
         });
+    }
+
+    function reloadPassivi(){
+        if(!visualizzazione.startsWith("Admin")){
+            setTimeout(function() {
+                location.reload();
+            }, 60000);
+        }
     }
 
     function logoutFunction() {

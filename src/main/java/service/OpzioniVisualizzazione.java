@@ -23,11 +23,9 @@ public class OpzioniVisualizzazione extends HttpServlet {
         String redirectURL = "";
         if(opzioniVisualizzazione != null && !opzioniVisualizzazione.trim().equalsIgnoreCase("")) {
             HttpSession session = request.getSession();
-
-            Cookie visualizzazione = new Cookie("opzioniVisualizzazione", opzioniVisualizzazione);
-            response.addCookie(visualizzazione);
-//            String encodedURL = response.encodeRedirectURL("/admin.jsp");
-//            response.sendRedirect(encodedURL);
+            String username = (String) session.getAttribute("username");
+            Cookie userVisualizzazione = new Cookie(username+"opzioniVisualizzazione", opzioniVisualizzazione);
+            response.addCookie(userVisualizzazione);
             redirectURL = "/admin.jsp";
         } else {
             redirectURL = "/home.jsp";

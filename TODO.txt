@@ -1,7 +1,5 @@
-1) controllare connessioni a DB - web.xml(?)
+1) controllare connessioni a DB - getConnection generico in classe astratta
 2) gestire sessioni e cookies in base all'utente loggato //semifatto - CONTROLLARE
 3) aggiungere logica stato treno (ON TIME - DELAYED - CANCELLED - CONFIRMED - LANDED) //semi fatto - vediamo se implementare i ritardi (?)
 4) ricerca treni (?)
-5) customizzare messaggi di errore //semifatto
-6) logica ruoli utenti
-7) correggere success ed error (in caso di error restituire errore generico)
+5) correggere success ed error (in caso di error restituire errore generico nel box rosso)

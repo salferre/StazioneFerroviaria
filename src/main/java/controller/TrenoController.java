@@ -145,7 +145,9 @@ public class TrenoController implements AbstractController {
 
             if(trenoDB.getStatoTreno().equalsIgnoreCase("C")){
                 if(cal.getTime().before(new Date(System.currentTimeMillis())))
-                    treno.setStato("Atterrato");
+                    treno.setStato("Arrivato");
+                else if (isInViaggio(connection, trenoDB.getIdTreno().toString()))
+                    treno.setStato("In viaggio");
                 else
                     treno.setStato("Confermato");
             } else
@@ -221,24 +223,9 @@ public class TrenoController implements AbstractController {
         try{
             Class.forName(DRIVER).newInstance();
             Connection connection= DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
-            Treno treno = getTrenoFromCodiceTreno(connection, "16");
-            if (treno.getStatoTreno().equalsIgnoreCase("C")) {
-                Calendario calendario = CalendarioController.getCalendarioFromidTreno(connection, treno.getIdTreno().toString());
-                String oraPartenza = calendario.getDataPartenza();
-                String oraArrivo = oraPartenza;
-                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                Date d = df.parse(oraArrivo);
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(d);
-                cal.add(Calendar.MINUTE, PercorsoController.getDurataViaggio(connection, calendario.getIdTratta()));
-                oraArrivo = df.format(cal.getTime());
-
-                Date partenza = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(oraPartenza);
-                Date arrivo = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(oraArrivo);
-                Date now = new Date();
-
-                if(now.after(partenza) && now.before(arrivo))
-                    return false;
+            Treno treno = getTrenoFromCodiceTreno(connection, codiceTreno);
+            if (treno.getStatoTreno().equalsIgnoreCase("C") && isInViaggio(connection, treno.getIdTreno().toString())) {
+                return false;
             }
             String SQL_DELETE_TRENO = "UPDATE Treno SET statoTreno=? where codiceTreno=?";
             PreparedStatement statement = connection.prepareStatement(SQL_DELETE_TRENO);
@@ -255,6 +242,27 @@ public class TrenoController implements AbstractController {
         return result;
     }
 
+    public static Boolean isInViaggio(Connection connection, String idTreno) throws ParseException {
+        Calendario calendario = CalendarioController.getCalendarioFromidTreno(connection, idTreno);
+        String oraPartenza = calendario.getDataPartenza();
+        String oraArrivo = oraPartenza;
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date d = df.parse(oraArrivo);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(d);
+        cal.add(Calendar.MINUTE, PercorsoController.getDurataViaggio(connection, calendario.getIdTratta()));
+        oraArrivo = df.format(cal.getTime());
+
+        Date partenza = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(oraPartenza);
+        Date arrivo = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(oraArrivo);
+        Date now = new Date();
+
+        if(now.after(partenza) && now.before(arrivo))
+            return true;
+
+        return false;
+    }
+
     public static Boolean updateTreno (String numeroTreno, String giornoPartenza, String oraPartenza, String binario) throws ClassNotFoundException {
         Boolean result = false;
         try{
@@ -264,7 +272,7 @@ public class TrenoController implements AbstractController {
             PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_TRENO);
             statement.setTimestamp(1, buildMySQLDateTime(giornoPartenza, oraPartenza));
             statement.setString(2, binario);
-            statement.setInt(2, getIdTrenoFromCodiceTreno(connection, numeroTreno));
+            statement.setInt(3, getIdTrenoFromCodiceTreno(connection, numeroTreno));
             statement.executeUpdate();
             statement.close();
             connection.close();

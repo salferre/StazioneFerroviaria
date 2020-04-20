@@ -32,7 +32,11 @@ function toggleFunctions() {
 
 function validateForm(tipoForm) {
 
-    $(errors).empty();
+    $(errCrMod).hide();
+    $(errCrMod).empty();
+    $(errUpMod).hide();
+    $(errUpMod).empty();
+
     erroriJS = [];
 
     var numRegex = /^\d+$/;
@@ -44,11 +48,14 @@ function validateForm(tipoForm) {
     }
     if(!dateRegex.test($('#giornoPartenza'+tipoForm).val())) {
         erroriJS.push("Inserire il giorno della partenza in formato dd/mm/yyyy!");
-    }
-    var today = new Date();
-    var giornoPartenza = new Date($('#giornoPartenza'+tipoForm).val());
-    if (today < giornoPartenza){
-        erroriJS.push("Il giorno della partenza deve essere posteriore o uguale alla data odierna!");
+    } else {
+        var today = new Date();
+        var ggPartenza = $('#giornoPartenza'+tipoForm).val();
+        var oraPartenza = $('#oraPartenza'+tipoForm).val();
+        var giornoPartenza = new Date(ggPartenza.split('/')[2], +ggPartenza.split('/')[1]-1, ggPartenza.split('/')[0], oraPartenza.split(':')[0], oraPartenza.split(':')[1]);
+        if (today > giornoPartenza){
+            erroriJS.push("Il giorno della partenza deve essere posteriore o uguale alla data odierna!");
+        }
     }
     if(!timeRegex.test($('#oraPartenza'+tipoForm).val())) {
         erroriJS.push("Inserire l'ora della partenza in formato hh:mm!");
@@ -60,9 +67,19 @@ function validateForm(tipoForm) {
     if ( erroriJS.length == 0 ){
         return true;
     }
-    erroriJS.forEach(element => {
-        $(errors).append(element);
-    });
+    if(tipoForm === 'Insert'){
+        erroriJS.forEach(element => {
+            $(errCrMod).append('<li>'+element+'</li>');
+        });
+
+        $(errCrMod).show();
+    } else if (tipoForm === 'Update'){
+        erroriJS.forEach(element => {
+            $(errUpMod).append('<li>'+element+'</li>');
+        });
+
+        $(errUpMod).show();
+    }
     return false;
 }
 
@@ -80,7 +97,7 @@ function addStazioneIntermedia(tipoForm) {
 
         var div = document.createElement("div");
         div.id = "stazIntermedia" + idSelect;
-        div.setAttribute("class", "pure-control-group")
+        div.setAttribute("class", "salvo-control-group")
 
         var select = document.createElement("select");
         select.id = "tappaIntermedia"+tipoForm+idSelect;
@@ -92,7 +109,7 @@ function addStazioneIntermedia(tipoForm) {
         label.innerHTML = "Stazione Intermedia " + idSelect + ": ";
 
         var span = document.createElement("span");
-        span.setAttribute("class", "pure-form-message-inline");
+        span.setAttribute("class", "salvo-form-message-inline");
         span.id = "rimuovi"+idSelect;
 
         var img = document.createElement("img");

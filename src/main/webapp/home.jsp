@@ -7,44 +7,31 @@
 </head>
 <body>
 <%
-    //allow access only if session exists
-    Utente user = null;
     if(session.getAttribute("username") == null){
         response.sendRedirect("/StazioneFerroviaria/");
         return;
-    }else user = (Utente) session.getAttribute("user");
-    String userName = null;
-    String sessionID = null;
-    Cookie[] cookies = request.getCookies();
-    if(cookies !=null){
-        for(Cookie cookie : cookies){
-            if(cookie.getName().equals(user)) userName = cookie.getValue();
-        }
-    }else{
-        sessionID = session.getId();
     }
 
     java.util.ArrayList<String> userRoleList = (java.util.ArrayList<String>) request.getSession().getAttribute("privileges");
     if (userRoleList == null || userRoleList.isEmpty()){
         response.sendRedirect("/StazioneFerroviaria/");
     }
-
 %>
 
 <div class="header">
-    <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
-        <a class="pure-menu-heading" style="padding: 0;"><img src="./img/logo.png"></a>
+    <div class="home-menu salvo-menu salvo-menu-horizontal salvo-menu-fixed">
+        <a class="salvo-menu-heading" style="padding: 0;"><img src="./img/logo.png"></a>
 
-        <ul class="pure-menu-list">
-            <li class="pure-menu-item cursor-pointer"><a onclick="logoutFunction()" class="pure-menu-link">Logout</a></li>
+        <ul class="salvo-menu-list">
+            <li class="salvo-menu-item cursor-pointer"><a onclick="logoutFunction()" class="salvo-menu-link">Logout</a></li>
         </ul>
     </div>
 </div>
 
 <div class="splash-container">
     <div class="splash">
-        <div class="l-box-lrg pure-u-1 pure-u-md-2-5">
-            <form class="pure-form pure-form-stacked little-white" action="/StazioneFerroviaria/OpzioniVisualizzazione" method="POST">
+        <div class="l-box-lrg salvo-u-1 salvo-u-md-2-5">
+            <form class="salvo-form salvo-form-stacked little-white" action="/StazioneFerroviaria/OpzioniVisualizzazione" method="POST">
                 <fieldset>
 
                     <label for="opzioniVisualizzazione">Scegliere una vista: </label>
@@ -57,7 +44,7 @@
                         <% } %>
                     </select>
 
-                    <button id="impostaVisualizzazione" class="pure-button pure-button-primary" type="submit">Imposta Visualizzazione</button>
+                    <button id="impostaVisualizzazione" class="salvo-button salvo-button-primary" type="submit">Imposta Visualizzazione</button>
                 </fieldset>
             </form>
         </div>

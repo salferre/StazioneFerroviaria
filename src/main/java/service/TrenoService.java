@@ -11,7 +11,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +64,7 @@ public class TrenoService extends HttpServlet {
             request.setAttribute("result", true);
             request.setAttribute("insert", insert);
             if(!insert){
-                request.setAttribute("errors", "Errore nell'inserimento del treno nel database!");
+                request.setAttribute("errors", "Errore nell'inserimento del treno nel database! ID duplicato!");
             }
         } else {
             request.setAttribute("result", false);
@@ -75,7 +77,10 @@ public class TrenoService extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String toDelete = request.getParameter("toDelete");
+        BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()));
+        String jsonString = br.readLine();
+
+        String toDelete = jsonString.split("=")[1];
         try {
             Boolean result = TrenoController.deleteTreno(toDelete);
             if(!result)
@@ -87,10 +92,13 @@ public class TrenoService extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String numeroTreno = request.getParameter("numeroTreno");
-        String giornoPartenza = request.getParameter("giornoPartenza");
-        String oraPartenza = request.getParameter("oraPartenza");
-        String binario = request.getParameter("binario");
+        BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()));
+        String jsonString = br.readLine();
+
+        String numeroTreno = jsonString.split("&")[0].split("=")[1];
+        String giornoPartenza = jsonString.split("&")[1].split("=")[1].replace("%2F", "/");
+        String oraPartenza = jsonString.split("&")[2].split("=")[1].replace("%3A", ":");
+        String binario = jsonString.split("&")[3].split("=")[1];
         try {
             Boolean result = TrenoController.updateTreno(numeroTreno, giornoPartenza, oraPartenza, binario);
             if(!result)
