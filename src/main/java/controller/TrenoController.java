@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 
-public class TrenoController implements AbstractController {
+public class TrenoController{
 
     public TrenoController() {
     }
@@ -26,8 +26,7 @@ public class TrenoController implements AbstractController {
 
         TrenoForm treno = new TrenoForm();
         try{
-            Class.forName(DRIVER).newInstance();
-            Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+            Connection connection = DBConnection.initializeDB();
 
             Integer idTreno = TrenoController.getIdTrenoFromCodiceTreno(connection, numeroTreno);
             Calendario calendario = CalendarioController.getCalendarioFromidTreno(connection, idTreno.toString());
@@ -72,8 +71,7 @@ public class TrenoController implements AbstractController {
         List<TrenoExtended> treni = new ArrayList<>();
         List<Tratta> tratte = new ArrayList<>();
         try{
-            Class.forName(DRIVER).newInstance();
-            Connection connection= DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+            Connection connection = DBConnection.initializeDB();
             PreparedStatement statement = connection.prepareStatement(arrivoOrPartenza);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
@@ -101,8 +99,7 @@ public class TrenoController implements AbstractController {
         List<TrenoExtended> treni = new ArrayList<>();
         List<Integer> idTreni = new ArrayList<>();
         try{
-            Class.forName(DRIVER).newInstance();
-            Connection connection= DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+            Connection connection = DBConnection.initializeDB();
             PreparedStatement statement = connection.prepareStatement(CalendarioRepository.GET_IDTRENO_FROM_BINARIO);
             statement.setString(1, binario);
             statement.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
@@ -162,8 +159,7 @@ public class TrenoController implements AbstractController {
                                       String binario) {
 
         try{
-            Class.forName(DRIVER).newInstance();
-            Connection connection= DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+            Connection connection = DBConnection.initializeDB();
 
             String SQL_INSERT_TRENO = "INSERT INTO Treno (codiceTreno, statoTreno) VALUES (?, ?)";
             PreparedStatement statement = connection.prepareStatement(SQL_INSERT_TRENO);
@@ -221,8 +217,7 @@ public class TrenoController implements AbstractController {
 
         Boolean result = false;
         try{
-            Class.forName(DRIVER).newInstance();
-            Connection connection= DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+            Connection connection = DBConnection.initializeDB();
             Treno treno = getTrenoFromCodiceTreno(connection, codiceTreno);
             if (treno.getStatoTreno().equalsIgnoreCase("C") && isInViaggio(connection, treno.getIdTreno().toString())) {
                 return false;
@@ -266,8 +261,7 @@ public class TrenoController implements AbstractController {
     public static Boolean updateTreno (String numeroTreno, String giornoPartenza, String oraPartenza, String binario) throws ClassNotFoundException {
         Boolean result = false;
         try{
-            Class.forName(DRIVER).newInstance();
-            Connection connection= DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+            Connection connection = DBConnection.initializeDB();
             String SQL_UPDATE_TRENO = "UPDATE Calendario SET dataPartenza=?, binario=? where idTreno=?";
             PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_TRENO);
             statement.setTimestamp(1, buildMySQLDateTime(giornoPartenza, oraPartenza));
@@ -289,9 +283,8 @@ public class TrenoController implements AbstractController {
 
         try{
             if (connection == null) {
-                connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+                connection = DBConnection.initializeDB();
             }
-            Class.forName(DRIVER).newInstance();
             PreparedStatement statement = connection.prepareStatement(TrenoRepository.GET_IDTRENO_FROM_CODICETRENO);
             statement.setString(1, codiceTreno);
             ResultSet rs = statement.executeQuery();
@@ -310,9 +303,8 @@ public class TrenoController implements AbstractController {
         Treno treno = null;
         try{
             if (connection == null) {
-                connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+                connection = DBConnection.initializeDB();
             }
-            Class.forName(DRIVER).newInstance();
             PreparedStatement statement = connection.prepareStatement(TrenoRepository.GET_TRENO_FROM_IDTRENO);
             statement.setString(1, idTreno);
             ResultSet rs = statement.executeQuery();
@@ -334,9 +326,8 @@ public class TrenoController implements AbstractController {
         Treno treno = null;
         try{
             if (connection == null) {
-                connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+                connection = DBConnection.initializeDB();
             }
-            Class.forName(DRIVER).newInstance();
             PreparedStatement statement = connection.prepareStatement(TrenoRepository.GET_TRENO_FROM_CODICETRENO);
             statement.setString(1, codiceTreno);
             ResultSet rs = statement.executeQuery();
@@ -359,9 +350,8 @@ public class TrenoController implements AbstractController {
 
         try{
             if (connection == null) {
-                connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+                connection = DBConnection.initializeDB();
             }
-            Class.forName(DRIVER).newInstance();
             PreparedStatement statement = connection.prepareStatement(TrenoRepository.GET_CODICETRENO_FROM_IDTRENO);
             statement.setString(1, idTreno);
             ResultSet rs = statement.executeQuery();
@@ -380,9 +370,8 @@ public class TrenoController implements AbstractController {
         List<Treno> treni = new ArrayList<>();
         try{
             if (connection == null) {
-                connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+                connection = DBConnection.initializeDB();
             }
-            Class.forName(DRIVER).newInstance();
             PreparedStatement statement = connection.prepareStatement(TrenoRepository.GET_ALL_TRENI);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {

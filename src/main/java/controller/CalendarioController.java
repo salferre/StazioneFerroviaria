@@ -1,18 +1,14 @@
 package controller;
 
 import dao.models.Calendario;
-import dao.models.Stazione;
 import dao.repositories.CalendarioRepository;
-import dao.repositories.StazioneRepository;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
 
-public class CalendarioController implements AbstractController {
+public class CalendarioController{
 
     public CalendarioController() {
     }
@@ -23,10 +19,9 @@ public class CalendarioController implements AbstractController {
 
         try {
             if (connection == null) {
-                connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+                connection = DBConnection.initializeDB();
             }
 
-            Class.forName(DRIVER).newInstance();
             PreparedStatement statement = connection.prepareStatement(CalendarioRepository.GET_CALENDARIO_FROM_IDTRENO);
             statement.setString(1, idTreno);
             ResultSet rs = statement.executeQuery();
@@ -53,10 +48,9 @@ public class CalendarioController implements AbstractController {
 
         try {
             if (connection == null) {
-                connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+                connection = DBConnection.initializeDB();
             }
 
-            Class.forName(DRIVER).newInstance();
             PreparedStatement statement = connection.prepareStatement(CalendarioRepository.GET_IDTRENO_FROM_IDTRATTA);
             statement.setString(1, idTratta);
             ResultSet rs = statement.executeQuery();

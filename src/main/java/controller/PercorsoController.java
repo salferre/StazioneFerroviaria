@@ -1,8 +1,6 @@
 package controller;
 
-import dao.models.Calendario;
 import dao.models.Percorso;
-import dao.repositories.CalendarioRepository;
 import dao.repositories.PercorsoRepository;
 
 import java.sql.Connection;
@@ -12,7 +10,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PercorsoController implements AbstractController {
+public class PercorsoController{
 
     public static List<Percorso> getPercorsoFromidTratta(Connection connection, String idTratta) {
 
@@ -20,10 +18,9 @@ public class PercorsoController implements AbstractController {
 
         try {
             if (connection == null) {
-                connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+                connection = DBConnection.initializeDB();
             }
 
-            Class.forName(DRIVER).newInstance();
             PreparedStatement statement = connection.prepareStatement(PercorsoRepository.GET_PERCORSO_FROM_IDTRATTA);
             statement.setString(1, idTratta);
             ResultSet rs = statement.executeQuery();
@@ -50,10 +47,9 @@ public class PercorsoController implements AbstractController {
 
         try {
             if (connection == null) {
-                connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+                connection = DBConnection.initializeDB();
             }
 
-            Class.forName(DRIVER).newInstance();
             PreparedStatement statement = connection.prepareStatement(PercorsoRepository.GET_DURATA_VIAGGIO);
             statement.setString(1, idTratta);
             ResultSet rs = statement.executeQuery();

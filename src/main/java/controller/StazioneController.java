@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StazioneController implements AbstractController {
+public class StazioneController{
 
     public StazioneController() {
     }
@@ -19,8 +19,7 @@ public class StazioneController implements AbstractController {
 
         List<Stazione> stazioni = new ArrayList<>();
         try{
-            Class.forName(DRIVER).newInstance();
-            Connection connection= DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+            Connection connection= DBConnection.initializeDB();
             PreparedStatement statement = connection.prepareStatement(StazioneRepository.GET_ALL_STAZIONI);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
@@ -44,10 +43,9 @@ public class StazioneController implements AbstractController {
 
         try {
             if (connection == null) {
-                connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+                connection = DBConnection.initializeDB();
             }
 
-            Class.forName(DRIVER).newInstance();
             PreparedStatement statement = connection.prepareStatement(StazioneRepository.GET_NOME_STAZIONE_FROM_IDSTAZIONE);
             statement.setString(1, idStazione);
             ResultSet rs = statement.executeQuery();
@@ -68,10 +66,9 @@ public class StazioneController implements AbstractController {
 
         try {
             if (connection == null) {
-                connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+                connection = DBConnection.initializeDB();
             }
 
-            Class.forName(DRIVER).newInstance();
             PreparedStatement statement = connection.prepareStatement(StazioneRepository.GET_NOME_STAZIONE_FROM_PROVINCIASTAZIONE);
             statement.setString(1, provinciaStazione);
             ResultSet rs = statement.executeQuery();
@@ -89,7 +86,6 @@ public class StazioneController implements AbstractController {
     public static Integer getIdStazione(Connection connection, String nomeStazione) {
         Integer idStazione = 0;
         try{
-            Class.forName(DRIVER).newInstance();
             PreparedStatement statement = connection.prepareStatement(StazioneRepository.GET_ID_STAZIONE);
             statement.setString(1, nomeStazione);
             ResultSet rs = statement.executeQuery();

@@ -2,12 +2,11 @@ package controller;
 
 import dao.models.Utente;
 
-import javax.servlet.http.HttpSession;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoginController implements AbstractController {
+public class LoginController{
 
     public LoginController() {
     }
@@ -15,8 +14,7 @@ public class LoginController implements AbstractController {
     public static Boolean checkUser(String username, String password) {
 
         try{
-            Class.forName(DRIVER).newInstance();
-            Connection connection= DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+            Connection connection = DBConnection.initializeDB();
             String queryLogin = "SELECT * FROM Utenti u WHERE u.username = ? AND u.password = ?";
             PreparedStatement statement = connection.prepareStatement(queryLogin);
             statement.setString(1, username);
@@ -39,8 +37,7 @@ public class LoginController implements AbstractController {
     public static Utente checkUserPrivileges(String username) {
         Utente result = new Utente();
         try{
-            Class.forName(DRIVER).newInstance();
-            Connection connection= DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+            Connection connection = DBConnection.initializeDB();
             String queryPrivileges = "SELECT * FROM Utenti u WHERE u.username = ?";
             PreparedStatement statement = connection.prepareStatement(queryPrivileges);
             statement.setString(1, username);
