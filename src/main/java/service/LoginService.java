@@ -31,10 +31,8 @@ public class LoginService extends HttpServlet {
             session.setAttribute("username", utente.getUsername());
             session.setAttribute("privileges", utente.getPrivileges());
             session.setMaxInactiveInterval(30*60);
-            Cookie userName = new Cookie("user", username);
+            Cookie userName = new Cookie("username", username);
             response.addCookie(userName);
-//            String encodedURL = response.encodeRedirectURL("/admin.jsp");
-//            response.sendRedirect(encodedURL);
             redirectURL = "/home.jsp";
             Cookie[] cookies = request.getCookies();
             if(cookies.length > 0){

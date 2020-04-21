@@ -9,8 +9,6 @@
 <body>
 
 <%
-    //allow access only if session exists
-    Utente user = null;
     if(session.getAttribute("username") != null){
         response.sendRedirect("/StazioneFerroviaria/home.jsp");
     }
