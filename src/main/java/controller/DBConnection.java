@@ -9,9 +9,9 @@ public class DBConnection {
     public static Connection initializeDB() throws SQLException, ClassNotFoundException, IllegalAccessException, InstantiationException {
 
         String DRIVER = "com.mysql.cj.jdbc.Driver";
-        String JDBC_URL = "jdbc:mysql://127.0.0.1:3306/StazioneFerroviaria?serverTimezone=CET";
+        String JDBC_URL = "jdbc:mysql://127.0.0.1:3306/ferreri?serverTimezone=CET";
         String USERNAME = "root";
-        String PASSWORD = "Suazami94";
+        String PASSWORD = "PA846645";
 
         Class.forName(DRIVER).newInstance();
 
